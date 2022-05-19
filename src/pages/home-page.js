@@ -55,7 +55,7 @@ function HomePage() {
 					</div>
 					{isReady && (
 						<div className="tw-z-40 tw-h-[100vh] tw-mt-[-70px] tw-w-[100%] bg-blur3 tw-absolute tw-top-0 tw-bottom-0 z-10 tw-items-center tw-justify-center tw-flex tw-flex-col">
-							<div className="tw-w-[300px]">
+							<div className="tw-w-[300px] tw-ml-5">
 								<img src={logo} alt="company logo" />
 							</div>
 							<div className="tw-relative tw-text-neutral-600 tw-text-[40px] md:tw-text-[50px] tw-flex tw-flex-col tw-items-center">
