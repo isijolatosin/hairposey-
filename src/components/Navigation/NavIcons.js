@@ -48,7 +48,7 @@ function NavIcons() {
 			{!user && (
 				<div className="tw-w-[80px] tw-ml-[25px] tw-flex tw-flex-row tw-justify-between tw-items-center">
 					<div className="tw-flex tw-flex-col tw-justify-center tw-items-center hover:tw-opacity-[0.5] hover:tw-cursor-pointer tw-relative">
-						<div className="tw-text-gray-800 tw-text-xl tw-ease-in tw-duration-500">
+						<div className="tw-text-neutral-50 tw-text-xl tw-ease-in tw-duration-500">
 							<FiLogIn onClick={() => navigate('/login')} />
 						</div>
 						<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-yellow-900 tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
@@ -56,7 +56,7 @@ function NavIcons() {
 						</span>
 					</div>
 					<div className="tw-flex tw-flex-col tw-justify-center tw-items-center hover:tw-opacity-[0.5] hover:tw-cursor-pointer tw-relative">
-						<div className="tw-text-gray-800 tw-text-xl tw-ease-in tw-duration-500">
+						<div className="tw-text-neutral-50 tw-text-xl tw-ease-in tw-duration-500">
 							<MdAssignmentInd onClick={() => navigate('/register')} />
 						</div>
 						<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-yellow-900 tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">

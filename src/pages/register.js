@@ -67,7 +67,9 @@ const Register = () => {
 							By creating account with us, you consent to receiving newsletters
 							or promotions from{' '}
 							<Link to="/">
-								<span className="tw-text-rose-800">modelEst.</span>
+								<span className="navStyleChild tw-text-yellow-800">
+									hairposey.
+								</span>
 							</Link>
 						</p>
 					</div>
@@ -81,7 +83,7 @@ const Register = () => {
 									value={authUser.name}
 									onChange={handleChangeAuthUser}
 									placeholder="Full Name"
-									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5"
+									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-yellow-500 invalid:tw-text-yellow-600 focus:invalid:tw-border-yellow-500 focus:invalid:tw-ring-yellow-500 tw-outline-0 tw-mb-5"
 								/>
 							</div>
 							<div>
@@ -92,7 +94,7 @@ const Register = () => {
 									value={authUser.email}
 									onChange={handleChangeAuthUser}
 									placeholder="Email"
-									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5"
+									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-yellow-500 invalid:tw-text-yellow-600 focus:invalid:tw-border-yellow-500 focus:invalid:tw-ring-yellow-500 tw-outline-0 tw-mb-5"
 								/>
 							</div>
 							<div>
@@ -103,7 +105,7 @@ const Register = () => {
 									value={authUser.password}
 									onChange={handleChangeAuthUser}
 									placeholder="Password"
-									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5"
+									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-yellow-500 invalid:tw-text-yellow-600 focus:invalid:tw-border-yellow-500 focus:invalid:tw-ring-yellow-500 tw-outline-0 tw-mb-5"
 								/>
 							</div>
 							<div>
@@ -114,7 +116,7 @@ const Register = () => {
 									value={authUser.phone}
 									onChange={handleChangeAuthUser}
 									placeholder="Phone-Number (optional)"
-									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5"
+									className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-yellow-500 invalid:tw-text-yellow-600 focus:invalid:tw-border-yellow-500 focus:invalid:tw-ring-yellow-500 tw-outline-0 tw-mb-5"
 								/>
 							</div>
 							<div className="tw-text-center tw-text-xs tw-text-red-800">
@@ -131,7 +133,9 @@ const Register = () => {
 						<p className="tw-text-neutral-500 tw-font-light">
 							Already have an account with us?{' '}
 							<Link to="/login">
-								<button className="tw-text-pink-800 tw-mb-10">Login</button>
+								<button className="tw-text-yellow-800 tw-mb-10 navStyleChild">
+									Login
+								</button>
 							</Link>{' '}
 						</p>
 					</div>
@@ -141,7 +145,7 @@ const Register = () => {
 							<a
 								href="https://policies.google.com/privacy"
 								rel="noopener noreferrer">
-								<span className="tw-text-pink-800 tw-mb-10 tw-text-sm tw-underline">
+								<span className="tw-text-yellow-800 tw-mb-10 tw-text-sm navStyleChild">
 									Privacy Policy
 								</span>
 							</a>{' '}
@@ -149,7 +153,7 @@ const Register = () => {
 							<a
 								href="https://policies.google.com/terms"
 								rel="noopener noreferrer">
-								<span className="tw-text-pink-800 tw-mb-10 tw-text-sm tw-underline">
+								<span className="tw-text-yellow-800 tw-mb-10 tw-text-sm navStyleChild">
 									Terms of Service
 								</span>
 							</a>{' '}

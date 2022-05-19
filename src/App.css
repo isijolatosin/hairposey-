@@ -686,3 +686,37 @@ label input::placeholder {
 .social-media-list a:hover::before {
 	transform: rotate(45deg) translate(15%, 100%);
 }
+.navStyleChild {
+	position: relative;
+}
+.navStyleChild::after {
+	position: absolute;
+	content: '';
+	width: 0%;
+	height: 1px;
+	background-color: rgb(133 77 14);
+	left: 50%;
+	bottom: 0px;
+	transition: all 0.3s ease-in-out;
+}
+.navStyleChild:hover::after {
+	width: 100%;
+	left: 0;
+}
+.navStyleChildWhite {
+	position: relative;
+}
+.navStyleChildWhite::after {
+	position: absolute;
+	content: '';
+	width: 0%;
+	height: 1px;
+	background-color: rgb(255, 255, 255);
+	left: 50%;
+	bottom: 0px;
+	transition: all 0.3s ease-in-out;
+}
+.navStyleChildWhite:hover::after {
+	width: 100%;
+	left: 0;
+}

@@ -56,7 +56,7 @@ function Footer() {
 		e.preventDefault()
 		try {
 			window.open(
-				`mailto:'modelEst1010@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
+				`mailto:'hairposey@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
 			)
 			setcontactInput({
 				name: '',
@@ -94,7 +94,7 @@ function Footer() {
 								  }
 								: null
 						}
-						className="tw-mx-5 hover:tw-cursor-pointer hover:tw-underline ">
+						className="tw-mx-5 hover:tw-cursor-pointer tw-text-yellow-800 navStyleChild">
 						{link.name}
 					</li>
 				))}
@@ -104,15 +104,16 @@ function Footer() {
 					onSubmit={handleSubmit}
 					className="tw-w-full tw-flex tw-flex-col tw-items-center md:tw-max-w-[80%] tw-bg-neutral-50 tw-py-5 tw-mb-5">
 					<span className="tw-text-sm tw-font-light tw-mb-2">
-						Contact - ModelEst
+						Contact - Hairposey
 					</span>
 					<p className="tw-font-light tw-text-[14px] tw-max-w-[80%] lg:tw-max-w-[50%] tw-my-5">
-						We at modelEst are customer centric, we take pride in our customers.
-						We are committed in helping with picking the right hair for you,
-						adequate information regarding education on hair maintenance, and
-						providing high quality hair extensions. We value you our customers
-						and we are committed to long time support. Our customers are our
-						sister’s. We respond within 24-48 business hours Monday - Friday.
+						We at hairposey are customer centric, we take pride in our
+						customers. We are committed in helping with picking the right hair
+						for you, adequate information regarding education on hair
+						maintenance, and providing high quality hair extensions. We value
+						you our customers and we are committed to long time support. Our
+						customers are our sister’s. We respond within 24-48 business hours
+						Monday - Friday.
 					</p>
 					<div className="md:tw-w-[90%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-mx-auto tw-flex tw-flex-col tw-items-center">
 						<input
@@ -645,7 +646,7 @@ function Footer() {
 						<br />
 						<br />
 						Questions about the Terms of Service should be sent to us at
-						modelEst1010@gmail.com.
+						hairposey@gmail.com.
 					</p>
 				</div>
 			)}
@@ -688,13 +689,14 @@ function Footer() {
 				</div>
 				<div className="md:tw-flex tw-ml-1">
 					<p className="">
-						develop by{' '}
-						<span className="rose-gold">
+						develop by -
+						<span className="tw-text-yellow-800 navStyleChild">
 							<a
 								href="https://www.linkedin.com/in/oluwatosin-isijola-33333ba8/"
 								target="_blank"
 								rel="noopener noreferrer">
-								- Tony Isijola
+								{' '}
+								Tony Isijola
 							</a>
 						</span>
 					</p>
@@ -704,18 +706,24 @@ function Footer() {
 				This site is protected by Google Privacy Policy and Terms of Service
 				apply.
 			</span>
-			<div className="tw-flex tw-justify-evenly tw-items-center tw-w-[80%] md:tw-w-[8%] tw-mt-3 rose-gold">
+			<div className="tw-flex tw-justify-evenly tw-items-center tw-w-[80%] md:tw-w-[15%] tw-mt-3 tw-text-yellow-800">
 				<a
 					href="https://www.instagram.com/hairposey/"
 					target="_blank"
 					rel="noopener noreferrer">
-					<AiOutlineInstagram size={20} className="hover:tw-text-rose-100" />
+					<AiOutlineInstagram
+						size={20}
+						className="hover:tw-text-rose-100 tw-ease tw-duration-300"
+					/>
 				</a>
 				<a
 					href="https://www.tiktok.com/search?q=hairposey&t=1652981534762"
 					target="_blank"
 					rel="noopener noreferrer">
-					<FaTiktok size={20} className="hover:tw-text-rose-100" />
+					<FaTiktok
+						size={20}
+						className="hover:tw-text-rose-100 tw-ease tw-duration-300"
+					/>
 				</a>
 			</div>
 		</footer>

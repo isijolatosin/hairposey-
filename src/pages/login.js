@@ -74,7 +74,7 @@ const Login = () => {
 										value={authUser.email}
 										onChange={handleChangeAuthUser}
 										placeholder="Email"
-										className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5"
+										className="tw-mt-1 tw-block lg:tw-w-[30%] tw-mx-auto tw-w-[70%] tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-neutral-500 invalid:tw-text-neutral-600 focus:invalid:tw-border-neutral-500 focus:invalid:tw-ring-neutral-500 tw-outline-0 tw-mb-5"
 									/>
 								</div>
 								<div className="tw-relative tw-h-[38.4px] lg:tw-w-[30%] tw-w-[70%] tw-mx-auto tw-shadow-xl">
@@ -85,9 +85,9 @@ const Login = () => {
 										value={authUser.password}
 										onChange={handleChangeAuthUser}
 										placeholder="Password"
-										className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm  tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5"
+										className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border tw-border-neutral-100 tw-text-sm  tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-neutral-500 invalid:tw-text-neutral-600 focus:invalid:tw-border-neutral-500 focus:invalid:tw-ring-neutral-500 tw-outline-0 tw-mb-5"
 									/>
-									<div className="tw-text-neutral-500 tw-font-light tw-flex tw-flex-row tw-justify-center tw-items-center tw-absolute tw-top-0 tw-bg-pink-900 tw-pr-2 tw-h-full tw-right-0 tw-w-[50px] tw-text-center tw-border tw-border-pink-900">
+									<div className="tw-text-neutral-500 tw-font-light tw-flex tw-flex-row tw-justify-center tw-items-center tw-absolute tw-top-0 tw-bg-neutral-900 tw-pr-2 tw-h-full tw-right-0 tw-w-[50px] tw-text-center tw-border tw-border-neutral-900">
 										<input
 											className="tw-border-gray-300 tw-ml-2 tw-rounded-full"
 											type="checkbox"
@@ -110,7 +110,7 @@ const Login = () => {
 								Forgot Password? |{' '}
 								<button
 									onClick={() => resetPassword(authUser.email)}
-									className="tw-text-pink-800 tw-underline">
+									className="tw-text-yellow-800 navStyleChild">
 									Reset
 								</button>
 							</span>
@@ -122,7 +122,7 @@ const Login = () => {
 							<p className="tw-mt-5 tw-mb-10">
 								Not a Member? |{' '}
 								<Link to="/register">
-									<button className="tw-text-pink-800 tw-underline">
+									<button className="tw-text-yellow-800 navStyleChild">
 										Create Account
 									</button>
 								</Link>
