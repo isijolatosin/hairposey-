@@ -56,7 +56,7 @@ function HomePage() {
 							<img src={logo} alt="company logo" />
 						</div>
 						<div className="tw-text-neutral-600 tw-text-[40px] md:tw-text-[50px] tw-flex tw-flex-col tw-items-center">
-							<span className="-tw-mb-5">UNDER</span>
+							<span className="-tw-mb-8">UNDER</span>
 							<span>CONSTRUCTION</span>
 						</div>
 						<span className="tw-font-light tw-ml-5 tw-text-center tw-text-white tw-tracking-[12px] md:tw-tracking-[20px] tw-text-[10px]">
