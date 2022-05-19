@@ -207,7 +207,9 @@ function Shippment() {
 									<div className="inner"></div>
 								</div>
 							) : (
-								<span>Data not Found</span>
+								<div className="tw-inline">
+									<span>Not Found</span>
+								</div>
 							)
 						) : (
 							<>

@@ -14,14 +14,6 @@ function NavIcons() {
 	const { user } = useContext(UserContext)
 	const itemCount = useSelector(selectItemCount)
 	const navigate = useNavigate()
-	// const [showText, setShowText] = React.useState(false)
-
-	// const handleShow = () => {
-	// 	!showText && setShowText(true)
-	// }
-	// const handleHide = () => {
-	// 	setShowText(false)
-	// }
 	const handleSignOut = () => {
 		auth.signOut()
 		navigate('/')
@@ -31,7 +23,7 @@ function NavIcons() {
 		<div className=" tw-flex tw-flex-row tw-w-46 tw-mr-5 tw-justify-center tw-items-center">
 			<div
 				onClick={() => navigate('/user-cart')}
-				className="tw-w-30 tw-h-30 tw-text-gray-800 tw-text-xl tw-mb-3 hover:tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-p-2 hover:tw-rounded-full hover:tw--mb-[2px] tw-ease-in tw-duration-300 tw-relative">
+				className="tw-w-30 tw-h-30 tw-text-neutral-50 tw-text-xl tw-mb-3 hover:tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-neutral-800 hover:tw-p-2 hover:tw-rounded-full hover:tw--mb-[2px] tw-ease-in tw-duration-300 tw-relative">
 				{itemCount > 0 ? (
 					<MdShoppingBag size={25} />
 				) : (
@@ -43,20 +35,12 @@ function NavIcons() {
 					</span>
 				)}
 			</div>
-			{/* <div
-				onMouseOver={!user && handleShow}
-				onMouseOut={!user && handleHide}
-				onClick={() => user && navigate('/user-account')}
-				className="tw-w-30 tw-h-30 tw-text-gray-300 tw-text-xl hover:tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-p-2 hover:tw-rounded-full tw-ease-in tw-duration-300 ">
-				<GoPerson />
-				<CursorText showText={showText}>Sign In Required</CursorText>
-			</div> */}
 			{user && (
 				<div className="tw-flex  tw-ml-[20px] tw-flex-col tw-justify-center tw-items-center hover:tw-opacity-[0.5] hover:tw-cursor-pointer  tw-relative">
-					<div className="tw-text-gray-800 tw-text-xl tw-ease-in tw-duration-500">
+					<div className="tw-text-neutral-50 tw-text-xl tw-ease-in tw-duration-500">
 						<FiLogOut onClick={handleSignOut} />
 					</div>
-					<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-black tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
+					<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-yellow-900 tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
 						sign out
 					</span>
 				</div>
@@ -67,7 +51,7 @@ function NavIcons() {
 						<div className="tw-text-gray-800 tw-text-xl tw-ease-in tw-duration-500">
 							<FiLogIn onClick={() => navigate('/login')} />
 						</div>
-						<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-black tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
+						<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-yellow-900 tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
 							sign in
 						</span>
 					</div>
@@ -75,7 +59,7 @@ function NavIcons() {
 						<div className="tw-text-gray-800 tw-text-xl tw-ease-in tw-duration-500">
 							<MdAssignmentInd onClick={() => navigate('/register')} />
 						</div>
-						<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-black tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
+						<span className="tw-text-[7px] tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-yellow-900 tw-via-yellow-600 tw-to-yellow-700 tw-uppercase">
 							sign up
 						</span>
 					</div>

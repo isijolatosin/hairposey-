@@ -682,13 +682,13 @@ function Footer() {
 			<div className="tw-flex tw-text-xs tw-text-neutral-500 tw-font-light">
 				<div className="tw-pr-1 tw-border-r-2 tw-border-r-neutral-800 md:tw-flex">
 					<p className="">
-						&copy; {new Date().getUTCFullYear()} <span>modelEst</span>
+						&copy; {new Date().getUTCFullYear()} <span>hairposey</span>
 						<span> • All right reserved</span>
 					</p>
 				</div>
 				<div className="md:tw-flex tw-ml-1">
 					<p className="">
-						website develop by{' '}
+						develop by{' '}
 						<span className="rose-gold">
 							<a
 								href="https://www.linkedin.com/in/oluwatosin-isijola-33333ba8/"
@@ -704,15 +704,15 @@ function Footer() {
 				This site is protected by Google Privacy Policy and Terms of Service
 				apply.
 			</span>
-			<div className="tw-flex tw-justify-evenly tw-items-center tw-w-[80%] md:tw-w-[8%] md:tw-ml-10 tw-mt-3 rose-gold">
+			<div className="tw-flex tw-justify-evenly tw-items-center tw-w-[80%] md:tw-w-[8%] tw-mt-3 rose-gold">
 				<a
-					href="https://www.instagram.com/modelestluxuryhair/"
+					href="https://www.instagram.com/hairposey/"
 					target="_blank"
 					rel="noopener noreferrer">
 					<AiOutlineInstagram size={20} className="hover:tw-text-rose-100" />
 				</a>
 				<a
-					href="https://www.tiktok.com/@es.motayo"
+					href="https://www.tiktok.com/search?q=hairposey&t=1652981534762"
 					target="_blank"
 					rel="noopener noreferrer">
 					<FaTiktok size={20} className="hover:tw-text-rose-100" />

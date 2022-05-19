@@ -640,3 +640,49 @@ label input::placeholder {
 		background-color: rgba(255, 255, 255, 0.7);
 	}
 }
+
+.social-media-list {
+	display: flex;
+}
+.social-media-list a {
+	display: inline-block;
+	width: 70px;
+	height: 70px;
+	background-color: transparent;
+	display: grid;
+	place-items: center;
+	border-radius: 50%;
+	font-size: 28px;
+	text-decoration: none;
+	color: #fff;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+}
+.social-media-list a:not(:last-child) {
+	margin-right: 2rem;
+}
+.social-media-list a svg {
+	transition: transform 0.3s;
+}
+.social-media-list a::before {
+	content: '';
+	position: absolute;
+	width: 115%;
+	height: 115%;
+	background-color: #d48d37;
+	z-index: -1;
+	transform: rotate(45deg);
+	top: -15%;
+	left: 5%;
+	transition: transform 0.3s;
+}
+.social-media-list a:hover {
+	color: #d48d37;
+}
+.social-media-list a:hover svg {
+	transform: scale(1.2);
+}
+.social-media-list a:hover::before {
+	transform: rotate(45deg) translate(15%, 100%);
+}
