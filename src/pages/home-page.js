@@ -11,7 +11,7 @@ const logo = require('../assets/logo.png')
 
 function HomePage() {
 	const [allProducts, setAllproducts] = React.useState([])
-	const [isReady, setIsReady] = React.useState(true)
+	const isReady = true
 
 	async function fetchProducts() {
 		try {
