@@ -83,7 +83,7 @@ function HomePage() {
 									<FaTiktok size={20} />
 								</a>
 							</div>
-							<div className="tw-flex tw-text-xs tw-text-neutral-500 tw-font-light tw-mt-[50px]">
+							<div className="tw-flex tw-text-xs tw-text-neutral-500 tw-font-light tw-mt-[50px] tw-mb-[30px]">
 								<div className="tw-pr-1 tw-border-r-2 tw-border-r-neutral-800 md:tw-flex">
 									<p className="">
 										&copy; {new Date().getUTCFullYear()} <span>hairposey</span>
