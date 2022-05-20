@@ -66,8 +66,10 @@ function HomePage() {
 							<span className="tw-font-light tw-ml-5 tw-text-center tw-text-white tw-tracking-[12px] md:tw-tracking-[20px] tw-text-[10px]">
 								SITE ALMOST READY
 							</span>
-							<div className="tw-rounded-full progress tw-w-[50%] tw-mt-[150px] tw-bg-neutral-900 ">
-								<div className="inner tw-bg-neutral-700"></div>
+							<div className="load-wrapper tw-mt-10">
+								<div className="circle"></div>
+								<div className="circle"></div>
+								<div className="circle"></div>
 							</div>
 							<div className="social-media-list tw-mt-[150px]">
 								<a

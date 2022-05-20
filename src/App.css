@@ -646,8 +646,8 @@ label input::placeholder {
 }
 .social-media-list a {
 	display: inline-block;
-	width: 70px;
-	height: 70px;
+	width: 60px;
+	height: 60px;
 	background-color: transparent;
 	display: grid;
 	place-items: center;
@@ -670,7 +670,7 @@ label input::placeholder {
 	position: absolute;
 	width: 115%;
 	height: 115%;
-	background-color: #d48d37;
+	background-color: #3b3b3b;
 	z-index: -1;
 	transform: rotate(45deg);
 	top: -15%;
@@ -719,4 +719,49 @@ label input::placeholder {
 .navStyleChildWhite:hover::after {
 	width: 100%;
 	left: 0;
+}
+.load-wrapper {
+	width: 120px;
+	height: 60px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.circle {
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	border-radius: 50%;
+	background-color: #d48d37;
+	left: 15%;
+	transform-origin: 50%;
+	animation: circle 0.5s alternate infinite ease;
+}
+.circle:nth-child(2) {
+	left: 42%;
+	animation-delay: 0.2s;
+	background-color: #ff00a2;
+}
+.circle:nth-child(3) {
+	left: auto;
+	right: 15%;
+	animation-delay: 0.3s;
+	background-color: #3300ff;
+}
+@keyframes circle {
+	0% {
+		top: 60px;
+		height: 5px;
+		border-radius: 50px 50px 25px 25px;
+		transform: scale(1.7);
+	}
+	40% {
+		height: 20px;
+		border-radius: 50%;
+		transform: scale(1);
+	}
+	100% {
+		top: 0%;
+	}
 }
