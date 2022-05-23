@@ -74,7 +74,8 @@ const Success = () => {
 		setTimeout(() => {
 			dispatch(clearCartItem())
 		}, 500)
-	})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const handleBackToShopping = () => {
 		localStorage.setItem('payload', '')
