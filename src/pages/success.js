@@ -44,6 +44,7 @@ const Success = () => {
 						customer: user && user?.displayName,
 						email: userEmail,
 						color: item?.hairColor,
+						length: item?.hairLength,
 					})
 					.then(() => {
 						// console.log(`SUCCESSFULL`)
@@ -64,20 +65,18 @@ const Success = () => {
 						customer: user && user?.displayName,
 						email: userEmail,
 						color: item?.hairColor,
+						length: item?.hairLength,
 					})
 					.then(() => {
 						console.log(`SUCCESSFULL`)
 					})
 					.catch((error) => console.log('Error' + error.message))
 			})
-
-		setTimeout(() => {
-			dispatch(clearCartItem())
-		}, 500)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const handleBackToShopping = () => {
+		dispatch(clearCartItem())
 		localStorage.setItem('payload', '')
 		localStorage.setItem('address', '')
 		localStorage.setItem('altEmail', '')

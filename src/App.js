@@ -23,7 +23,7 @@ function App() {
 			<Route exact path="/hair-bundles" element={<HairBundles />} />
 			<Route exact path="/closure-frontal" element={<ClosureFrontal />} />
 			<Route exact path="/jet-black-&-blonde-hair" element={<JetBlackHair />} />
-			<Route exact path="/user-cart" element={<Cart />} />
+			<Route exact path="/user-cart/:userId" element={<Cart />} />
 			<Route exact path="/user-account" element={<Account />} />
 			<Route exact path="*" element={<NotFound />} />
 			<Route exact path="/" element={<HomePage />} />

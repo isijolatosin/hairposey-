@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import axios from 'axios'
 import Layout from '../components/shared/Layout'
@@ -8,9 +8,11 @@ import { GrCheckmark } from 'react-icons/gr'
 import { selectItemCount } from '../slices/appSlices'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/user-context'
 
 function JetBlackHair() {
 	const itemCount = useSelector(selectItemCount)
+	const { user } = useContext(UserContext)
 	const [singleProducts, setSingleproducts] = React.useState(null)
 	const [jetBlackHair, setJetBlackHair] = React.useState([])
 	const [show, setShow] = React.useState(false)
@@ -51,7 +53,7 @@ function JetBlackHair() {
 	const sizes = singleProducts?.[0].availablelength.split(', ')
 
 	function handleCheckout() {
-		navigate('/user-cart')
+		navigate(`/user-cart/${user?.displayName || 'new-customer'}`)
 		setTimeout(() => {
 			setTimeout(function () {
 				window.scrollTo(0, window.innerHeight)
@@ -96,7 +98,9 @@ function JetBlackHair() {
 								</div>
 							</div>
 							<div
-								onClick={() => navigate('/user-cart')}
+								onClick={() =>
+									navigate(`/user-cart/${user?.displayName || 'new-customer'}`)
+								}
 								className="tw-border tw-border-black tw-py-2 tw-bg-white tw-text-center tw-mb-3">
 								<button>View cart ({itemCount})</button>
 							</div>

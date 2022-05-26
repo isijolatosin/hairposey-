@@ -3,10 +3,14 @@ import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
 import { Calendar } from 'react-date-range'
 import Button from './shared/Button'
-import { categories, staffs, services, sessions } from './formData'
+// import { categories, staffs, services, sessions } from './formData'
 import { UserContext } from '../context/user-context'
 
 const bookImg = require('../assets/book.jpeg')
+const categories = []
+const staffs = []
+const services = []
+const sessions = ['10am-12pm', '12pm-2pm', '2pm-4pm']
 
 function Book() {
 	const dateToday = new Date()
@@ -65,7 +69,7 @@ function Book() {
 						product_data: {
 							name: `Hair Appointment for ${selectDate}`,
 						},
-						unit_amount: 50 * 100,
+						unit_amount: Number(process.env.REACT_APP_BOOKING_PRICE) * 100,
 					},
 					quantity: 1,
 				},
@@ -89,6 +93,8 @@ function Book() {
 				console.log(e.message)
 			})
 	}
+
+	console.log(Number(process.env.REACT_APP_BOOKING_PRICE))
 
 	return (
 		<div className="tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-border-t tw-border-b tw-p-5 lg:tw-pl-0 tw-mx-auto">
@@ -158,8 +164,8 @@ function Book() {
 										id="Session"
 										value={bookingData.session}
 										name="session">
-										{sessions.map((session) => (
-											<option key={session.id}>{session.name}</option>
+										{sessions?.map((session) => (
+											<option key={session.id}>{session}</option>
 										))}
 									</select>
 								</div>
@@ -173,7 +179,7 @@ function Book() {
 										id="category"
 										value={bookingData.category}
 										name="category">
-										{categories.map((category) => (
+										{categories?.map((category) => (
 											<option key={category.id}>{category.name}</option>
 										))}
 									</select>
@@ -188,7 +194,7 @@ function Book() {
 										id="Service"
 										value={bookingData.service}
 										name="service">
-										{services.map((service) => (
+										{services?.map((service) => (
 											<option key={service.id}>{service.name}</option>
 										))}
 									</select>
@@ -203,7 +209,7 @@ function Book() {
 										id="Personnel"
 										value={bookingData.personnel}
 										name="personnel">
-										{staffs.map((staff) => (
+										{staffs?.map((staff) => (
 											<option key={staff.id}>{staff.name}</option>
 										))}
 									</select>

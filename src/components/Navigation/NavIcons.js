@@ -22,7 +22,9 @@ function NavIcons() {
 	return (
 		<div className=" tw-flex tw-flex-row tw-w-46 tw-mr-5 tw-justify-center tw-items-center">
 			<div
-				onClick={() => navigate('/user-cart')}
+				onClick={() =>
+					navigate(`/user-cart/${user?.displayName || 'new-customer'}`)
+				}
 				className="tw-w-30 tw-h-30 tw-text-neutral-50 tw-text-xl tw-mb-3 hover:tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-neutral-800 hover:tw-p-2 hover:tw-rounded-full hover:tw--mb-[2px] tw-ease-in tw-duration-300 tw-relative">
 				{itemCount > 0 ? (
 					<MdShoppingBag size={25} />
