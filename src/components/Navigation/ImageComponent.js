@@ -34,7 +34,7 @@ function ImageComponent() {
 					className="tw-absolute -tw-right-5 tw-top-[20%]"
 					onMouseOver={handleShow}
 					onMouseOut={handleHide}>
-					<div className="tw-w-30 tw-h-30 tw-p-2 tw-text-black tw-text-xl hover:tw-cursor-pointer tw-bg-neutral-600 tw-rounded-full tw-ease-in tw-duration-300">
+					<div className="tw-w-30 tw-h-30 tw-p-2 tw-text-black tw-text-xl hover:tw-cursor-pointer tw-bg-pink-900 tw-rounded-full tw-ease-in tw-duration-300">
 						<RiDatabase2Fill />
 					</div>
 					<CursorText showText={showText}>Admin</CursorText>

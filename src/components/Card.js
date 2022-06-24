@@ -1,22 +1,23 @@
 import React from 'react'
 import axios from 'axios'
-import { GrCheckmark } from 'react-icons/gr'
+import {
+	MdOutlineViewInAr,
+	MdOutlineInventory,
+	MdMoneyOff,
+} from 'react-icons/md'
+import { isInCart } from '../utils/helpers'
+import { GiMoneyStack } from 'react-icons/gi'
+import { selectCartItems } from '../slices/appSlices'
+import { useSelector } from 'react-redux'
 
-function Card({ product, setSingleproducts, scrollToTop }) {
-	const [clickedID, setClickedID] = React.useState('')
-
-	function handleMouseIn(event) {
-		setClickedID(event.target.id)
-	}
-
+function Card({ product, setSingleproducts, scrollToTop, sales }) {
+	const cartItems = useSelector(selectCartItems)
 	async function handleViewImage(event) {
 		try {
 			const {
 				data: { products },
 			} = await axios.get('/api/v1/products')
-			const result = products.filter(
-				(product) => product._id === event.target.id
-			)
+			const result = products.filter((product) => product._id === event)
 			setSingleproducts(result)
 		} catch (error) {
 			console.log(error)
@@ -25,50 +26,67 @@ function Card({ product, setSingleproducts, scrollToTop }) {
 	}
 
 	return (
-		<div
-			onMouseOver={handleMouseIn}
-			onMouseOut={() => setClickedID('')}
-			className="tw-w-[100%] tw-h-[300px] md:tw-w-[300px] tw-shadow-lg md:tw-h-[300px] tw-relative tw-rounded-sm">
+		<div className="card tw-w-[90%] tw-mx-auto md:tw-w-[300px] tw-rounded-[30px]">
+			<ul className="ul">
+				<li
+					onClick={() => handleViewImage(product._id)}
+					className="tw-relative">
+					<span className="tw-absolute tw-left-[-45px] tw-text-white tw-text-xs">
+						Expand
+					</span>
+					<MdOutlineViewInAr />
+				</li>
+				<li>
+					<span
+						className={`${
+							product.instock
+								? 'tw-text-white'
+								: 'tw-text-white tw-left-[-65px]'
+						} tw-absolute tw-left-[-45px] tw-text-xs`}>
+						{product.instock ? 'Instock' : 'Not Instock'}
+					</span>
+					<MdOutlineInventory
+						className={`${!product.instock && 'tw-text-red-800'}`}
+					/>
+				</li>
+				<li>
+					<span className="tw-absolute tw-left-[-80px] tw-text-white tw-text-md tw-font-bold">
+						${product.price} CAD
+					</span>
+					<GiMoneyStack />
+				</li>
+				<li>
+					<span
+						className={`${
+							product.sales && sales !== 0
+								? 'tw-text-white  tw-left-[-35px]'
+								: 'tw-text-white tw-left-[-73px]'
+						} tw-absolute tw-text-xs`}>
+						{product.sales ? 'Sales' : 'Not on Sales'}
+					</span>
+					<MdMoneyOff className={`${!product.sales && 'tw-text-red-800'}`} />
+				</li>
+			</ul>
 			<img
-				onClick={handleViewImage}
 				id={product._id}
 				src={product?.image}
 				alt={product._id}
-				className=" tw-w-[400px] tw-h-full tw-object-cover tw-rounded-sm hover:tw-cursor-pointer"
+				className="tw-w-full"
 			/>
-			{clickedID === product._id && (
-				<div className="tw-absolute tw-top-0 tw-right-0 tw-bg-neutral-300 tw-rounded-tr-sm tw-rounded-bl-sm tw-text-xs tw-p-2">
-					<span className="tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-pink-500 tw-to-violet-500">
-						Quick view
-					</span>
-				</div>
-			)}
-			<div className="bg-blur tw-text-neutral-800 tw-px-2 tw-w-full tw-absolute tw-z-5 tw-bottom-0 tw-rounded-b-sm">
-				<div className="tw-flex tw-flex-row tw-justify-between">
-					<div className="tw-pt-2 tw-w-full">
-						<div className="tw-flex tw-justify-between tw-items-center tw-w-full">
-							<p
-								className={
-									product.instock
-										? 'tw-flex-[0.7] tw-text-xs tw-font-bold'
-										: 'tw-text-xs tw-font-bold'
-								}>
-								{product.name}
-							</p>
-							{product.instock && (
-								<div className="tw-flex-[0.3] tw-justify-end tw-flex tw-items-center">
-									<GrCheckmark />
-									<span className="tw-text-[10px] tw-ml-1 tw-font-semibold">
-										In Stock
-									</span>
-								</div>
-							)}
-						</div>
-						<p className=" tw-text-xs tw-text-neutral-600 tw-mb-3">
-							{product.description}
-						</p>
-					</div>
-				</div>
+			<div className="con-text">
+				<h2>{product.name}</h2>
+				<p className="">{product.description}</p>
+				{isInCart(product, cartItems) ? (
+					<button
+						className="tw-bg-white tw-text-black"
+						onClick={() => handleViewImage(product._id)}>
+						Add More
+					</button>
+				) : (
+					<button onClick={() => handleViewImage(product._id)}>
+						Add to cart
+					</button>
+				)}
 			</div>
 		</div>
 	)

@@ -123,7 +123,7 @@ const CheckoutForm = ({ total, itemCount }) => {
 		)
 	}
 
-	const cardStyle = {
+	const bbb = {
 		style: {
 			base: {
 				color: '#32325d',
@@ -443,7 +443,7 @@ const CheckoutForm = ({ total, itemCount }) => {
 				</div>
 				<CardElement
 					id="card-element"
-					options={cardStyle}
+					options={bbb}
 					onChange={handleChange}
 					className="tw-w-[95%] tw-mx-auto tw-border-[1px] tw-border-b-0 tw-p-3 tw-rounded-t-[4px] "
 				/>

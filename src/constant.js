@@ -21,3 +21,5 @@ export const AUTHORIZED_ID = {
 	id_one: 'hairposey@gmail.com',
 	id_two: 'tisijola7@gmail.com',
 }
+
+export const googleSearch = 'https://www.google.com/maps/search/'

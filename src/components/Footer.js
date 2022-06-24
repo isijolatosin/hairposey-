@@ -2,24 +2,26 @@ import React from 'react'
 import { AiOutlineInstagram } from 'react-icons/ai'
 import { FaTiktok } from 'react-icons/fa'
 import { SiMastercard } from 'react-icons/si'
+import { SiTreyarch } from 'react-icons/si'
 import { RiVisaLine } from 'react-icons/ri'
 import { SiAmericanexpress } from 'react-icons/si'
 import { countries } from '../country'
-// import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+// import { MdLocationPin } from 'react-icons/md'
+// import { googleSearch, location } from '../constant'
 
 function Footer() {
-	// const navigate = useNavigate()
 	const paymentType = [
 		{ id: 1, type: <SiMastercard size={20} color="darkorange" /> },
-		{ id: 2, type: <RiVisaLine size={20} color="blue" /> },
-		{ id: 3, type: <SiAmericanexpress size={20} color="blue" /> },
+		{ id: 2, type: <RiVisaLine size={20} color="white" /> },
+		{ id: 3, type: <SiAmericanexpress size={20} color="white" /> },
 	]
 	const [country, setCountry] = React.useState('United States')
 	const [showContactForm, setShowContactForm] = React.useState(false)
 	const [showTerms, setShowTerms] = React.useState(false)
 	const handleOnChange = (e) => {
 		setCountry(e.target.value)
-		localStorage.setItem('Country/region', country)
+		localStorage.setItem('country', e.target.value)
 	}
 	const [contactInput, setcontactInput] = React.useState({
 		name: '',
@@ -29,22 +31,74 @@ function Footer() {
 		error: null,
 	})
 
-	React.useEffect(() => {
-		localStorage.setItem('Country/region', country)
-	}, [country])
-
 	const links = [
 		{
 			id: 1,
-			name: 'Search',
-		},
-		{
-			id: 2,
 			name: 'Contact Us',
 		},
 		{
-			id: 3,
+			id: 2,
 			name: 'Terms and Conditions',
+		},
+		{
+			id: 3,
+			name: 'Shipping & Returns',
+		},
+		{
+			id: 4,
+			name: 'Privacy Policy',
+		},
+	]
+
+	const indian = [
+		{
+			id: '1',
+			name: 'Bundles (Indian)',
+			route: '/indian-bundles',
+		},
+		{
+			id: '2',
+			name: 'Closure / Frontal (Indian)',
+			route: '/indian-closure-frontal',
+		},
+		{
+			id: '3',
+			name: 'Jet Black / Blonde (Indian)',
+			route: '/indian-jet-black-&-blonde',
+		},
+	]
+	const vietnamese = [
+		{
+			id: '1',
+			name: 'Bundles (Vietnamese)',
+			// route: '/vietnamese-bundles',
+		},
+		{
+			id: '2',
+			name: 'Closure / Frontal (Vietnamese)',
+			// route: '/vietnamese-closure-frontal',
+		},
+		{
+			id: '3',
+			name: 'Jet Black / Blonde (Vietnamese)',
+			// route: '/vietnamese-jet-black-&-blonde',
+		},
+	]
+	const Brazillian = [
+		{
+			id: '1',
+			name: 'Bundles (Brazillian)',
+			// route: '/brazillian-bundles',
+		},
+		{
+			id: '2',
+			name: 'Closure / Frontal (Brazillian)',
+			// route: '/brazillian-closure-frontal',
+		},
+		{
+			id: '3',
+			name: 'Jet Black / Blonde (Brazillian)',
+			// route: '/brazillian-jet-black-&-blonde-hair',
 		},
 	]
 
@@ -56,7 +110,7 @@ function Footer() {
 		e.preventDefault()
 		try {
 			window.open(
-				`mailto:'hairposey@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
+				`mailto:'modelEst1010@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
 			)
 			setcontactInput({
 				name: '',
@@ -73,47 +127,122 @@ function Footer() {
 	}
 
 	return (
-		<footer className="tw-flex tw-bg-white tw-flex-col tw-py-5 tw-justify-center tw-items-center tw-border-t-[1px] tw-border-neutral-300">
+		<footer className="tw-flex tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex-col tw-py-5 tw-justify-center tw-items-center tw-border-t-[1px] tw-border-neutral-300 tw-text-white">
 			<span className="tw-text-center tw-mb-5 tw-text-sm tw-font-light">
 				Quick Links
 			</span>
-			<ul className="tw-flex tw-flex-row tw-justify-center tw-text-xs tw-font-light tw-mb-1">
-				{links.map((link) => (
-					<li
-						key={link.id}
-						onClick={
-							link.name === 'Contact Us'
-								? () => {
-										setShowContactForm(!showContactForm)
-										setShowTerms(false)
-								  }
-								: link.name === 'Terms and Conditions'
-								? () => {
-										setShowTerms(!showTerms)
-										setShowContactForm(false)
-								  }
-								: null
-						}
-						className="tw-mx-5 hover:tw-cursor-pointer tw-text-yellow-800 navStyleChild">
-						{link.name}
-					</li>
-				))}
-			</ul>
+			<div className="xl:tw-w-[60%] tw-w-full md:tw-w-[90%] tw-px-5 md:tw-px-10 tw-flex tw-flex-col md:tw-flex-row md:tw-justify-between tw-border-b tw-border-neutral-900 tw-mb-5">
+				<div className="tw-w-full tw-grid tw-grid-cols-2 tw-gap-2 md:tw-mr-10 tw-text-white md:tw-border-r-[1px] md:tw-border-neutral-900 md:tw-pr-20 tw-mb-10">
+					<div className="tw-mb-5">
+						<h1 className="tw-text-xs tw-font-bold  tw-mb-2">Indian Hair</h1>
+						<ul className="tw-flex tw-flex-col tw-justify-center tw-text-xs tw-font-light tw-mb-1">
+							{indian.map((ind) => (
+								<Link
+									key={ind.id}
+									to={ind.route}
+									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
+									{ind.name}
+								</Link>
+							))}
+						</ul>
+					</div>
+					<div className="tw-mb-5">
+						<h1 className="tw-text-xs tw-font-bold  tw-mb-2">
+							Vietnamese Hair
+						</h1>
+						<ul className="tw-flex tw-flex-col tw-justify-center tw-text-xs tw-font-light tw-mb-1">
+							{vietnamese.map((veit) => (
+								<Link
+									key={veit.id}
+									to="/"
+									// onClick={() => navigate(`/${veit.route}`)}
+									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
+									{veit.name}{' '}
+									<span className="tw-text-[10px] tw-font-bold">
+										- coming soon...
+									</span>
+								</Link>
+							))}
+						</ul>
+					</div>
+					<div className="tw-mb-5">
+						<h1 className="tw-text-xs tw-font-bold  tw-mb-2">
+							Brazillian Hair
+						</h1>
+						<ul className="tw-flex tw-flex-col tw-justify-center tw-text-xs tw-font-light tw-mb-1">
+							{Brazillian.map((braz) => (
+								<Link
+									key={braz.id}
+									to="/"
+									// onClick={() => navigate(`/${braz.route}`)}
+									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
+									{braz.name}{' '}
+									<span className="tw-text-[10px] tw-font-bold">
+										- coming soon...
+									</span>
+								</Link>
+							))}
+						</ul>
+					</div>
+				</div>
+				<div className=" tw-text-white">
+					<h1 className="tw-text-xs tw-font-bold  tw-mb-2">Customer Service</h1>
+					<ul className="tw-flex tw-flex-col tw-justify-center tw-text-xs tw-font-light tw-mb-1">
+						{links.map((link) => (
+							<li
+								key={link.id}
+								onClick={
+									link.name === 'Contact Us'
+										? () => {
+												setShowContactForm(!showContactForm)
+												setShowTerms(false)
+										  }
+										: link.name === 'Terms and Conditions'
+										? () => {
+												setShowTerms(!showTerms)
+												setShowContactForm(false)
+										  }
+										: null
+								}
+								className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
+								{link.name}
+							</li>
+						))}
+					</ul>
+					<div className="tw-border-neutral-100 tw-w-full tw-flex tw-flex-col tw-mt-5 tw-mb-5 tw-pb-5 tw-pt-5 md:tw-items-center tw-text-white">
+						<span className="tw-text-xs tw-font-light tw-tracking-widest tw-mb-1">
+							Country/region
+						</span>
+						<select
+							className="tw-w-[220px] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-neutral-500 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+							onChange={handleOnChange}
+							id="country"
+							value={country}
+							name="country">
+							{countries.map((item, idx) => (
+								<option key={idx}>
+									{item.countryName} - {item.currencyCode}
+								</option>
+							))}
+						</select>
+					</div>
+				</div>
+			</div>
+
 			{showContactForm && (
 				<form
 					onSubmit={handleSubmit}
 					className="tw-w-full tw-flex tw-flex-col tw-items-center md:tw-max-w-[80%] tw-bg-neutral-50 tw-py-5 tw-mb-5">
-					<span className="tw-text-sm tw-font-light tw-mb-2">
-						Contact - Hairposey
+					<span className="tw-text-2xl tw-font-light tw-mb-1 tw-mt-5">
+						Contact - ModelEst
 					</span>
 					<p className="tw-font-light tw-text-[14px] tw-max-w-[80%] lg:tw-max-w-[50%] tw-my-5">
-						We at hairposey are customer centric, we take pride in our
-						customers. We are committed in helping with picking the right hair
-						for you, adequate information regarding education on hair
-						maintenance, and providing high quality hair extensions. We value
-						you our customers and we are committed to long time support. Our
-						customers are our sister’s. We respond within 24-48 business hours
-						Monday - Friday.
+						We at modelEst are customer centric, we take pride in our customers.
+						We are committed in helping with picking the right hair for you,
+						adequate information regarding education on hair maintenance, and
+						providing high quality hair extensions. We value you our customers
+						and we are committed to long time support. Our customers are our
+						sister’s. We respond within 24-48 business hours Monday - Friday.
 					</p>
 					<div className="md:tw-w-[90%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-mx-auto tw-flex tw-flex-col tw-items-center">
 						<input
@@ -123,7 +252,7 @@ function Footer() {
 							value={contactInput.name}
 							onChange={handleContactInput}
 							placeholder="Full Name"
-							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-300 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-400 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
 						/>
 						<input
 							type="text"
@@ -132,7 +261,7 @@ function Footer() {
 							value={contactInput.email}
 							onChange={handleContactInput}
 							placeholder="Email"
-							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-300 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-400 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
 						/>
 						<input
 							type="text"
@@ -140,8 +269,8 @@ function Footer() {
 							id="subject"
 							value={contactInput.subject}
 							onChange={handleContactInput}
-							placeholder="subject"
-							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-300 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+							placeholder="subject / order - number"
+							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-400 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
 						/>
 						<textarea
 							id="message"
@@ -151,7 +280,7 @@ function Footer() {
 							value={contactInput.message}
 							onChange={handleContactInput}
 							placeholder="message..."
-							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-300 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+							className="tw-w-[100%] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-neutral-400 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
 						/>
 						<div className="tw-text-center tw-text-xs tw-text-red-800">
 							{contactInput.error ? (
@@ -646,27 +775,10 @@ function Footer() {
 						<br />
 						<br />
 						Questions about the Terms of Service should be sent to us at
-						hairposey@gmail.com.
+						modelEst1010@gmail.com.
 					</p>
 				</div>
 			)}
-			<div className="tw-border-t tw-border-b tw-border-neutral-100 tw-w-full tw-flex tw-flex-col tw-mt-5 tw-mb-5 tw-pb-5 tw-pt-5 tw-items-center">
-				<span className="tw-text-xs tw-font-light tw-tracking-widest tw-text-black tw-mb-1">
-					Country/region
-				</span>
-				<select
-					className="tw-w-[220px] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-neutral-500 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
-					onChange={handleOnChange}
-					id="country"
-					value={country}
-					name="country">
-					{countries.map((item, idx) => (
-						<option key={idx}>
-							{item.countryName} - {item.currencyCode}
-						</option>
-					))}
-				</select>
-			</div>
 			<div className="tw-flex tw-flex-row tw-justify-between tw-items-center tw-mb-5">
 				{paymentType.map((item) => (
 					<div
@@ -680,50 +792,43 @@ function Footer() {
 					</div>
 				))}
 			</div>
-			<div className="tw-flex tw-text-xs tw-text-neutral-500 tw-font-light">
-				<div className="tw-pr-1 tw-border-r-2 tw-border-r-neutral-800 md:tw-flex">
+			<div className="tw-flex tw-text-xs tw-text-white tw-font-light">
+				<div className="tw-pr-1 tw-border-r-[1px] tw-border-r-neutral-50 md:tw-flex">
 					<p className="">
 						&copy; {new Date().getUTCFullYear()} <span>hairposey</span>
 						<span> • All right reserved</span>
 					</p>
 				</div>
 				<div className="md:tw-flex tw-ml-1">
-					<p className="">
-						develop by -
-						<span className="tw-text-yellow-800 navStyleChild">
+					<p className="tw-flex tw-items-center">
+						<span>Design by</span>{' '}
+						<span className="rose-gold tw-ml-1">
 							<a
 								href="https://www.linkedin.com/in/oluwatosin-isijola-33333ba8/"
 								target="_blank"
 								rel="noopener noreferrer">
-								{' '}
-								Tony Isijola
+								<SiTreyarch size={15} />
 							</a>
 						</span>
 					</p>
 				</div>
 			</div>
-			<span className="tw-text-[10px] tw-font-light tw-my-5 tw-bg-neutral-100 tw-w-full tw-text-center tw-text-neutral-500">
+			<span className="tw-text-[10px] tw-font-light tw-my-5 tw-bg-slate-900 tw-w-full tw-text-center tw-text-white">
 				This site is protected by Google Privacy Policy and Terms of Service
 				apply.
 			</span>
-			<div className="tw-flex tw-justify-evenly tw-items-center tw-w-[80%] md:tw-w-[15%] tw-mt-3 tw-text-yellow-800">
+			<div className="tw-flex tw-justify-evenly tw-items-center tw-w-[80%] md:tw-w-[8%] md:tw-ml-10 tw-mt-3 rose-gold">
 				<a
 					href="https://www.instagram.com/hairposey/"
 					target="_blank"
 					rel="noopener noreferrer">
-					<AiOutlineInstagram
-						size={20}
-						className="hover:tw-text-rose-100 tw-ease tw-duration-300"
-					/>
+					<AiOutlineInstagram size={20} className="hover:tw-text-rose-100" />
 				</a>
 				<a
 					href="https://www.tiktok.com/search?q=hairposey&t=1652981534762"
 					target="_blank"
 					rel="noopener noreferrer">
-					<FaTiktok
-						size={20}
-						className="hover:tw-text-rose-100 tw-ease tw-duration-300"
-					/>
+					<FaTiktok size={20} className="hover:tw-text-rose-100" />
 				</a>
 			</div>
 		</footer>

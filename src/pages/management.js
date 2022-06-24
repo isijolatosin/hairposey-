@@ -1,17 +1,31 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
+import { getDatabase, ref, onValue, set } from 'firebase/database'
 import Heading from '../components/Heading'
 import Inventory from '../components/Inventory'
 import Layout from '../components/shared/Layout'
 import Shippment from '../components/Shippment'
 import { BsFillArrowUpSquareFill } from 'react-icons/bs'
+import { RiSendPlaneLine } from 'react-icons/ri'
 import AllInventories from '../components/AllInventories'
 import { UserContext } from '../context/user-context'
 
 function Management() {
+	const database = getDatabase()
+	const [sales, setSales] = React.useState(null)
 	const [section, setSection] = React.useState('all-inventory')
+	const [percentSale, setPercentSale] = React.useState(null)
 	const { user } = useContext(UserContext)
-	const isSales = localStorage.getItem('isSales')
+
+	React.useEffect(() => {
+		const starCountRef = ref(database, 'sales')
+		onValue(starCountRef, (snapshot) => {
+			const data = snapshot.val()
+
+			setSales(data.no)
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const toggleSection = (e) => {
 		setSection(e.target.id)
@@ -28,6 +42,14 @@ function Management() {
 			return <Shippment />
 		}
 	}
+	const handleSubmit = () => {
+		if (percentSale !== null || percentSale !== '') {
+			set(ref(database, 'sales'), {
+				no: percentSale,
+			})
+		}
+		setPercentSale('')
+	}
 
 	return (
 		<>
@@ -37,11 +59,29 @@ function Management() {
 			<Layout>
 				<div
 					className={
-						isSales
-							? 'tw-mt-[140px] lg:tw-mt-[110px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-neutral-300'
-							: 'tw-mt-[70px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-neutral-300'
+						sales
+							? 'tw-mt-[100px] lg:tw-mt-[100px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-neutral-300'
+							: 'tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-neutral-300'
 					}>
-					<Heading>Admin portal</Heading>
+					<div className="tw-flex tw-flex-row tw-items-center tw-justify-between tw-w-[85%]">
+						<Heading>Admin portal</Heading>
+						<div className="tw-py-[2px] tw-flex tw-items-center tw-justify-end tw-w-[50%] md:tw-w-[30%] tw-rounded-full tw-px-3 tw-text-sm tw-bg-neutral-200">
+							<input
+								type="number"
+								name="percentSale"
+								id="number"
+								value={percentSale}
+								onChange={(e) => setPercentSale(Number(e.target.value))}
+								placeholder="sales %"
+								className="tw-w-[90%] tw-h-[30px] tw-placeholder-gray-400 focus:tw-outline-none tw-border-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-bg-transparent"
+							/>
+							<RiSendPlaneLine
+								onClick={handleSubmit}
+								size={20}
+								className="tw-text-violet-700 hover:tw-text-violet-300 tw-ease-in tw-duration-300 tw-w-[10%] tw-mr-2"
+							/>
+						</div>
+					</div>
 					<div className="tw-my-5 tw-w-[100%] tw-text-violet-700">
 						<ul className="tw-flex tw-text-xs tw-flex-row tw-items-center tw-justify-between tw-w-[90%] lg:tw-w-[50%] tw-mx-auto">
 							<li
