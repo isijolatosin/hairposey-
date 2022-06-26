@@ -1,17 +1,17 @@
-export const SUPER_USER1 = 'estherodi2020@gmail.com'
+export const SUPER_USER1 = 'hairposey@gmail.com'
 export const SUPER_USER2 = 'tisijola7@gmail.com'
 export const SHIPPING_COST = {
-	canada: 20,
-	usa: 9,
+	canada: 9,
+	usa: 20,
 	london: 20,
 }
 export const CANADA = 'canada'
 export const USERS = 'users'
 export const BOOKINGS = 'bookings'
-export const FREE_SHIPPING_AMOUNT = 200
-export const CURRENCY = 'usd'
-export const TAX_PERCENT = 0.06
-export const installmentStartPrice = 29900
+// export const FREE_SHIPPING_AMOUNT = 200
+export const CURRENCY = 'cad'
+// export const TAX_PERCENT = 0.13
+// export const installmentStartPrice = 49900
 
 // Back end url
 export const HTTPS_LINK = 'http://localhost:5000'

@@ -59,18 +59,18 @@ function HomePage() {
 				<div className="tw-relative">
 					<div
 						className={`tw-flex tw-flex-col tw-items-center ${
-							allProducts.length === 0 ? 'tw-mt-[70px]' : 'tw-pt-[80px]'
+							allProducts.length === 0 ? 'tw-mt-[70px]' : 'tw-pt-[40px]'
 						} md:tw-py-[40px] lg:tw-w-[100%] xl:tw-w-[90%] 2xl:tw-w-[80%] lg:tw-mx-auto`}>
 						{allProducts.length !== 0 ? (
 							<Products sales={sales} allProducts={allProducts} />
 						) : (
 							<div className="tw-rounded-full progress">
-								<div className="inner"></div>
+								<div className="inner tw-bg-slate-900"></div>
 							</div>
 						)}
 					</div>
 					{notReady && (
-						<div className="tw-z-40 tw-h-[5000px] tw-mt-[-70px] tw-w-[100%] bg-blur3 tw-absolute tw-top-0 tw-bottom-0 z-10 tw-items-center tw-flex tw-flex-col">
+						<div className="tw-z-40 tw-h-[2700px] md:tw-h-[1550px] lg:tw-h-[1650px] 2xl:tw-h-[1200px] tw-mt-[-70px] tw-w-[100%] bg-blur3 tw-absolute tw-top-0 tw-bottom-0 z-10 tw-items-center tw-flex tw-flex-col">
 							<div className="tw-w-[300px] tw-ml-5 tw-mt-[100px]">
 								<img src={logo} alt="company logo" />
 							</div>

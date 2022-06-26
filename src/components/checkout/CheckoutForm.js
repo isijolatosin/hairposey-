@@ -7,13 +7,9 @@ import { GoAlert } from 'react-icons/go'
 import { SiMastercard } from 'react-icons/si'
 import { RiVisaLine } from 'react-icons/ri'
 import { SiAmericanexpress } from 'react-icons/si'
-import { clearCartItem, selectCartItems } from '../../slices/appSlices'
+import { selectCartItems } from '../../slices/appSlices'
 import { UserContext } from '../../context/user-context'
-import {
-	SHIPPING_COST,
-	TAX_PERCENT,
-	installmentStartPrice,
-} from '../../constant'
+import { SHIPPING_COST } from '../../constant'
 import { ValidateEmail } from '../../utils/ValidateEmail'
 
 const CheckoutForm = ({ total, itemCount }) => {
@@ -23,24 +19,39 @@ const CheckoutForm = ({ total, itemCount }) => {
 	const cartItems = useSelector(selectCartItems)
 	const [email, setEmail] = React.useState('')
 	const [succeeded, setSucceeded] = React.useState(false)
+	const [isProceed, setIsProceed] = React.useState(false)
+	const [paymentPlanWarn, setPaymentPlanWarn] = React.useState(false)
+	const [alert, setAlert] = React.useState(false)
 	const [_error, set_Error] = React.useState(null)
 	const [processing, setProcessing] = React.useState('')
 	const [disabled, setDisabled] = React.useState(true)
 	const [clientSecret, setClientSecret] = React.useState('')
-	const [allowproceed, setAllowProceed] = React.useState(false) //CHANGE BACK TO FALSE
+	const [allowproceed, setAllowProceed] = React.useState(false)
+
+	const localStorageCountry = localStorage
+		?.getItem('country')
+		?.toLowerCase()
+		?.split(' - ')[0]
+	const region =
+		((localStorageCountry === 'united states of america' ||
+			localStorageCountry === 'united states') &&
+			'usa') ||
+		((localStorageCountry === 'united kingdom' ||
+			localStorageCountry === 'london') &&
+			'uk') ||
+		localStorageCountry
 	const [address, setAddress] = React.useState({
 		street: '',
 		city: '',
 		province: '',
 		postalcode: '',
-		country: '',
+		country: localStorage.getItem('country') ? region : '',
 	})
 	const [shippingCost, setShippingCost] = React.useState({
 		country: '',
 		cost: '',
 	})
 	const [error, setError] = React.useState(false)
-	const dispatch = useDispatch()
 	const { user } = useContext(UserContext)
 	const [payPlan, setPlan] = React.useState('')
 	const paymentPlan = [
@@ -67,63 +78,75 @@ const CheckoutForm = ({ total, itemCount }) => {
 			value = 'uk'
 		}
 		setAddress({ ...address, [e.target.name]: value })
+		setAlert(false)
 	}
 
 	// Submit address
 	const handleSubmitAddress = () => {
-		const shippingAd = `${address.street}, ${address.city}. ${address.province}. ${address.postalcode}. ${address.country}`
+		if (
+			address?.country.toLowerCase() === 'usa' ||
+			address?.country.toLowerCase() === 'uk' ||
+			address?.country.toLowerCase() === 'canada'
+		) {
+			const shippingAd = `${address.street}, ${address.city}. ${address.province}. ${address.postalcode}. ${address.country}`
 
-		if (
-			!user ||
-			!email ||
-			!address.street ||
-			!address.city ||
-			!address.province ||
-			!address.postalcode ||
-			!address.country
-		) {
-			setError(true)
-		}
-		if (!ValidateEmail(email)) {
-			setError(true)
-		}
-		if (
-			(user &&
-				address?.street &&
-				address?.city &&
-				address?.province &&
-				address?.postalcode &&
-				address?.country) ||
-			(email &&
-				ValidateEmail(email) &&
-				address?.street &&
-				address?.city &&
-				address?.province &&
-				address?.postalcode &&
-				address?.country)
-		) {
-			localStorage.setItem('address', shippingAd)
-			setAllowProceed(true)
-			setAddress({
-				street: '',
-				city: '',
-				province: '',
-				postalcode: '',
-				country: '',
-			})
-			setError(false)
-		}
-		Object.keys(SHIPPING_COST).filter(
-			(cntry) =>
-				cntry.toLowerCase() === address.country.toLowerCase() &&
-				setShippingCost({
-					country: cntry,
-					cost: SHIPPING_COST[cntry],
+			if (
+				!user ||
+				!email ||
+				!address.street ||
+				!address.city ||
+				!address.province ||
+				!address.postalcode ||
+				!address.country
+			) {
+				setError(true)
+			}
+			if (!ValidateEmail(email)) {
+				setError(true)
+			}
+			if (
+				(user &&
+					address?.street &&
+					address?.city &&
+					address?.province &&
+					address?.postalcode &&
+					address?.country) ||
+				(email &&
+					ValidateEmail(email) &&
+					address?.street &&
+					address?.city &&
+					address?.province &&
+					address?.postalcode &&
+					address?.country)
+			) {
+				localStorage.setItem('address', shippingAd)
+				localStorage.setItem('altEmail', email)
+				setAllowProceed(true)
+				setAddress({
+					street: '',
+					city: '',
+					province: '',
+					postalcode: '',
+					country: '',
 				})
-		)
+				setError(false)
+			}
+			Object.keys(SHIPPING_COST).filter(
+				(cntry) =>
+					cntry.toLowerCase() === address.country.toLowerCase() &&
+					setShippingCost({
+						country: cntry,
+						cost: SHIPPING_COST[cntry],
+					})
+			)
+			setEmail('')
+			setIsProceed(true)
+		} else {
+			setAlert(true)
+		}
 	}
 
-	const bbb = {
+	const cardStyle = {
 		style: {
 			base: {
 				color: '#32325d',
@@ -140,9 +163,8 @@ const CheckoutForm = ({ total, itemCount }) => {
 			},
 		},
 	}
-
 	const shipping_fee = Math.floor(shippingCost.cost * 100)
-	const taxPercentage = total * TAX_PERCENT
+	const taxPercentage = total * Number(process.env.REACT_APP_TAX_PERCENT)
 	const tax = Math.floor(taxPercentage * 100)
 	const price = Math.floor((total + taxPercentage) * 100)
 	const total_amount = price
@@ -162,7 +184,9 @@ const CheckoutForm = ({ total, itemCount }) => {
 	}
 
 	React.useEffect(() => {
-		createPaymentIntent()
+		if (shipping_fee !== 0) {
+			createPaymentIntent()
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [shipping_fee])
 
@@ -174,7 +198,9 @@ const CheckoutForm = ({ total, itemCount }) => {
 	const handleSubmit = async (ev) => {
 		ev.preventDefault()
 
-		if (payPlan === 'Payment Plan') return
+		if (payPlan === 'Payment Plan') {
+			setPaymentPlanWarn(true)
+		}
 
 		if (payPlan.includes('One-Time')) {
 			// One time payment
@@ -184,11 +210,13 @@ const CheckoutForm = ({ total, itemCount }) => {
 				const payload = await stripe.confirmCardPayment(clientSecret, {
 					payment_method: {
 						card: elements.getElement(CardElement),
+						billing_details: {
+							email: user?.email || email,
+						},
 					},
 				})
 
 				localStorage.setItem('payload', payload?.paymentIntent?.client_secret)
-				localStorage.setItem('altEmail', email)
 
 				if (payload.error) {
 					set_Error(`Payment failed ${payload.error.message}`)
@@ -209,7 +237,9 @@ const CheckoutForm = ({ total, itemCount }) => {
 		}
 		// recurring payment
 		else {
-			if (total_amount > installmentStartPrice) {
+			if (
+				total_amount > Number(process.env.REACT_APP_INSTALLMENT_START_PRICE)
+			) {
 				setProcessing(true)
 				const result = await stripe.createPaymentMethod({
 					type: 'card',
@@ -243,7 +273,6 @@ const CheckoutForm = ({ total, itemCount }) => {
 
 					if (status === 'requires_action') {
 						stripe.confirmCardPayment(client_secret).then(function (result) {
-							console.log(result)
 							if (result.error) {
 								console.log(result.error)
 								set_Error(`Payment failed ${result.error.message}`)
@@ -255,7 +284,6 @@ const CheckoutForm = ({ total, itemCount }) => {
 								set_Error(null)
 								setProcessing(false)
 								setSucceeded(true)
-								localStorage.setItem('altEmail', email)
 								localStorage.setItem('payload', client_secret)
 								setTimeout(() => {
 									navigate('/success')
@@ -266,7 +294,6 @@ const CheckoutForm = ({ total, itemCount }) => {
 						set_Error(null)
 						setProcessing(false)
 						setSucceeded(true)
-						localStorage.setItem('altEmail', email)
 						localStorage.setItem('payload', client_secret)
 						setTimeout(() => {
 							navigate('/success')
@@ -279,13 +306,7 @@ const CheckoutForm = ({ total, itemCount }) => {
 
 	return (
 		<div>
-			<div className="tw-flex tw-flex-col tw-max-w-[100%] lg:tw-max-w-[70%] tw-mx-auto">
-				<span className="tw-text-xs tw-text-center tw-mb-5 tw-mt-5 tw-font-light">
-					We currently ship to these 3 countries -{' '}
-					<span className="tw-font-bold">United States</span> -{' '}
-					<span className="tw-font-bold">United Kingdom</span> -{' '}
-					<span className="tw-font-bold">Canada</span>
-				</span>
+			<div className="tw-flex tw-flex-col tw-max-w-[100%] lg:tw-max-w-[70%] tw-mx-auto ">
 				{!user && (
 					<input
 						type="email"
@@ -294,8 +315,8 @@ const CheckoutForm = ({ total, itemCount }) => {
 						value={email}
 						className={
 							error && !ValidateEmail(email)
-								? 'user-email-input input-error'
-								: 'user-email-input tw-text-sm'
+								? 'user-email-input input-error tw-bg-transparent'
+								: 'user-email-input tw-text-sm tw-bg-transparent'
 						}
 					/>
 				)}
@@ -307,8 +328,8 @@ const CheckoutForm = ({ total, itemCount }) => {
 					placeholder="Address"
 					className={
 						error && !address.street
-							? 'user-email-input input-error'
-							: 'user-email-input tw-text-sm tw-font-light'
+							? 'user-email-input input-error tw-bg-transparent'
+							: 'user-email-input tw-text-sm tw-font-light tw-bg-transparent'
 					}
 				/>
 				<input
@@ -319,8 +340,8 @@ const CheckoutForm = ({ total, itemCount }) => {
 					placeholder="City"
 					className={
 						error && !address.city
-							? 'user-email-input input-error'
-							: 'user-email-input tw-text-sm tw-font-light'
+							? 'user-email-input input-error tw-bg-transparent'
+							: 'user-email-input tw-text-sm tw-font-light tw-bg-transparent'
 					}
 				/>
 				<input
@@ -328,11 +349,11 @@ const CheckoutForm = ({ total, itemCount }) => {
 					type="text"
 					value={address.province}
 					onChange={inputOnchangeHandler}
-					placeholder="Province"
+					placeholder="State / Province"
 					className={
 						error && !address.province
-							? 'user-email-input input-error'
-							: 'user-email-input tw-text-sm tw-font-light'
+							? 'user-email-input input-error tw-bg-transparent'
+							: 'user-email-input tw-text-sm tw-font-light tw-bg-transparent'
 					}
 				/>
 				<input
@@ -343,8 +364,8 @@ const CheckoutForm = ({ total, itemCount }) => {
 					placeholder="Postal Code"
 					className={
 						error && !address.postalcode
-							? 'user-email-input input-error'
-							: 'user-email-input tw-text-sm tw-font-light'
+							? 'user-email-input input-error tw-bg-transparent'
+							: 'user-email-input tw-text-sm tw-font-light tw-bg-transparent'
 					}
 				/>
 				<input
@@ -355,13 +376,13 @@ const CheckoutForm = ({ total, itemCount }) => {
 					placeholder="Country"
 					className={
 						error && !address.country
-							? 'user-email-input input-error'
-							: 'user-email-input tw-text-sm tw-font-light'
+							? 'user-email-input input-error tw-bg-transparent'
+							: 'user-email-input tw-text-sm tw-font-light tw-bg-transparent'
 					}
 				/>
 			</div>
 			{email.substr(email.length - 3) === 'com' && (
-				<div className="email-verify tw-text-center tw-text-xs">
+				<div className="email-verify tw-text-center tw-text-xs tw-text-slate-900">
 					<span>Please verify you have the correct email and address</span>
 				</div>
 			)}
@@ -370,25 +391,27 @@ const CheckoutForm = ({ total, itemCount }) => {
 					<span className="tw-text-xs">Hey! You have missing credentials!</span>
 				</div>
 			)}
+			{alert && (
+				<div className="tw-text-red-800 tw-text-xs tw-flex tw-flex-row tw-items-center tw-justify-center tw-mt-5">
+					<GoAlert className="tw-mr-2" />
+					<span>
+						You are not authorize to make purchase from this region/country
+					</span>
+				</div>
+			)}
 			<div className="total-button tw-text-sm tw-mx-auto tw-flex tw-flex-row tw-items-center">
 				<button
 					disabled={allowproceed}
 					onClick={handleSubmitAddress}
-					className="tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-black tw-via-yellow-600 tw-to-yellow-700 hover:tw-text-neutral-400 tw-ease-in tw-duration-500 tw-mr-5 tw-border-r-2 tw-pr-5"
+					className="tw-text-white hover:tw-text-slate-900 hover:tw-bg-neutral-300 tw-ease-in tw-duration-500 tw-bg-slate-900 tw-px-5 tw-py-2"
 					type="submit">
-					PROCEED
+					Proceed to payment
 				</button>
-
-				<span
-					onClick={() => dispatch(clearCartItem())}
-					className="hover:tw-text-neutral-400 hover:tw-cursor-pointer tw-ease-in tw-duration-500 tw-min-w-[100px]">
-					CLEAR CART
-				</span>
 			</div>
-			{allowproceed && (
-				<div className="tw-flex tw-flex-col">
+			{isProceed && (
+				<div className="tw-flex tw-flex-col tw-items-center tw-my-10 tw-w-[80%] tw-mx-auto">
 					<select
-						className="tw-max-w-[120px] tw-mt-10 tw-text-neutral-500 tw-font-light tw-bg-neutral-50 tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[4px] tw-text-xs tw-border-[1px] tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+						className="tw-w-[150px] tw-text-neutral-500 tw-font-light tw-bg-neutral-50 tw-block tw-px-3 tw-py-2 tw-border-gray-200 tw-rounded-[4px] tw-text-xs tw-border-[1px] tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
 						onChange={handleOnChange}
 						id="payPlan"
 						value={payPlan}
@@ -397,6 +420,13 @@ const CheckoutForm = ({ total, itemCount }) => {
 							<option key={plan.id}>{plan.name}</option>
 						))}
 					</select>
+					<span className="tw-text-sm tw-font-light tw-text-neutral-600 tw-mt-2">
+						Please select payment plan before payment
+					</span>
+				</div>
+			)}
+			{payPlan !== '' && payPlan !== 'Payment Plan' && (
+				<div className="tw-flex tw-flex-col">
 					{succeeded ? (
 						<article className="tw-text-center tw-mt-2">
 							<h4>Thank you. Your payment was successful!</h4>
@@ -406,13 +436,14 @@ const CheckoutForm = ({ total, itemCount }) => {
 						</article>
 					) : (
 						<article className="tw-flex tw-justify-between tw-text-[11px] tw-p-1 tw-mt-1 tw-max-w-[100%] tw-text-neutral-500">
-							<span className="tw-underline">
+							<span className="tw-underline tw-flex-[0.4]">
 								Hello, {user && user?.displayName}, your total is $
 								{((total_amount + shipping_fee) / 100).toFixed(2)} - (tax &
 								shipping inclusive)
 							</span>
-							{total_amount < installmentStartPrice && (
-								<span className="tw-text-blue-700">
+							{total_amount <
+								Number(process.env.REACT_APP_INSTALLMENT_START_PRICE) && (
+								<span className="tw-text-blue-700 tw-flex-[0.4]">
 									You are only elligible for one-time payment
 								</span>
 							)}
@@ -422,7 +453,7 @@ const CheckoutForm = ({ total, itemCount }) => {
 			)}
 			<form
 				className={
-					allowproceed
+					payPlan !== '' && payPlan !== 'Payment Plan'
 						? 'tw-block tw-ease-in tw-duration-300 tw-w-full tw-pt-2'
 						: 'tw-hidden tw-ease-in tw-duration-300'
 				}
@@ -443,7 +474,7 @@ const CheckoutForm = ({ total, itemCount }) => {
 				</div>
 				<CardElement
 					id="card-element"
-					options={bbb}
+					options={cardStyle}
 					onChange={handleChange}
 					className="tw-w-[95%] tw-mx-auto tw-border-[1px] tw-border-b-0 tw-p-3 tw-rounded-t-[4px] "
 				/>
@@ -470,6 +501,12 @@ const CheckoutForm = ({ total, itemCount }) => {
 						{processing ? <div className="spinner" id="spinner"></div> : 'Pay'}
 					</span>
 				</button>
+				{paymentPlanWarn && (
+					<span className="tw-text-red-700 tw-text-xs tw-flex tw-items-center tw-justify-center tw-mt-2 tw-capitalize">
+						<GoAlert className="tw-mr-2" />
+						Please set your payment plan
+					</span>
+				)}
 				{_error && (
 					<div
 						className="card-error tw-flex tw-items-center tw-justify-center tw-text-xs tw-text-red-700 "

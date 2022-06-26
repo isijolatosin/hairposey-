@@ -71,10 +71,12 @@ function Card({ product, setSingleproducts, scrollToTop, sales }) {
 				id={product._id}
 				src={product?.image}
 				alt={product._id}
-				className="tw-w-full"
+				className="tw-w-full md:tw-w-[400px] tw-object-cover"
 			/>
 			<div className="con-text">
-				<h2>{product.name}</h2>
+				<h2 className="font_cursive tw-text-4xl tw-mb-[15px]">
+					{product.name}
+				</h2>
 				<p className="">{product.description}</p>
 				{isInCart(product, cartItems) ? (
 					<button

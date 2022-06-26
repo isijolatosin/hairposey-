@@ -21,6 +21,7 @@ const CartItems = ({ product }) => {
 		hairColor,
 		description,
 		id,
+		isCart,
 	} = product
 	const [expand, setExpand] = React.useState(false)
 	const dispatch = useDispatch()
@@ -37,16 +38,16 @@ const CartItems = ({ product }) => {
 	}
 
 	return (
-		<div className="tw-flex tw-flex-row tw-p-5 tw-w-full tw-bg-gray-50 tw-mb-1">
+		<div className="tw-flex tw-flex-row tw-p-5 tw-w-full tw-bg-neutral-300 tw-rounded-lg tw-mb-1 tw-text-black">
 			<div className="tw-mr-5">
 				<img
-					className="tw-w-[100px] tw-h-[100px] tw-shadow-lg"
+					className="tw-w-[300px] tw-rounded-lg tw-h-full tw-shadow-lg tw-object-cover"
 					src={image}
 					alt={name}
 				/>
 			</div>
 			<div className="tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-[100%] tw-pr-5">
-				<div className="tw-text-neutral-600 tw-font-light tw-text-sm">
+				<div className="tw-font-light tw-text-sm">
 					<div className="tw-font-bold">
 						<h4>{name}</h4>
 					</div>
@@ -76,28 +77,30 @@ const CartItems = ({ product }) => {
 							</span>
 						)}
 					</div>
-				</div>
-				<div className="tw-flex tw-flex-col tw-justify-between tw-h-[70%]">
-					<div
-						className="tw-text-2xl tw-text-neutral-300 hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
-						onClick={increaseItem}>
-						<MdAddShoppingCart />
-						{/* <span>Add</span> */}
-					</div>
-					{quantity === 1 && (
-						<div
-							className="tw-text-2xl tw-text-neutral-300 hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
-							onClick={removeItem}>
-							<GiTrashCan />
-							{/* <span>Delete</span> */}
-						</div>
-					)}
-					{quantity > 1 && (
-						<div
-							className="tw-text-2xl tw-text-neutral-300 hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
-							onClick={decreaseItem}>
-							<BsCartDash />
-							{/* <span>Remove</span> */}
+					{isCart && (
+						<div className="tw-bg-pink-900 tw-py-1 tw-px-2 tw-flex tw-flex-row tw-items-center tw-justify-between tw-w-[100px] tw-mt-5 tw-rounded-lg tw-text-white">
+							<div
+								className="tw-flex tw-flex-col tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-border-r-[1px] tw-border-neutral-300 tw-pr-5"
+								onClick={increaseItem}>
+								<MdAddShoppingCart size={20} />
+								<span className="tw-text-[10px]">Add</span>
+							</div>
+							{quantity === 1 && (
+								<div
+									className="tw-flex tw-flex-col tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
+									onClick={removeItem}>
+									<GiTrashCan size={22} />
+									<span className="tw-text-[10px]">Delete</span>
+								</div>
+							)}
+							{quantity > 1 && (
+								<div
+									className="tw-flex tw-flex-col tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
+									onClick={decreaseItem}>
+									<BsCartDash size={20} />
+									<span className="tw-text-[10px]">Remove</span>
+								</div>
+							)}
 						</div>
 					)}
 				</div>

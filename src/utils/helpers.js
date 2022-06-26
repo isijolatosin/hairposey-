@@ -1,9 +1,7 @@
 import { HTTPS_LINK } from '../constant'
 
 export const isInCart = (singleProduct, cartItems) => {
-	return cartItems.find(
-		(item) => item.id === singleProduct._id || singleProduct.id
-	)
+	return cartItems.find((item) => item._id === singleProduct._id)
 }
 
 // This is where the server is running. When we deploy the app, this will be the hosting url

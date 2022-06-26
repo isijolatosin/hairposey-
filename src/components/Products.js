@@ -42,7 +42,7 @@ function Products({ allProducts, sales }) {
 
 	// Adding to cart items
 	const name = singleProducts?.[0] && singleProducts?.[0]?.name
-	const id = singleProducts?.[0] && singleProducts?.[0]?._id
+	const _id = singleProducts?.[0] && singleProducts?.[0]?._id
 	const image = singleProducts?.[0] && singleProducts?.[0]?.image
 	const color = singleProducts?.[0] && singleProducts?.[0]?.color
 	const description = singleProducts?.[0] && singleProducts?.[0]?.description
@@ -54,7 +54,7 @@ function Products({ allProducts, sales }) {
 
 	const singleProduct = {
 		name,
-		id,
+		_id,
 		image,
 		hairColor,
 		price,
@@ -96,7 +96,7 @@ function Products({ allProducts, sales }) {
 				<Add2CartPopup singleCart={singleCart} setSingleCart={setSingleCart} />
 			</div>
 			{allProducts ? (
-				<div className="tw-flex tw-flex-wrap tw-gap-3 tw-items-center tw-justify-center tw-pb-10 tw-t-0">
+				<div className="tw-flex tw-flex-wrap tw-gap-3 tw-items-center tw-justify-center tw-pb-10 tw-pt-0">
 					{allProducts.map((product) => {
 						localStorage.setItem('isSales', product.sales)
 						return (
@@ -114,9 +114,6 @@ function Products({ allProducts, sales }) {
 			) : (
 				<div className="tw-text-neutral-500">Loading data...</div>
 			)}
-			{/* <div className="tw-mx-auto lg:tw-w-4/5 xl:tw-w-full tw-bg-neutral-50 tw-py-10 tw-mt-10">
-				<About />
-			</div> */}
 			{singleProducts && (
 				<div className="single tw-absolute tw-z-30 tw-overflow-scroll tw-w-[100%] tw-shadow-lg tw-border-neutral-800 tw-h-[100vh] tw-right-0 tw-left-0 tw-top-[-97px] md:tw-top-[22px] md:tw-pt-20 tw-flex tw-flex-col tw-items-start tw-justify-center tw-bg-white">
 					<div className="md:tw-w-[80%] xl:tw-w-[70%] md:tw-mx-auto tw-w-[100%] tw-h-full tw-flex md:tw-flex-row tw-flex-col">

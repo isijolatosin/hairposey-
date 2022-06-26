@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import axios from 'axios'
+import { getDatabase, ref, onValue } from 'firebase/database'
 import { CgClose } from 'react-icons/cg'
 import { GrCheckmark } from 'react-icons/gr'
 import Layout from '../components/shared/Layout'
@@ -19,10 +20,7 @@ function HairBundles() {
 	const [show, setShow] = React.useState(false)
 	const [sales, setSales] = React.useState(false)
 	const navigate = useNavigate()
-
-	React.useEffect(() => {
-		setSales(localStorage.getItem('isSales'))
-	}, [])
+	const database = getDatabase()
 
 	async function fetchProducts() {
 		try {
@@ -37,6 +35,15 @@ function HairBundles() {
 			console.log(error)
 		}
 	}
+	React.useEffect(() => {
+		const starCountRef = ref(database, 'sales')
+		onValue(starCountRef, (snapshot) => {
+			const data = snapshot.val()
+
+			setSales(data.no)
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	React.useEffect(() => {
 		setTimeout(() => {

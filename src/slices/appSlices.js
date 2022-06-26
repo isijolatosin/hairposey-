@@ -110,11 +110,8 @@ export const appSlices = createSlice({
 					item.hairLength === action.payload.hairLength
 			)
 
-			const a = state.cartItems.slice(0, state.cartItems[removeIndex])
-			const b = state.cartItems.slice(
-				state.cartItems[removeIndex + 1],
-				state.cartItems.length - 1
-			)
+			const a = state.cartItems.slice(0, removeIndex)
+			const b = state.cartItems.slice(removeIndex + 1, state.cartItems.length)
 
 			const newCartItems = [...a, ...b]
 
