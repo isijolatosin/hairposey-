@@ -82,7 +82,7 @@ function HomePage() {
 							<span className="tw-font-light tw-ml-5 tw-text-center tw-text-white tw-tracking-[12px] md:tw-tracking-[20px] tw-text-[10px]">
 								SITE ALMOST READY
 							</span>
-							<div className="load-wrapper tw-mt-10 tw-top-[9%] md:tw-top-[10%] tw-left-[50%]">
+							<div className="load-wrapper tw-mt-10 tw-top-[16%] md:tw-top-[30%] tw-left-[50%]">
 								<div className="circle"></div>
 								<div className="circle"></div>
 								<div className="circle"></div>
