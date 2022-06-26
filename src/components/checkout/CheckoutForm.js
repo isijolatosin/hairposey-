@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
 import { GoAlert } from 'react-icons/go'
 import { SiMastercard } from 'react-icons/si'
