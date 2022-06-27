@@ -32,7 +32,7 @@ const Cart = () => {
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
+	console.log(sales)
 	const scrollToTop = function scrollToTop() {
 		window.scrollTo(0, window.innerHeight)
 	}
@@ -46,7 +46,7 @@ const Cart = () => {
 			<Helmet>
 				<title>Checkout</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<div
 					className={
 						sales

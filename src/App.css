@@ -950,13 +950,13 @@ label input::placeholder {
 	height: 280px;
 }
 .card:hover .con-text p {
-	margin-bottom: 0px;
+	margin-bottom: 30px;
 	opacity: 1;
 }
 .card .con-text h2 {
 	font-size: 20px;
 }
-.card:hover .con-text button {
+.card:hover button {
 	opacity: 1;
 }
 .card:hover img {
@@ -1014,7 +1014,7 @@ label input::placeholder {
 	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
 		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-.card .con-text button {
+.card button {
 	padding: 2px 17px;
 	border-radius: 8px;
 	background: transparent;
@@ -1030,7 +1030,7 @@ label input::placeholder {
 	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
 		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-.card .con-text button:hover {
+.card button:hover {
 	background: #fff;
 	color: #000;
 }

@@ -9,13 +9,16 @@ import { AiOutlineInstagram } from 'react-icons/ai'
 import { MdLocationPin, MdOutlineConstruction } from 'react-icons/md'
 import { googleSearch } from '../constant'
 import { SiTreyarch } from 'react-icons/si'
+import { CgClose } from 'react-icons/cg'
 
 const logo = require('../assets/logo.png')
 
 function HomePage() {
 	const [allProducts, setAllproducts] = React.useState([])
 	const [sales, setSales] = React.useState(null)
-	const notReady = false
+	const [_image, setImage] = React.useState(null)
+	const [isSingleImage, setIsSingleImage] = React.useState(false)
+	const notReady = true
 	const location = '638 Wilson Ave, North York, ON M3K 1E1'
 	const database = getDatabase()
 
@@ -49,28 +52,52 @@ function HomePage() {
 	React.useEffect(() => {
 		fetchProducts()
 	}, [])
-
+	console.log(_image)
 	return (
 		<div className="tw-bg-neutral-200 relative">
 			<Helmet>
 				<title>Home</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<div className="tw-relative">
 					<div
 						className={`tw-flex tw-flex-col tw-items-center ${
 							allProducts.length === 0 ? 'tw-mt-[70px]' : 'tw-pt-[40px]'
 						} md:tw-py-[40px] lg:tw-w-[100%] xl:tw-w-[90%] 2xl:tw-w-[80%] lg:tw-mx-auto`}>
 						{allProducts.length !== 0 ? (
-							<Products sales={sales} allProducts={allProducts} />
+							<Products
+								sales={sales}
+								allProducts={allProducts}
+								setImage={setImage}
+								setIsSingleImage={setIsSingleImage}
+							/>
 						) : (
 							<div className="tw-rounded-full progress">
 								<div className="inner tw-bg-slate-900"></div>
 							</div>
 						)}
 					</div>
+					{isSingleImage && (
+						<div className="tw-relative">
+							<div className="tw-fixed tw-top-[70px] tw-z-20 md:tw-bg-[rgba(255,255,255,0.9)] tw-h-[100vh] md:tw-h-[95vh] tw-w-[100vw] tw-flex tw-items-center tw-justify-center">
+								<img
+									src={_image?.[0].image}
+									alt={_image?.[0]._id}
+									className="tw-object-cover tw-h-[100%] md:tw-h-[90%] md:tw-rounded-3xl"
+								/>
+								<div
+									onClick={() => {
+										setImage(null)
+										setIsSingleImage(false)
+									}}
+									className="tw-text-2xl tw-bg-neutral-200 tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-lg tw-absolute tw-top-[20px] md:tw-right-[150px] tw-right-[20px] tw-ease-in tw-duration-300 hover:tw-cursor-pointer hover:tw-bg-neutral-900 hover:tw-text-white">
+									<CgClose />
+								</div>
+							</div>
+						</div>
+					)}
 					{notReady && (
-						<div className="tw-z-40 tw-h-[2700px] md:tw-h-[1550px] lg:tw-h-[1650px] 2xl:tw-h-[1200px] tw-mt-[-70px] tw-w-[100%] bg-blur3 tw-absolute tw-top-0 tw-bottom-0 z-10 tw-items-center tw-flex tw-flex-col">
+						<div className="tw-z-40 tw-h-[2700px] md:tw-h-[1550px] lg:tw-h-[1650px] 2xl:tw-h-[1200px] tw-mt-[-70px] tw-w-[100%] bg-blur3 tw-fixed tw-top-0 tw-bottom-0 z-10 tw-items-center tw-flex tw-flex-col">
 							<div className="tw-w-[300px] tw-ml-5 tw-mt-[100px]">
 								<img src={logo} alt="company logo" />
 							</div>
