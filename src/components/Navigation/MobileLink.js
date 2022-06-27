@@ -59,13 +59,13 @@ const subLinks3 = [
 
 function MobileLink() {
 	return (
-		<div className="tw-z-40 wrapper tw-h-[100vh] bg-blur md:tw-bg-[rgba(255,255,255,0.9)] md:tw-w-[450px] tw-w-[300px] tw-top-[486px] md:tw-top-[543px] md:tw-right-[-225px] tw-right-[-150px]">
+		<div className="tw-z-40 wrapper tw-h-[100vh] bg-blur md:tw-bg-[rgba(255,255,255,0.9)] md:tw-w-[450px] tw-w-[300px] tw-top-[486px] md:tw-top-[543px] md:tw-left-[225px] tw-left-[150px]">
 			<ui className="mainMenu">
 				{NavHead.map((item) => (
 					<li className="item" id={item.name}>
 						<a
 							href={`#${item.name}`}
-							className="btn tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900">
+							className="_btn tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900">
 							{item.name}
 						</a>
 						{item.name === 'Indian-Hair' ? (

@@ -31,8 +31,8 @@ function Card({ product, setSingleproducts, scrollToTop, sales }) {
 				<li
 					onClick={() => handleViewImage(product._id)}
 					className="tw-relative">
-					<span className="tw-absolute tw-left-[-45px] tw-text-white tw-text-xs">
-						Expand
+					<span className="tw-absolute tw-left-[-80px] tw-text-white tw-text-xs">
+						Expand Photo
 					</span>
 					<MdOutlineViewInAr />
 				</li>
@@ -40,9 +40,9 @@ function Card({ product, setSingleproducts, scrollToTop, sales }) {
 					<span
 						className={`${
 							product.instock
-								? 'tw-text-white'
+								? 'tw-text-white  tw-left-[-45px]'
 								: 'tw-text-white tw-left-[-65px]'
-						} tw-absolute tw-left-[-45px] tw-text-xs`}>
+						} tw-absolute tw-text-xs`}>
 						{product.instock ? 'Instock' : 'Not Instock'}
 					</span>
 					<MdOutlineInventory

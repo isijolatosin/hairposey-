@@ -15,7 +15,7 @@ const logo = require('../assets/logo.png')
 function HomePage() {
 	const [allProducts, setAllproducts] = React.useState([])
 	const [sales, setSales] = React.useState(null)
-	const notReady = true
+	const notReady = false
 	const location = '638 Wilson Ave, North York, ON M3K 1E1'
 	const database = getDatabase()
 

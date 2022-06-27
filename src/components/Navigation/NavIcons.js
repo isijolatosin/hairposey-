@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { BsHandbagFill, BsHandbag } from 'react-icons/bs'
 import { FiLogOut } from 'react-icons/fi'
 import { FiLogIn } from 'react-icons/fi'
-import { HiMenuAlt3 } from 'react-icons/hi'
 import { MdAssignmentInd } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../../firebase'
@@ -10,7 +9,7 @@ import { UserContext } from '../../context/user-context'
 import { selectItemCount } from '../../slices/appSlices'
 import { useSelector } from 'react-redux'
 
-function NavIcons({ setIsNav, isNav }) {
+function NavIcons() {
 	const { user } = useContext(UserContext)
 	const itemCount = useSelector(selectItemCount)
 	const navigate = useNavigate()
@@ -21,9 +20,6 @@ function NavIcons({ setIsNav, isNav }) {
 
 	return (
 		<div className=" tw-flex tw-flex-row tw-w-46 tw-mr-5 tw-justify-center tw-items-center">
-			<div className="tw-text-white tw-text-3xl tw-mr-8 hover:tw-cursor-pointer hover:tw-text-slate-400 tw-ease-in tw-duration-300">
-				<HiMenuAlt3 onClick={() => setIsNav(!isNav)} />
-			</div>
 			<div
 				onClick={() =>
 					navigate(`/user-cart/${user?.displayName || 'new-customer'}`)
