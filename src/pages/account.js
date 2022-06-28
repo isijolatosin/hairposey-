@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { getDatabase, ref, onValue, set } from 'firebase/database'
+import { getDatabase, ref, onValue } from 'firebase/database'
 import Layout from '../components/shared/Layout'
 import { UserContext } from '../context/user-context'
 
