@@ -953,8 +953,12 @@ label input::placeholder {
 	margin-bottom: 30px;
 	opacity: 1;
 }
+.card:hover .con-text h2 {
+	margin-bottom: 0px;
+}
 .card .con-text h2 {
 	font-size: 20px;
+	margin-bottom: 70px;
 }
 .card:hover button {
 	opacity: 1;

@@ -52,7 +52,7 @@ function HomePage() {
 	React.useEffect(() => {
 		fetchProducts()
 	}, [])
-	console.log(_image)
+
 	return (
 		<div className="tw-bg-neutral-200 relative">
 			<Helmet>

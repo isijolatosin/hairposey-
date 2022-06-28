@@ -1,6 +1,6 @@
 import React from 'react'
 const NavHead = [
-	{ name: 'Indian-Hair', id: '1' },
+	{ name: 'Cambodian-Hair', id: '1' },
 	{ name: 'Vietnamese-Hair', id: '1' },
 	{ name: 'Brazilian-Hair', id: '1' },
 ]
@@ -8,52 +8,52 @@ const NavHead = [
 const subLinks1 = [
 	{
 		id: '1',
-		name: 'Bundles (Indian)',
-		route: '/indian-bundles',
+		name: 'Bundles (cambodian)',
+		route: '/bundles/cambodian-hair',
 	},
 	{
 		id: '2',
-		name: 'Closure / Frontal (Indian)',
-		route: '/indian-closure-frontal',
+		name: 'Closure / Frontal (cambodian)',
+		route: '/closure-frontal/cambodian-hair',
 	},
 	{
 		id: '3',
-		name: 'Jet Black / Blonde (Indian)',
-		route: '/indian-jet-black-&-blonde',
+		name: 'Jet Black / Blonde (cambodian)',
+		route: '/jet-black-&-blonde/cambodian-hair',
 	},
 ]
 const subLinks2 = [
 	{
 		id: '1',
-		name: 'Coming Soon...',
-		route: '',
+		name: 'Bundles (vietnamese)',
+		route: '/bundles/vietnamese-hair',
 	},
 	{
 		id: '2',
-		name: 'Coming Soon...',
-		route: '',
+		name: 'Closure / Frontal (vietnamese)',
+		route: '/closure-frontal/vietnamese-hair',
 	},
 	{
 		id: '3',
-		name: 'Coming Soon...',
-		route: '',
+		name: 'Jet Black / Blonde (vietnamese)',
+		route: '/jet-black-&-blonde/vietnamese-hair',
 	},
 ]
 const subLinks3 = [
 	{
 		id: '1',
-		name: 'Coming Soon...',
-		route: '',
+		name: 'Bundles (brazilian)',
+		route: '/bundles/brazilian-hair',
 	},
 	{
 		id: '2',
-		name: 'Coming Soon...',
-		route: '',
+		name: 'Closure / Frontal (brazilian)',
+		route: '/closure-frontal/brazilian-hair',
 	},
 	{
 		id: '3',
-		name: 'Coming Soon...',
-		route: '',
+		name: 'Jet Black / Blonde (brazilian)',
+		route: '/jet-black-&-blonde/brazilian-hair',
 	},
 ]
 
@@ -68,7 +68,7 @@ function MobileLink() {
 							className="_btn tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900">
 							{item.name}
 						</a>
-						{item.name === 'Indian-Hair' ? (
+						{item.name === 'Cambodian-Hair' ? (
 							<div className="subMenu">
 								{subLinks1.map((item) => (
 									<a href={item.route}>{item.name}</a>

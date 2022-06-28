@@ -124,7 +124,7 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 				<div className="tw-text-neutral-500">Loading data...</div>
 			)}
 			{singleProducts && (
-				<div className="single tw-fixed tw-z-30 tw-overflow-scroll tw-w-[100%] tw-shadow-lg tw-border-neutral-800 tw-h-[100vh] tw-right-0 tw-left-0 tw-top-[-97px] md:tw-top-[0px] md:tw-pt-10 tw-flex tw-flex-col tw-items-start tw-justify-center tw-bg-[rgba(255,255,255,0.96)]">
+				<div className="single tw-fixed tw-z-30 tw-overflow-scroll tw-w-[100%] tw-shadow-lg tw-border-neutral-800 tw-h-[100vh] tw-right-0 tw-left-0 tw-top-[-97px] md:tw-top-[0px] md:tw-pt-10 tw-flex tw-flex-col tw-items-start tw-justify-center tw-bg-pink-100">
 					<div className=" tw-relative md:tw-w-[80%] xl:tw-w-[70%] md:tw-mx-auto tw-w-[100%] tw-h-full tw-flex md:tw-flex-row tw-flex-col">
 						<div className="tw-w-[100%] md:tw-h-[500px] md:tw-w-[50%] tw-mx-auto md:tw-mr-10">
 							<Slideshow images={singleProducts?.[0]} />
@@ -138,7 +138,7 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 													onClick={() => {
 														setColor(colr)
 													}}
-													className="tw-flex tw-flex-wrap tw-bg-neutral-200 tw-rounded-md tw-mr-2 tw-border-[1px] tw-border-neutral-100 tw-px-5 tw-py-1 tw-text-[14px] tw-text-neutral-900 hover:tw-cursor-pointer hover:tw-bg-neutral-300 tw-ease-in tw-duration-300"
+													className="tw-flex tw-flex-wrap tw-bg-white tw-rounded-md tw-mr-2 tw-px-5 tw-py-1 tw-text-[14px] tw-text-neutral-900 hover:tw-cursor-pointer hover:tw-bg-slate-900 hover:tw-text-white tw-ease-in tw-duration-300"
 													key={idx}>
 													<span>{colr}</span>
 												</span>
@@ -152,7 +152,7 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 													onClick={() => {
 														sethairType(tex)
 													}}
-													className="tw-flex tw-flex-wrap tw-bg-neutral-200 tw-rounded-md tw-mr-2 tw-border-[1px] tw-border-neutral-100 tw-px-5 tw-py-1 tw-text-[14px] tw-text-neutral-900 hover:tw-cursor-pointer hover:tw-bg-neutral-300 tw-ease-in tw-duration-300"
+													className="tw-flex tw-flex-wrap tw-bg-white tw-rounded-md tw-mr-2 tw-px-5 tw-py-1 tw-text-[14px] tw-text-neutral-900 hover:tw-cursor-pointer hover:tw-bg-slate-900 hover:tw-text-white tw-ease-in tw-duration-300"
 													key={idx}>
 													<span>{tex}</span>
 												</span>
@@ -166,7 +166,7 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 													onClick={() => {
 														setLength(size)
 													}}
-													className="tw-flex tw-flex-wrap tw-bg-neutral-200 tw-rounded-md tw-mr-2 tw-mb-2 tw-border-[1px] tw-border-neutral-100 tw-px-5 tw-py-1 tw-text-[16px] tw-text-neutral-900 hover:tw-cursor-pointer hover:tw-bg-neutral-300 tw-ease-in tw-duration-300"
+													className="tw-flex tw-flex-wrap tw-bg-white tw-rounded-md tw-mr-2 tw-mb-2 tw-px-5 tw-py-1 tw-text-[16px] tw-text-neutral-900 hover:tw-cursor-pointer hover:tw-bg-slate-900 hover:tw-text-white tw-ease-in tw-duration-300"
 													key={idx}>
 													{size}inch
 												</span>
@@ -182,7 +182,7 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 												setLength(size)
 												setError(false)
 											}}
-											className="tw-flex tw-flex-wrap tw-bg-neutral-200 tw-rounded-md tw-mr-2 tw-mb-2 tw-border-[1px] tw-border-neutral-100 tw-px-2 tw-text-[16px] tw-text-neutral-900 tw-p-5 hover:tw-cursor-pointer hover:tw-bg-neutral-900 hover:tw-text-white tw-ease-in tw-duration-300"
+											className="tw-flex tw-flex-wrap tw-bg-white tw-rounded-md tw-mr-2 tw-mb-2 tw-px-2 tw-text-[16px] tw-text-neutral-900 tw-p-5 hover:tw-cursor-pointer hover:tw-bg-neutral-900 hover:tw-text-white tw-ease-in tw-duration-300"
 											key={idx}>
 											{size}inch
 										</span>

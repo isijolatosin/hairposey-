@@ -5,21 +5,33 @@ import { getDatabase, ref, onValue } from 'firebase/database'
 import { CgClose } from 'react-icons/cg'
 import { GrCheckmark } from 'react-icons/gr'
 import Layout from '../components/shared/Layout'
-import Card from '../components/Card2'
-import { selectItemCount } from '../slices/appSlices'
-import { useSelector } from 'react-redux'
+import Card from '../components/Card'
+import {
+	addToCartItem,
+	increaseCartItem,
+	selectCartItems,
+	selectItemCount,
+} from '../slices/appSlices'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user-context'
+import SingleProductModal from '../components/shared/SingleProductModal'
 
 function HairBundles() {
+	const [length, setLength] = React.useState(null)
+	const [error, setError] = React.useState(false)
+	const [singleProducts, setSingleproducts] = React.useState(null)
+	const cartItems = useSelector(selectCartItems)
 	const itemCount = useSelector(selectItemCount)
 	const { user } = useContext(UserContext)
+	const [_image, setImage] = React.useState(null)
+	const [isSingleImage, setIsSingleImage] = React.useState(false)
 	const [hairBundles, setHairBundles] = React.useState([])
-	const [singleProducts, setSingleproducts] = React.useState(null)
 	const [singleCart, setSingleCart] = React.useState(null)
 	const [show, setShow] = React.useState(false)
 	const [sales, setSales] = React.useState(false)
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 	const database = getDatabase()
 
 	async function fetchProducts() {
@@ -27,9 +39,26 @@ function HairBundles() {
 			const {
 				data: { products },
 			} = await axios.get('/api/v1/products')
-			const filtered = products.filter(
-				(product) => product.color.toLowerCase() === 'natural black'
-			)
+			const filtered = products.filter((product) => {
+				if (window.location.pathname.toLowerCase().includes('cambodian-hair')) {
+					return (
+						product.brand.toLowerCase() === 'cambodian' &&
+						product.color.toLowerCase().includes('natural black')
+					)
+				} else if (
+					window.location.pathname.toLowerCase().includes('vietnamese-hair')
+				) {
+					return (
+						product.brand.toLowerCase() === 'vietnamese' &&
+						product.color.toLowerCase().includes('natural black')
+					)
+				} else {
+					return (
+						product.brand.toLowerCase() === 'brazilian' &&
+						product.color.toLowerCase().includes('natural black')
+					)
+				}
+			})
 			setHairBundles(filtered.sort((a, b) => a.name.localeCompare(b.name)))
 		} catch (error) {
 			console.log(error)
@@ -66,12 +95,77 @@ function HairBundles() {
 		}, 500)
 	}
 
+	// Adding to cart items
+	const name = singleProducts?.[0] && singleProducts?.[0]?.name
+	const id = singleProducts?.[0] && singleProducts?.[0]?._id
+	const image = singleProducts?.[0] && singleProducts?.[0]?.image
+	const color = singleProducts?.[0] && singleProducts?.[0]?.color
+	const description = singleProducts?.[0] && singleProducts?.[0]?.description
+	const price = singleProducts?.[0] && singleProducts?.[0]?.price
+	const hairLength = length
+	const hairColor = color
+	const hairTexture = singleProducts?.[0] && singleProducts?.[0]?.name
+
+	const singleProduct = {
+		name,
+		id,
+		image,
+		hairColor,
+		price,
+		hairLength,
+		description,
+		hairTexture,
+	}
+
+	const addToCart = () => {
+		if (length) {
+			dispatch(addToCartItem(singleProduct))
+			setTimeout(() => {
+				setSingleCart(singleProduct)
+			}, 1000)
+		} else {
+			setError(true)
+		}
+	}
+
+	const IncreaseItem = () => {
+		dispatch(increaseCartItem(singleProduct))
+		setTimeout(() => {
+			setSingleCart(singleProduct)
+		}, 1000)
+	}
+
+	const desc = [
+		{ key: 'Hair Texture', value: name },
+		{ key: 'Hair Color', value: color },
+		{
+			key: 'Hair Length',
+			value: `Available from ${sizes?.[0]}" - ${
+				sizes?.[sizes.length - 1]
+			}" inches`,
+		},
+		{ key: 'Material', value: '100% Human Hair' },
+		{ key: 'Density', value: '150% - 200%' },
+		{ key: 'Cap Size', value: 'Average Size(Head circumference: 54cm - 58cm' },
+		{ key: 'Can be bleached.dyed', value: 'Yes' },
+		{
+			key: 'Delivery time',
+			value:
+				'We usually ship the order within 24 hours after order confirmation, except for weekends and holidays - (order confirmation is within 2 weeks)',
+		},
+		{
+			key: 'Return policy',
+			value:
+				'We accept 10-days no reason return exchange with hair not been used',
+		},
+	]
+
 	return (
 		<>
 			<Helmet>
 				<title>Hair Bundles</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<div
 					className={
 						sales
@@ -126,17 +220,16 @@ function HairBundles() {
 						</div>
 					)}
 					{show && hairBundles && (
-						<div className="tw-grid tw-grid-cols-2 tw-w-full tw-px-2 md:tw-grid-cols-3 lg:tw-grid-cols-4 xl:tw-grid-cols-5 xl:tw-w-[85%] 2xl:tw-w-[70%] tw-gap-2 md:tw-gap-5">
-							{hairBundles.map((item) => (
-								<div
-									className="tw-justify-center tw-items-center tw-flex tw-flex-row"
-									key={item._id}>
+						<div className="tw-flex tw-flex-wrap tw-gap-3 tw-items-center tw-justify-center tw-pb-10 tw-pt-0">
+							{hairBundles.map((product) => (
+								<div key={product._id} className="tw-mb-2 md:tw-mb-0">
 									<Card
-										key={item._id}
-										product={item}
+										key={product._id}
+										product={product}
 										setSingleproducts={setSingleproducts}
-										setSingleCart={setSingleCart}
 										scrollToTop={scrollToTop}
+										setImage={setImage}
+										setIsSingleImage={setIsSingleImage}
 									/>
 								</div>
 							))}
@@ -144,47 +237,45 @@ function HairBundles() {
 					)}
 					{!show && (
 						<div className="tw-rounded-full progress">
-							<div className="inner"></div>
+							<div className="inner tw-bg-slate-900"></div>
+						</div>
+					)}
+					{isSingleImage && (
+						<div className="tw-relative">
+							<div className="tw-fixed tw-top-[70px] tw-left-0 tw-z-20 md:tw-bg-[rgba(255,255,255,0.9)] tw-h-[100vh] md:tw-h-[95vh] tw-w-[100vw] tw-flex tw-items-center tw-justify-center">
+								<img
+									src={_image?.[0].image}
+									alt={_image?.[0]._id}
+									className="tw-object-cover tw-h-[100%] md:tw-h-[90%] md:tw-rounded-3xl"
+								/>
+								<div
+									onClick={() => {
+										setImage(null)
+										setIsSingleImage(false)
+									}}
+									className="tw-text-2xl tw-bg-neutral-200 tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-lg tw-absolute tw-top-[20px] md:tw-right-[150px] tw-right-[20px] tw-ease-in tw-duration-300 hover:tw-cursor-pointer hover:tw-bg-neutral-900 hover:tw-text-white">
+									<CgClose />
+								</div>
+							</div>
 						</div>
 					)}
 
 					{singleProducts && (
-						<div className="tw-absolute tw-z-30 tw-h-[100vh] tw-w-[100%] tw-right-0 tw-left-0 tw-top-0 tw-flex tw-flex-row tw-items-start tw-justify-center bg-blur3">
-							<div className="tw-w-[600px] tw-h-[600px]">
-								<img
-									id={singleProducts?.[0]._id}
-									src={singleProducts?.[0].image}
-									alt={singleProducts?.[0]._id}
-									className="tw-w-[90%] tw-mt-20 tw-mx-auto tw-h-full tw-object-cover tw-mb-1"
-								/>
-								<div className="tw-max-w-[90%] tw-mx-auto">
-									<p className="tw-text-xs tw-font-200 tw-tracking-tight tw-text-neutral-900 tw-mb-[1px] bg-blur tw-px-2 tw-leading-6 lg:tw-mt-[150px]">
-										{singleProducts?.[0].name}
-									</p>
-									<p className="tw-font-medium tw-text-slate-900 tw-text-xs tw-mb-[1px] bg-blur tw-px-2 tw-mt-0">
-										{singleProducts?.[0].description}
-									</p>
-									<div className="tw-flex tw-flex-col">
-										<p className="tw-font-medium tw-text-white tw-text-xs tw-mt-2 tw-mr-2">
-											Length
-										</p>
-										<div>
-											{sizes.map((size, idx) => (
-												<span
-													className="bg-blur tw-text-slate-900 tw-rounded-full tw-mr-2 tw-border-[1px] tw-border-neutral-600 tw-px-2 tw-text-xs"
-													key={idx}>
-													{size}
-												</span>
-											))}
-										</div>
-									</div>
-								</div>
-								<CgClose
-									onClick={() => setSingleproducts(null)}
-									className="tw-absolute tw-top-[100px] tw-right-10 tw-w-10 tw-h-10 tw-p-3 tw-bg-gray-100 tw-rounded-full hover:tw-cursor-pointer"
-								/>
-							</div>
-						</div>
+						<SingleProductModal
+							category={singleProducts?.[0]?.name}
+							singleProducts={singleProducts}
+							setSingleproducts={setSingleproducts}
+							sales={sales}
+							desc={desc}
+							sizes={sizes}
+							setLength={setLength}
+							setError={setError}
+							error={error}
+							singleProduct={singleProduct}
+							cartItems={cartItems}
+							IncreaseItem={IncreaseItem}
+							addToCart={addToCart}
+						/>
 					)}
 				</div>
 			</Layout>

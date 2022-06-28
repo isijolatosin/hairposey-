@@ -50,55 +50,55 @@ function Footer() {
 		},
 	]
 
-	const indian = [
+	const Cambodian = [
 		{
 			id: '1',
-			name: 'Bundles (Indian)',
-			route: '/indian-bundles',
+			name: 'Bundles (cambodian)',
+			route: '/bundles/cambodian-hair',
 		},
 		{
 			id: '2',
-			name: 'Closure / Frontal (Indian)',
-			route: '/indian-closure-frontal',
+			name: 'Closure / Frontal (cambodian)',
+			route: '/closure-frontal/cambodian-hair',
 		},
 		{
 			id: '3',
-			name: 'Jet Black / Blonde (Indian)',
-			route: '/indian-jet-black-&-blonde',
+			name: 'Jet Black / Blonde (cambodian)',
+			route: '/jet-black-&-blonde/cambodian-hair',
 		},
 	]
 	const vietnamese = [
 		{
 			id: '1',
-			name: 'Bundles (Vietnamese)',
-			// route: '/vietnamese-bundles',
+			name: 'Bundles (vietnamese)',
+			route: '/bundles/vietnamese-hair',
 		},
 		{
 			id: '2',
-			name: 'Closure / Frontal (Vietnamese)',
-			// route: '/vietnamese-closure-frontal',
+			name: 'Closure / Frontal (vietnamese)',
+			route: '/closure-frontal/vietnamese-hair',
 		},
 		{
 			id: '3',
-			name: 'Jet Black / Blonde (Vietnamese)',
-			// route: '/vietnamese-jet-black-&-blonde',
+			name: 'Jet Black / Blonde (vietnamese)',
+			route: '/jet-black-&-blonde/vietnamese-hair',
 		},
 	]
 	const Brazillian = [
 		{
 			id: '1',
-			name: 'Bundles (Brazillian)',
-			// route: '/brazillian-bundles',
+			name: 'Bundles (brazilian)',
+			route: '/bundles/brazilian-hair',
 		},
 		{
 			id: '2',
-			name: 'Closure / Frontal (Brazillian)',
-			// route: '/brazillian-closure-frontal',
+			name: 'Closure / Frontal (brazilian)',
+			route: '/closure-frontal/brazilian-hair',
 		},
 		{
 			id: '3',
-			name: 'Jet Black / Blonde (Brazillian)',
-			// route: '/brazillian-jet-black-&-blonde-hair',
+			name: 'Jet Black / Blonde (brazilian)',
+			route: '/jet-black-&-blonde/brazilian-hair',
 		},
 	]
 
@@ -136,7 +136,7 @@ function Footer() {
 					<div className="tw-mb-5">
 						<h1 className="tw-text-xs tw-font-bold  tw-mb-2">Indian Hair</h1>
 						<ul className="tw-flex tw-flex-col tw-justify-center tw-text-xs tw-font-light tw-mb-1">
-							{indian.map((ind) => (
+							{Cambodian.map((ind) => (
 								<Link
 									key={ind.id}
 									to={ind.route}
@@ -154,13 +154,10 @@ function Footer() {
 							{vietnamese.map((veit) => (
 								<Link
 									key={veit.id}
-									to="/"
+									to={veit.route}
 									// onClick={() => navigate(`/${veit.route}`)}
 									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
-									{veit.name}{' '}
-									<span className="tw-text-[10px] tw-font-bold">
-										- coming soon...
-									</span>
+									{veit.name}
 								</Link>
 							))}
 						</ul>
@@ -173,13 +170,10 @@ function Footer() {
 							{Brazillian.map((braz) => (
 								<Link
 									key={braz.id}
-									to="/"
+									to={braz.route}
 									// onClick={() => navigate(`/${braz.route}`)}
 									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
-									{braz.name}{' '}
-									<span className="tw-text-[10px] tw-font-bold">
-										- coming soon...
-									</span>
+									{braz.name}
 								</Link>
 							))}
 						</ul>

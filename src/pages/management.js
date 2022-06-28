@@ -56,16 +56,18 @@ function Management() {
 			<Helmet>
 				<title>Admin Portal</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<div
 					className={
 						sales
-							? 'tw-mt-[100px] lg:tw-mt-[100px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-neutral-300'
-							: 'tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-neutral-300'
+							? 'tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-pink-100'
+							: 'tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-pink-100'
 					}>
-					<div className="tw-flex tw-flex-row tw-items-center tw-justify-between tw-w-[85%]">
-						<Heading>Admin portal</Heading>
-						<div className="tw-py-[2px] tw-flex tw-items-center tw-justify-end tw-w-[50%] md:tw-w-[30%] tw-rounded-full tw-px-3 tw-text-sm tw-bg-neutral-200">
+					<div className="tw-flex tw-flex-col tw-items-left tw-justify-between tw-w-[90%] md:tw-w-[85%]">
+						<div className="tw-mb-2">
+							<Heading children="Admin portal" isBold={true} />
+						</div>
+						<div className="tw-py-[2px] tw-flex tw-items-center tw-justify-end tw-w-[50%] md:tw-w-[30%] tw-px-3 tw-text-sm tw-bg-white">
 							<input
 								type="number"
 								name="percentSale"
@@ -78,27 +80,27 @@ function Management() {
 							<RiSendPlaneLine
 								onClick={handleSubmit}
 								size={20}
-								className="tw-text-violet-700 hover:tw-text-violet-300 tw-ease-in tw-duration-300 tw-w-[10%] tw-mr-2"
+								className="tw-text-pink-800 hover:tw-text-violet-300 tw-ease-in tw-duration-300 tw-w-[10%] tw-mr-2"
 							/>
 						</div>
 					</div>
-					<div className="tw-my-5 tw-w-[100%] tw-text-violet-700">
+					<div className="tw-my-5 tw-w-[100%] tw-text-slate-900">
 						<ul className="tw-flex tw-text-xs tw-flex-row tw-items-center tw-justify-between tw-w-[90%] lg:tw-w-[50%] tw-mx-auto">
 							<li
 								id="all-inventory"
-								className="hover:tw-cursor-pointer tw-bg-violet-50 tw-px-4 tw-py-2 tw-rounded-full hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
+								className="hover:tw-cursor-pointer tw-bg-white tw-px-4 tw-py-2 hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
 								onClick={toggleSection}>
 								All Inventories
 							</li>
 							<li
 								id="inventory"
-								className="hover:tw-cursor-pointer tw-bg-violet-50 tw-px-4 tw-py-2 tw-rounded-full hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
+								className="hover:tw-cursor-pointer tw-bg-white tw-px-4 tw-py-2 hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
 								onClick={toggleSection}>
 								Add to Inventory
 							</li>
 							<li
 								id="shipping"
-								className="hover:tw-cursor-pointer tw-bg-violet-50  tw-px-4 tw-py-2 tw-rounded-full hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
+								className="hover:tw-cursor-pointer tw-bg-white  tw-px-4 tw-py-2 hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
 								onClick={toggleSection}>
 								Shipment
 							</li>

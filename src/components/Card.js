@@ -7,6 +7,7 @@ import { isInCart } from '../utils/helpers'
 import { selectCartItems } from '../slices/appSlices'
 import { useSelector } from 'react-redux'
 import Rating from './shared/Rating'
+import truncate from '../utils/truncate'
 
 function Card({
 	product,
@@ -92,10 +93,13 @@ function Card({
 			/>
 			<div className="con-text">
 				<h2 className="font_cursive tw-text-4xl">{product.name}</h2>
-				<div className=" md:tw-mb-[8px] tw-mb-[15px]">
+				<div className="tw-mb-[10px]">
 					<Rating isNum={false} />
 				</div>
-				<p className="">{product.description}</p>
+				<h1 className="tw-text-sm tw-uppercase tw-font-bold tw-text-red-700">
+					{product.brand} - Hair
+				</h1>
+				<p className="">{truncate(product.description, 15)}</p>
 			</div>
 			{isInCart(product, cartItems) ? (
 				<button

@@ -34,6 +34,22 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: e.target.value,
+			brand: singleProduct.brand,
+			type: singleProduct.type,
+			color: singleProduct.color,
+			availablecolor: singleProduct.availablecolor,
+			price: Number(singleProduct.price),
+			length: Number(singleProduct.length),
+			availablelength: singleProduct.availablelength,
+			description: singleProduct.description,
+			sales: singleProduct.sales,
+		})
+	}
+	const handleInputBrand = (e) => {
+		setSingleProduct({
+			id: singleProduct.id,
+			name: singleProduct.name,
+			brand: e.target.value,
 			type: singleProduct.type,
 			color: singleProduct.color,
 			availablecolor: singleProduct.availablecolor,
@@ -48,6 +64,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: e.target.value,
 			color: singleProduct.color,
 			availablecolor: singleProduct.availablecolor,
@@ -62,6 +79,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: singleProduct.type,
 			color: e.target.value,
 			availablecolor: singleProduct.availablecolor,
@@ -76,6 +94,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: singleProduct.type,
 			color: singleProduct.color,
 			availablecolor: e.target.value,
@@ -90,6 +109,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: singleProduct.type,
 			color: singleProduct.color,
 			availablecolor: singleProduct.availablecolor,
@@ -104,6 +124,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: singleProduct.type,
 			color: singleProduct.color,
 			availablecolor: singleProduct.availablecolor,
@@ -118,6 +139,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: singleProduct.type,
 			color: singleProduct.color,
 			availablecolor: singleProduct.availablecolor,
@@ -132,6 +154,7 @@ function AllInventories() {
 		setSingleProduct({
 			id: singleProduct.id,
 			name: singleProduct.name,
+			brand: singleProduct.brand,
 			type: singleProduct.type,
 			color: singleProduct.color,
 			availablecolor: singleProduct.availablecolor,
@@ -149,6 +172,7 @@ function AllInventories() {
 		try {
 			const product = {
 				name: singleProduct.name,
+				brand: singleProduct.brand,
 				type: singleProduct.type,
 				color: singleProduct.color,
 				availablecolor: singleProduct.availablecolor,
@@ -157,15 +181,17 @@ function AllInventories() {
 				availablelength: singleProduct.availablelength,
 				description: singleProduct.description,
 				sales: isTrue,
-				// image: imageFile,
 			}
 			if (
 				product.name === '' ||
+				product.brand === '' ||
 				product.type === '' ||
 				product.color === '' ||
 				product.price === null ||
 				product.length === null ||
-				product.description === ''
+				product.description === '' ||
+				product.availablelength === '' ||
+				product.availablecolor === ''
 			) {
 				return setPostError('Missing Credentials')
 			}
@@ -180,28 +206,6 @@ function AllInventories() {
 
 		fetchProducts()
 	}
-
-	// 	const uploadFile = async (e) => {
-	// 		e.preventDefault()
-	// 		const imageFile = e.target.files[0]
-	// 		const formData = new FormData()
-	// 		formData.append('image', imageFile)
-	// 		try {
-	// 			const {
-	// 				data: {
-	// 					image: { src },
-	// 				},
-	// 			} = await axios.post('/api/v1/products/uploads', formData, {
-	// 				headers: {
-	// 					'Content-Type': 'multipart/form-data',
-	// 				},
-	// 			})
-	//
-	// 			setImageFile(src)
-	// 		} catch (error) {
-	// 			console.log(error)
-	// 		}
-	// 	}
 
 	return (
 		<div>
@@ -237,6 +241,15 @@ function AllInventories() {
 								value={singleProduct.name}
 								onChange={handleInputName}
 								placeholder="Product Name..."
+								className="tw-mt-1 tw-block lg:tw-w-[50%] tw-mx-auto tw-w-[90%] tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+							/>
+							<input
+								type="text"
+								name="brand"
+								id="brand"
+								value={singleProduct.brand}
+								onChange={handleInputBrand}
+								placeholder="Product brand..."
 								className="tw-mt-1 tw-block lg:tw-w-[50%] tw-mx-auto tw-w-[90%] tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 							/>
 							<input
@@ -302,21 +315,6 @@ function AllInventories() {
 								placeholder="Description..."
 								className="tw-rounded tw-mt-1 tw-block lg:tw-w-[50%] tw-mx-auto tw-w-[90%] tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 							/>
-							{/* <div className="tw-text-red-800 tw-text-sm tw-mb-2 ">
-								<span>
-									Rename Image and substitute space with a dash ( e.g abc-def )
-								</span>
-							</div>
-							<div className="tw-rounded tw-flex tw-flex-row tw-items-center tw-shadow-xl tw-pl-3 tw-pb-1">
-								<label className="tw-mr-3 tw-text-gray-500 tw-text-sm">
-									Image
-								</label>
-								<input
-									onChange={uploadFile}
-									type="file"
-									className="tw-block tw-w-full tw-text-sm tw-text-gray-500 file:tw-mr-4 file:tw-py-1 file:tw-px-4 file:tw-rounded file:tw-border-0 file:tw-text-sm file:tw-bg-gray-200 file:tw-text-violet-700 hover:file:tw-bg-violet-100 tw-ease-in tw-duration-300"
-								/>
-							</div> */}
 							<div className="tw-rounded tw-flex tw-flex-row tw-items-center tw-mt-5 tw-shadow-xl tw-p-2">
 								<label className="tw-mr-3 tw-text-gray-500 tw-text-sm">
 									Sales

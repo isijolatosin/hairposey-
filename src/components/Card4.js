@@ -215,7 +215,7 @@ function Card({ product, setSingleproducts, setSingleCart, scrollToTop }) {
 						id="length"
 						value={bundles.length}
 						name="length">
-						{lengthArr.map((len, idx) => (
+						{lengthArr?.map((len, idx) => (
 							<option key={idx}>{len}</option>
 						))}
 					</select>
@@ -223,9 +223,9 @@ function Card({ product, setSingleproducts, setSingleCart, scrollToTop }) {
 						className="tw-flex-[0.5] tw-text-gray-500 tw-mt-1 tw-block tw-w-full tw-px-1 tw-py-1 tw-border tw-border-gray-100 tw-rounded-sm tw-text-xs tw-shadow-sm tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
 						onChange={handleOnChange}
 						id="widthlength"
-						value={bundles.widthlength}
+						value={bundles?.widthlength}
 						name="widthlength">
-						{widthlength.map((len, idx) => (
+						{widthlength?.map((len, idx) => (
 							<option key={idx}>{len}</option>
 						))}
 					</select>
@@ -237,7 +237,7 @@ function Card({ product, setSingleproducts, setSingleCart, scrollToTop }) {
 						id="color"
 						value={bundles.color}
 						name="color">
-						{colorArr.map((colo, idx) => (
+						{colorArr?.map((colo, idx) => (
 							<option key={idx}>{colo}</option>
 						))}
 					</select>
@@ -247,7 +247,7 @@ function Card({ product, setSingleproducts, setSingleCart, scrollToTop }) {
 						id="hairType"
 						value={bundles.hairType}
 						name="hairType">
-						{hairType.map((type, idx) => (
+						{hairType?.map((type, idx) => (
 							<option key={idx}>{type}</option>
 						))}
 					</select>
