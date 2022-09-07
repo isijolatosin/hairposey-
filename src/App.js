@@ -15,11 +15,16 @@ import Account from './pages/account'
 function App() {
 	return (
 		<Routes>
+			{/* General route path */}
 			<Route exact path="/register" element={<Register />} />
 			<Route exact path="/login" element={<Login />} />
-			<Route exact path="/canceled" element={<Canceled />} />
 			<Route exact path="/success" element={<Success />} />
+			<Route exact path="/canceled" element={<Canceled />} />
+			<Route exact path="/user-account/:userInfo" element={<Account />} />
 			<Route exact path="/admin-portal" element={<Management />} />
+			<Route exact path="/user-cart/:userId" element={<Cart />} />
+
+			{/* Hair route path */}
 			<Route exact path="/bundles/:brand" element={<HairBundles />} />
 			<Route
 				exact
@@ -31,8 +36,8 @@ function App() {
 				path="/jet-black-&-blonde/:brand"
 				element={<JetBlackHair />}
 			/>
-			<Route exact path="/user-cart/:userId" element={<Cart />} />
-			<Route exact path="/user-account/:userInfo" element={<Account />} />
+
+			{/* Home and error route path */}
 			<Route exact path="*" element={<NotFound />} />
 			<Route exact path="/" element={<HomePage />} />
 		</Routes>

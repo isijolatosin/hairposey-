@@ -179,7 +179,9 @@ const CheckoutForm = ({ total, itemCount }) => {
 
 			setClientSecret(data.clientSecret.split("'")?.[0])
 		} catch (error) {
-			set_Error(error?.response?.data ? 'Please contact modelEst Admin...' : '')
+			set_Error(
+				error?.response?.data ? 'Please contact hairposey Admin...' : ''
+			)
 		}
 	}
 

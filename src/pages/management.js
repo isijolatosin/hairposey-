@@ -9,6 +9,8 @@ import { BsFillArrowUpSquareFill } from 'react-icons/bs'
 import { RiSendPlaneLine } from 'react-icons/ri'
 import AllInventories from '../components/AllInventories'
 import { UserContext } from '../context/user-context'
+import { AUTHORIZED_ID } from '../constant'
+import { db } from '../firebase'
 
 function Management() {
 	const database = getDatabase()
@@ -16,6 +18,7 @@ function Management() {
 	const [section, setSection] = React.useState('all-inventory')
 	const [percentSale, setPercentSale] = React.useState(null)
 	const { user } = useContext(UserContext)
+	const [location, setLocation] = React.useState('')
 
 	React.useEffect(() => {
 		const starCountRef = ref(database, 'sales')
@@ -51,6 +54,18 @@ function Management() {
 		setPercentSale('')
 	}
 
+	const handleLocation = (e) => {
+		e.preventDefault()
+		setLocation(e.target.value)
+	}
+	const handleSubmitLoc = (e) => {
+		e.preventDefault()
+		db.collection('location')
+			.doc(`${AUTHORIZED_ID.id_one}/`)
+			.set({ location: location }, { merge: true })
+		setLocation('')
+	}
+
 	return (
 		<>
 			<Helmet>
@@ -63,11 +78,11 @@ function Management() {
 							? 'tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-pink-100'
 							: 'tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-pink-100'
 					}>
-					<div className="tw-flex tw-flex-col tw-items-left tw-justify-between tw-w-[90%] md:tw-w-[85%]">
+					<div className="tw-flex tw-flex-col tw-items-left tw-justify-between tw-w-[90%] md:tw-w-[85%] tw-mb-10">
 						<div className="tw-mb-2">
 							<Heading children="Admin portal" isBold={true} />
 						</div>
-						<div className="tw-py-[2px] tw-flex tw-items-center tw-justify-end tw-w-[50%] md:tw-w-[30%] tw-px-3 tw-text-sm tw-bg-white">
+						<div className="tw-py-[2px] tw-flex tw-items-center tw-justify-end tw-w-fit tw-px-3 tw-text-sm tw-bg-white ">
 							<input
 								type="number"
 								name="percentSale"
@@ -83,8 +98,31 @@ function Management() {
 								className="tw-text-pink-800 hover:tw-text-violet-300 tw-ease-in tw-duration-300 tw-w-[10%] tw-mr-2"
 							/>
 						</div>
+						<div className="tw-mt-2 tw-flex tw-items-center tw-justify-between tw-w-fit">
+							<label>
+								<input
+									type="text"
+									autoComplete="off"
+									placeholder="set location"
+									name="location"
+									id="location"
+									value={location}
+									onChange={(e) => handleLocation(e)}
+									className="focus:tw-ring-0"
+								/>
+								<p>Current Location...</p>
+							</label>
+							<div className="tw-w-full tw-flex tw-flex-row tw-justify-center tw-ml-3">
+								<button
+									onClick={handleSubmitLoc}
+									type="button"
+									className="btn tw-bg-neutral-100 tw-text-xs hover:tw-bg-neutral-400 hover:tw-text-neutral-100">
+									Lock-in Location
+								</button>
+							</div>
+						</div>
 					</div>
-					<div className="tw-my-5 tw-w-[100%] tw-text-slate-900">
+					<div className="tw-mt-5 tw-w-[100%] tw-text-slate-900">
 						<ul className="tw-flex tw-text-xs tw-flex-row tw-items-center tw-justify-between tw-w-[90%] lg:tw-w-[50%] tw-mx-auto">
 							<li
 								id="all-inventory"

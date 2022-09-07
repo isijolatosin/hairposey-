@@ -13,7 +13,7 @@ function InventoryForm({
 }) {
 	return (
 		<form onSubmit={handleSubmit}>
-			<div className="tw-flex tw-flex-col tw-items-center">
+			<div className="tw-flex tw-flex-col tw-items-center tw-mt-5">
 				{inputTypes.map((inputType) => (
 					<input
 						key={inputType.id}

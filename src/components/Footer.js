@@ -53,51 +53,51 @@ function Footer() {
 	const Cambodian = [
 		{
 			id: '1',
-			name: 'Bundles (cambodian)',
+			name: 'Bundles',
 			route: '/bundles/cambodian-hair',
 		},
 		{
 			id: '2',
-			name: 'Closure / Frontal (cambodian)',
+			name: 'Closure / Frontal',
 			route: '/closure-frontal/cambodian-hair',
 		},
 		{
 			id: '3',
-			name: 'Jet Black / Blonde (cambodian)',
+			name: 'Jet Black / Blonde',
 			route: '/jet-black-&-blonde/cambodian-hair',
 		},
 	]
 	const vietnamese = [
 		{
 			id: '1',
-			name: 'Bundles (vietnamese)',
+			name: 'Bundles',
 			route: '/bundles/vietnamese-hair',
 		},
 		{
 			id: '2',
-			name: 'Closure / Frontal (vietnamese)',
+			name: 'Closure / Frontal',
 			route: '/closure-frontal/vietnamese-hair',
 		},
 		{
 			id: '3',
-			name: 'Jet Black / Blonde (vietnamese)',
+			name: 'Jet Black / Blonde',
 			route: '/jet-black-&-blonde/vietnamese-hair',
 		},
 	]
 	const Brazillian = [
 		{
 			id: '1',
-			name: 'Bundles (brazilian)',
+			name: 'Bundles',
 			route: '/bundles/brazilian-hair',
 		},
 		{
 			id: '2',
-			name: 'Closure / Frontal (brazilian)',
+			name: 'Closure / Frontal',
 			route: '/closure-frontal/brazilian-hair',
 		},
 		{
 			id: '3',
-			name: 'Jet Black / Blonde (brazilian)',
+			name: 'Jet Black / Blonde',
 			route: '/jet-black-&-blonde/brazilian-hair',
 		},
 	]
@@ -208,7 +208,7 @@ function Footer() {
 							Country/region
 						</span>
 						<select
-							className="tw-w-[220px] tw-mb-5 tw-text-neutral-500 tw-font-light tw-bg-white tw-block tw-px-3 tw-py-2 tw-border-neutral-500 tw-rounded-[2px] tw-text-xs tw-border-[1px] tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+							className="tw-bg-transparent tw-w-[220px] tw-mb-5 tw-text-neutral-400 tw-font-light tw-block tw-px-3 tw-py-2 tw-border-neutral-900 tw-rounded-[2px] tw-text-xs tw-border-[1px] focus:tw-outline-none focus:tw-ring-0 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-red-600 invalid:tw-text-red-600 focus:invalid:tw-border-red-600 focus:invalid:tw-ring-red-600 tw-outline-0"
 							onChange={handleOnChange}
 							id="country"
 							value={country}

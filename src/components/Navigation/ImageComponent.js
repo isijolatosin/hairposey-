@@ -19,6 +19,7 @@ function ImageComponent({ setIsNav, isNav }) {
 	const handleHide = () => {
 		setShowText(false)
 	}
+
 	return (
 		<div className="tw-relative tw-flex tw-flex-row tw-items-center -tw-ml-5">
 			<div
@@ -57,11 +58,13 @@ function ImageComponent({ setIsNav, isNav }) {
 			</div>
 			{showOpt && (
 				<div className="tw-flex tw-flex-col tw-absolute tw-left-[25px] tw-top-[65px]">
-					<Link
-						to="/"
-						className="tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300">
-						<RiHomeFill size={25} />
-					</Link>
+					{window.location.pathname !== '/' && (
+						<Link
+							to="/"
+							className="tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300">
+							<RiHomeFill size={25} />
+						</Link>
+					)}
 					<Link
 						to={`/user-account/${user?.email || user?.displayName}`}
 						className="tw-border-b-[1px] tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300">
