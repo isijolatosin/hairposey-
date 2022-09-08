@@ -35,11 +35,12 @@ function Nav({ sales }) {
 					<NavIcons />
 				</div>
 			</div>
-			{isNav && (
-				<div>
-					<MobileLink />
-				</div>
-			)}
+			<div
+				className={`${
+					isNav ? 'tw-opacity-1 tw-h-0' : 'tw-opacity-0 tw-h-fit'
+				} tw-ease-in tw-duration-300`}>
+				<MobileLink />
+			</div>
 		</div>
 	)
 }

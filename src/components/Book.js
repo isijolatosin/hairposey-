@@ -82,7 +82,7 @@ function Book() {
 					const dt = results?.filter(
 						(booking) => booking?.data.date === ranges.toDateString()
 					)
-					console.log(dt)
+
 					setBookArr(dt)
 					if (dt.length === 3) {
 						return
@@ -101,7 +101,7 @@ function Book() {
 		setDisabled(event.empty)
 		set_Error(event.error ? event.error.message : '')
 	}
-	console.log(bookingData)
+
 	const cardStyle = {
 		style: {
 			base: {
@@ -273,7 +273,7 @@ function Book() {
 					<div className="tw-flex tw-flex-col tw-items-center tw-mt-[-40px] tw-px-5 lg:tw-mr-10">
 						<div className="xl:tw-ml-0">
 							<Calendar
-								color="orange"
+								color="rgb(157 23 77)"
 								date={new Date()}
 								onChange={handleSelect}
 								dateDisplayFormat="yyyy-MM-dd"

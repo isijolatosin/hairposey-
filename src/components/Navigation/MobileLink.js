@@ -8,58 +8,58 @@ const NavHead = [
 const subLinks1 = [
 	{
 		id: '1',
-		name: 'Bundles (cambodian)',
+		name: 'Bundles',
 		route: '/bundles/cambodian-hair',
 	},
 	{
 		id: '2',
-		name: 'Closure / Frontal (cambodian)',
+		name: 'Closure / Frontal',
 		route: '/closure-frontal/cambodian-hair',
 	},
 	{
 		id: '3',
-		name: 'Jet Black / Blonde (cambodian)',
+		name: 'Jet Black / Blonde',
 		route: '/jet-black-&-blonde/cambodian-hair',
 	},
 ]
 const subLinks2 = [
 	{
 		id: '1',
-		name: 'Bundles (vietnamese)',
+		name: 'Bundles',
 		route: '/bundles/vietnamese-hair',
 	},
 	{
 		id: '2',
-		name: 'Closure / Frontal (vietnamese)',
+		name: 'Closure / Frontal',
 		route: '/closure-frontal/vietnamese-hair',
 	},
 	{
 		id: '3',
-		name: 'Jet Black / Blonde (vietnamese)',
+		name: 'Jet Black / Blonde',
 		route: '/jet-black-&-blonde/vietnamese-hair',
 	},
 ]
 const subLinks3 = [
 	{
 		id: '1',
-		name: 'Bundles (brazilian)',
+		name: 'Bundles',
 		route: '/bundles/brazilian-hair',
 	},
 	{
 		id: '2',
-		name: 'Closure / Frontal (brazilian)',
+		name: 'Closure / Frontal',
 		route: '/closure-frontal/brazilian-hair',
 	},
 	{
 		id: '3',
-		name: 'Jet Black / Blonde (brazilian)',
+		name: 'Jet Black / Blonde',
 		route: '/jet-black-&-blonde/brazilian-hair',
 	},
 ]
 
 function MobileLink() {
 	return (
-		<div className="tw-z-40 wrapper tw-h-[100vh] bg-blur md:tw-bg-[rgba(255,255,255,0.9)] md:tw-w-[450px] tw-w-[300px] tw-top-[486px] md:tw-top-[543px] md:tw-left-[225px] tw-left-[150px]">
+		<div className="tw-z-40 wrapper tw-h-[100%] md:tw-w-[450px] tw-w-[300px] tw-top-[140px] md:tw-left-[225px] tw-left-[150px]">
 			<ui className="mainMenu">
 				{NavHead.map((item) => (
 					<li className="item" id={item.name}>

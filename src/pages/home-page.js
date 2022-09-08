@@ -19,6 +19,8 @@ import { googleSearch } from '../constant'
 import { SiTreyarch } from 'react-icons/si'
 import { CgClose } from 'react-icons/cg'
 import Book from '../components/Book'
+import { db } from '../firebase'
+import { scrollToTop } from '../utils/scrollTop'
 
 const logo = require('../assets/logo.png')
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
@@ -29,8 +31,8 @@ function HomePage() {
 	const [_image, setImage] = React.useState(null)
 	const [isSingleImage, setIsSingleImage] = React.useState(false)
 	const [toggleBookBtn, setToggleBookBtn] = React.useState(false)
-	const notReady = true
-	const location = '638 Wilson Ave, North York, ON M3K 1E1'
+	const notReady = false
+	const [location, setLocation] = React.useState('')
 	const database = getDatabase()
 
 	React.useEffect(() => {
@@ -39,6 +41,13 @@ function HomePage() {
 			const data = snapshot.val()
 
 			setSales(data.no)
+		})
+
+		db.collection('location').onSnapshot((snapshot) => {
+			const results = snapshot.docs.map((doc) => ({
+				data: doc.data(),
+			}))
+			setLocation(results[0].data.location)
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
@@ -63,7 +72,7 @@ function HomePage() {
 	React.useEffect(() => {
 		fetchProducts()
 	}, [])
-	console.log(toggleBookBtn)
+
 	return (
 		<div className="tw-bg-neutral-200 relative">
 			<Helmet>
@@ -74,9 +83,9 @@ function HomePage() {
 					className={`tw-relative ${
 						allProducts.length === 0 ? 'tw-mt-[70px]' : 'tw-pt-[60px]'
 					} `}>
-					<div className="tw-relative tw-w-full tw-bg-white tw-h-fit tw-text-black tw-font-thin  tw-py-2 tw-text-xs">
-						<div className="tw-flex tw-items-center tw-justify-center">
-							<p>For your hair appointment, open tab for booking</p>
+					<div className="tw-fixed tw-top-[70px] tw-left-0 tw-right-0 tw-z-20 tw-w-full tw-bg-white tw-h-fit tw-text-black tw-font-thin  tw-py-2 tw-text-xs">
+						<div className="tw-flex tw-items-center tw-justify-start lg:tw-justify-center tw-ml-3 lg:tw-ml-0 tw-font-bold">
+							<p>For your hair appointment, book now !</p>
 							{toggleBookBtn ? (
 								<button
 									onClick={() => setToggleBookBtn(false)}
@@ -85,13 +94,16 @@ function HomePage() {
 								</button>
 							) : (
 								<button
-									onClick={() => setToggleBookBtn(true)}
+									onClick={() => {
+										setToggleBookBtn(true)
+										scrollToTop()
+									}}
 									className="tw-ml-2 tw-bg-black tw-text-white tw-rounded-full hover:tw-bg-white hover:tw-text-black tw-ease-in tw-duration-300">
 									<MdOutlineKeyboardArrowDown size={20} />
 								</button>
 							)}
 						</div>
-						<div className="tw-absolute tw-right-0 tw-top-[25%] tw-max-w-[20%]">
+						<div className="tw-absolute tw-right-0 tw-top-[25%] tw-border-l-[1px] tw-border-pink-800 tw-pl-3">
 							<div className="tw-flex tw-justify-evenly tw-items-center tw-text-pink-800">
 								<a
 									href="https://www.instagram.com/hairposey/"
@@ -125,7 +137,7 @@ function HomePage() {
 						</Wrapper>
 					</div>
 					<div
-						className={`tw-flex tw-flex-col tw-items-center lg:tw-w-[100%] xl:tw-w-[90%] 2xl:tw-w-[80%] lg:tw-mx-auto`}>
+						className={`tw-flex tw-flex-col tw-items-center lg:tw-w-[100%] xl:tw-w-[90%] 2xl:tw-w-[80%] lg:tw-mx-auto tw-mt-5`}>
 						{allProducts.length !== 0 ? (
 							<Products
 								sales={sales}
