@@ -59,7 +59,10 @@ const subLinks3 = [
 
 function MobileLink() {
 	return (
-		<div className="tw-z-40 wrapper tw-h-[100%] md:tw-w-[450px] tw-w-[300px] tw-top-[140px] md:tw-left-[225px] tw-left-[150px]">
+		<div
+			className={`${
+				window.location.pathname !== '/' ? 'tw-top-[105px] ' : 'tw-top-[140px] '
+			} tw-z-40 wrapper tw-h-[100%] md:tw-w-[450px] tw-w-[300px] md:tw-left-[225px] tw-left-[150px]`}>
 			<ui className="mainMenu">
 				{NavHead.map((item) => (
 					<li className="item" id={item.name}>

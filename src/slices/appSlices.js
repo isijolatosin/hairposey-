@@ -22,10 +22,10 @@ export const appSlices = createSlice({
 		// Add item
 		addToCartItem: (state, action) => {
 			// check if item is in the cart
-			if (!state.cartItems.find((item) => item.id === action.payload.id)) {
+			if (!state.cartItems.find((item) => item._id === action.payload._id)) {
 				state.cartItems.push({
 					...action.payload,
-					quantity: 1,
+					quantity: action.payload.quantity || 1,
 				})
 			}
 
@@ -45,12 +45,12 @@ export const appSlices = createSlice({
 				state.cartItems.find(
 					(item) =>
 						item.hairLength === action.payload.hairLength &&
-						item.id === action.payload.id
+						item._id === action.payload._id
 				)
 			) {
 				const increaseIndex = state.cartItems.findIndex(
 					(item) =>
-						item.id === action.payload.id &&
+						item._id === action.payload._id &&
 						item.hairLength === action.payload.hairLength
 				)
 
@@ -67,7 +67,7 @@ export const appSlices = createSlice({
 			} else {
 				state.cartItems.push({
 					...action.payload,
-					quantity: 1,
+					quantity: action.payload.quantity || 1,
 				})
 
 				state.itemCount = state.cartItems.reduce(
@@ -85,7 +85,7 @@ export const appSlices = createSlice({
 		decreaseCartItem: (state, action) => {
 			const decreaseIndex = state.cartItems.findIndex(
 				(item) =>
-					item.id === action.payload.id &&
+					item._id === action.payload._id &&
 					item.hairLength === action.payload.hairLength
 			)
 			const product = state.cartItems[decreaseIndex]
@@ -106,7 +106,7 @@ export const appSlices = createSlice({
 		removeCartItem: (state, action) => {
 			const removeIndex = state.cartItems.findIndex(
 				(item) =>
-					item.id === action.payload.id &&
+					item._id === action.payload._id &&
 					item.hairLength === action.payload.hairLength
 			)
 

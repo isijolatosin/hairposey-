@@ -23,3 +23,5 @@ export const AUTHORIZED_ID = {
 }
 
 export const googleSearch = 'https://www.google.com/maps/search/'
+export const cloudinaryBaseUrl =
+	'https://res.cloudinary.com/dhdccvkyt/image/upload/v'

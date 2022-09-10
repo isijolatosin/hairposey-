@@ -23,7 +23,7 @@ const Add2CartPopup = ({ singleCart, setSingleCart }) => {
 	return (
 		<div>
 			{singleCart && (
-				<div className=" tw-shadow-2xl tw-absolute bg-blur2 tw-border tw-p-10 tw-w-[350px] tw-top-0 md:tw-top-[95px] tw-z-40 tw-right-0 md:tw-right-[40px]">
+				<div className=" tw-shadow-2xl tw-absolute bg-blur2 tw-border tw-p-10 tw-w-[350px] tw-top-0 md:tw-top-[95px] tw-z-50 tw-right-0 md:tw-right-[40px]">
 					<div className="tw-flex tw-items-center">
 						<GrCheckmark />
 						<span className="tw-text-xs tw-ml-2 tw-text-neutral-700">

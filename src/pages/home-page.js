@@ -146,7 +146,7 @@ function HomePage() {
 								setIsSingleImage={setIsSingleImage}
 							/>
 						) : (
-							<div className="tw-rounded-full progress">
+							<div className="tw-rounded-full tw-mt-4 progress">
 								<div className="inner tw-bg-slate-900"></div>
 							</div>
 						)}

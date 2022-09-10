@@ -3,9 +3,6 @@ import axios from 'axios'
 import { MdOutlineInventory, MdMoneyOff } from 'react-icons/md'
 import { GiMoneyStack } from 'react-icons/gi'
 import { RiSearch2Fill } from 'react-icons/ri'
-import { isInCart } from '../utils/helpers'
-import { selectCartItems } from '../slices/appSlices'
-import { useSelector } from 'react-redux'
 import Rating from './shared/Rating'
 import truncate from '../utils/truncate'
 
@@ -17,13 +14,12 @@ function Card({
 	setImage,
 	setIsSingleImage,
 }) {
-	const cartItems = useSelector(selectCartItems)
-	async function routeToSingleProductPage(event) {
+	async function routeToSingleProductPage(id) {
 		try {
 			const {
 				data: { products },
 			} = await axios.get('/api/v1/products')
-			const result = products.filter((product) => product._id === event)
+			const result = products.filter((product) => product._id === id)
 			setSingleproducts(result)
 		} catch (error) {
 			console.log(error)
@@ -101,19 +97,11 @@ function Card({
 				</h1>
 				<p className="">{truncate(product.description, 15)}</p>
 			</div>
-			{isInCart(product, cartItems) ? (
-				<button
-					className=""
-					onClick={() => routeToSingleProductPage(product._id)}>
-					Add More
-				</button>
-			) : (
-				<button
-					className="tw-absolute tw-bottom-[20px] tw-right-[20px] tw-z-30"
-					onClick={() => routeToSingleProductPage(product._id)}>
-					Add to cart
-				</button>
-			)}
+			<button
+				className="tw-absolute tw-text-[18px] tw-bottom-[20px] tw-right-[20px] tw-z-30"
+				onClick={(e) => routeToSingleProductPage(product._id)}>
+				Buy
+			</button>
 		</div>
 	)
 }

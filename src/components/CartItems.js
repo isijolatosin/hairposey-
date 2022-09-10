@@ -10,6 +10,7 @@ import {
 	increaseCartItem,
 	removeCartItem,
 } from '../slices/appSlices'
+import Truncate from '../utils/truncate'
 
 const CartItems = ({ product }) => {
 	const {
@@ -20,13 +21,12 @@ const CartItems = ({ product }) => {
 		hairLength,
 		hairColor,
 		description,
-		id,
-		isCart,
+		_id,
 	} = product
 	const [expand, setExpand] = React.useState(false)
 	const dispatch = useDispatch()
 
-	const prdct = { name, id, image, price, hairLength, hairColor, description }
+	const prdct = { name, _id, image, price, hairLength, hairColor, description }
 	const increaseItem = () => {
 		dispatch(increaseCartItem(prdct))
 	}
@@ -38,10 +38,10 @@ const CartItems = ({ product }) => {
 	}
 
 	return (
-		<div className="tw-flex tw-flex-row tw-p-5 tw-w-full tw-bg-neutral-300 tw-rounded-lg tw-mb-1 tw-text-black">
+		<div className="tw-flex tw-flex-row tw-p-5 tw-w-full tw-h-fit tw-bg-neutral-300 tw-rounded-lg tw-mb-1 tw-text-black">
 			<div className="tw-mr-5">
 				<img
-					className="tw-w-[300px] tw-rounded-lg tw-h-full tw-shadow-lg tw-object-cover"
+					className="tw-w-[300px] tw-rounded-lg tw-max-h-[170px] tw-shadow-lg tw-object-cover"
 					src={image}
 					alt={name}
 				/>
@@ -51,16 +51,16 @@ const CartItems = ({ product }) => {
 					<div className="tw-font-bold">
 						<h4>{name}</h4>
 					</div>
-					<p>{`Price: $${price}`}</p>
+					<p>{`Price: CA$${price}`}</p>
 					<p>{`Length: ${hairLength}`}</p>
 					{hairColor && <p>{`Color: ${hairColor}`}</p>}
-					<p>{`Quantity: ${quantity}`}</p>
 					<div className="">
 						{!expand && description?.length >= 100 ? (
-							<span>{description.substring(0, 50)}...</span>
+							<span>{Truncate(description, 6)}</span>
 						) : (
 							<span>{description}</span>
 						)}
+
 						{description?.length >= 100 && (
 							<span
 								onClick={() => setExpand(!expand)}
@@ -77,30 +77,35 @@ const CartItems = ({ product }) => {
 							</span>
 						)}
 					</div>
-					{isCart && (
-						<div className="tw-bg-pink-900 tw-py-1 tw-px-2 tw-flex tw-flex-row tw-items-center tw-justify-between tw-w-[100px] tw-mt-5 tw-rounded-lg tw-text-white">
-							<div
-								className="tw-flex tw-flex-col tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-border-r-[1px] tw-border-neutral-300 tw-pr-5"
-								onClick={increaseItem}>
-								<MdAddShoppingCart size={20} />
-								<span className="tw-text-[10px]">Add</span>
-							</div>
+					{window.location.pathname.includes('/user-cart/') && (
+						<div className="tw-bg-white tw-py-1 tw-px-2 tw-flex tw-flex-row tw-items-center tw-justify-between tw-w-fit tw-mt-5 tw-rounded-lg tw-text-neutral-900">
 							{quantity === 1 && (
 								<div
-									className="tw-flex tw-flex-col tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
+									className="tw-flex tw-flex-row tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-mr-3"
 									onClick={removeItem}>
-									<GiTrashCan size={22} />
-									<span className="tw-text-[10px]">Delete</span>
+									<GiTrashCan size={15} />
+									<span className="tw-text-[10px] tw-ml-1">Delete</span>
 								</div>
 							)}
+
 							{quantity > 1 && (
 								<div
-									className="tw-flex tw-flex-col tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
+									className="tw-flex tw-flex-row tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-mr-3"
 									onClick={decreaseItem}>
-									<BsCartDash size={20} />
-									<span className="tw-text-[10px]">Remove</span>
+									<BsCartDash size={15} />
+									<span className="tw-text-[10px] tw-ml-1">Remove</span>
 								</div>
 							)}
+							<div className="tw-border-x-[1px] tw-border-neutral-300 tw-px-3">
+								<span>{quantity}</span>
+							</div>
+
+							<div
+								className="tw-flex tw-flex-row tw-items-center tw-tw-text-2xl hover:tw-cursor-pointer hover:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-ml-3"
+								onClick={increaseItem}>
+								<MdAddShoppingCart size={15} />
+								<span className="tw-text-[10px] tw-ml-1">Add</span>
+							</div>
 						</div>
 					)}
 				</div>

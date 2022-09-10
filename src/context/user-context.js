@@ -30,7 +30,7 @@ const UserContextProvider = ({ children }) => {
 	if (loading) {
 		return (
 			<div className="tw-text-gray-600 tw-flex tw-flex-col tw-items-center tw-mt-[50px]">
-				Loading...
+				Loading hairposey.com...
 			</div>
 		)
 	}
