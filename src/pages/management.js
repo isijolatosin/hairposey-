@@ -75,10 +75,10 @@ function Management() {
 				<div
 					className={
 						sales
-							? 'tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-pink-100'
-							: 'tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-pink-100'
+							? 'tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-slate-100'
+							: 'tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100%] tw-items-center tw-bg-slate-100'
 					}>
-					<div className="tw-flex tw-flex-col tw-items-left tw-justify-between tw-w-[90%] md:tw-w-[85%] tw-mb-10">
+					<div className="tw-flex tw-flex-col tw-items-left tw-justify-between tw-w-[100%] lg:tw-w-[70%] tw-mb-10 tw-px-3">
 						<div className="tw-mb-2">
 							<Heading children="Admin portal" isBold={true} />
 						</div>
@@ -98,7 +98,7 @@ function Management() {
 								className="tw-text-pink-800 hover:tw-text-violet-300 tw-ease-in tw-duration-300 tw-w-[10%] tw-mr-2"
 							/>
 						</div>
-						<div className="tw-mt-2 tw-flex tw-items-center tw-justify-between tw-w-fit">
+						<div className="tw-mt-2 tw-flex tw-flex-col tw-w-fit">
 							<label>
 								<input
 									type="text"
@@ -112,7 +112,7 @@ function Management() {
 								/>
 								<p>Current Location...</p>
 							</label>
-							<div className="tw-w-full tw-flex tw-flex-row tw-justify-center tw-ml-3">
+							<div className="tw-w-fit tw-mt-1 tw-flex tw-flex-row tw-justify-center">
 								<button
 									onClick={handleSubmitLoc}
 									type="button"
@@ -122,8 +122,8 @@ function Management() {
 							</div>
 						</div>
 					</div>
-					<div className="tw-mt-5 tw-w-[100%] tw-text-slate-900">
-						<ul className="tw-flex tw-text-xs tw-flex-row tw-items-center tw-justify-between tw-w-[90%] lg:tw-w-[50%] tw-mx-auto">
+					<div className="tw-mt-5 tw-px-3 tw-w-[100%] tw-text-slate-900">
+						<ul className="tw-flex tw-text-xs tw-flex-row tw-items-center tw-justify-between tw-w-[100%] lg:tw-w-[50%] tw-mx-auto">
 							<li
 								id="all-inventory"
 								className="hover:tw-cursor-pointer tw-bg-white tw-px-4 tw-py-2 hover:tw-bg-violet-100 tw-ease-in tw-duration-300"
@@ -145,7 +145,7 @@ function Management() {
 						</ul>
 					</div>
 					{user && (
-						<div className="tw-w-[100%]">
+						<div className="tw-w-[100%] tw-px-3">
 							<SectionComp />
 						</div>
 					)}

@@ -1,3 +1,4 @@
+import Heading from './Heading'
 import Button from './shared/Button'
 
 function InventoryForm({
@@ -10,22 +11,44 @@ function InventoryForm({
 	postError,
 	buttonText,
 	uploadFile,
+	priceList,
 }) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className="tw-flex tw-flex-col tw-items-center tw-mt-5">
-				{inputTypes.map((inputType) => (
-					<input
-						key={inputType.id}
-						type={inputType.type}
-						name={inputType.name}
-						id={inputType.id}
-						value={inputType.value}
-						onChange={handleformDataChange}
-						placeholder={inputType.placeholder}
-						className="tw-rounded tw-mt-1 tw-block lg:tw-w-[50%] tw-mx-auto tw-w-[90%] tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
-					/>
-				))}
+				<div className="tw-grid md:tw-grid-cols-4 tw-gap-2 tw-w-[100%] lg:tw-w-[70%]">
+					{inputTypes.map((inputType) => (
+						<input
+							key={inputType.id}
+							type={inputType.type}
+							name={inputType.name}
+							id={inputType.id}
+							value={inputType.value}
+							onChange={handleformDataChange}
+							placeholder={inputType.placeholder}
+							className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+						/>
+					))}
+				</div>
+				<div className="tw-w-[100%] lg:tw-w-[70%]">
+					<div className="tw-bg-slate-200 tw-text-sm tw-text-slate-500 tw-pl-3 tw-pr-10 tw-rounded-md tw-mt-3 tw-text-left tw-w-fit">
+						<Heading children="Prices" />
+					</div>
+				</div>
+				<div className="tw-grid tw-grid-cols-3 tw-gap-2 tw-w-[100%] lg:tw-w-[70%]">
+					{priceList.map((price) => (
+						<input
+							key={price.id}
+							type={price.type}
+							name={price.name}
+							id={price.id}
+							value={price.value}
+							onChange={handleformDataChange}
+							placeholder={price.placeholder}
+							className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+						/>
+					))}
+				</div>
 				<textarea
 					value={formData.description}
 					name="description"
@@ -33,13 +56,8 @@ function InventoryForm({
 					rows={10}
 					cols={50}
 					placeholder="Description..."
-					className="tw-rounded tw-mt-1 tw-block lg:tw-w-[50%] tw-mx-auto tw-w-[90%] tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+					className="tw-rounded tw-mt-1 tw-block lg:tw-w-[70%] tw-mx-auto tw-w-[100%] tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 tw-mb-5 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 				/>
-				<div className="tw-text-red-800 tw-text-sm ">
-					<span>
-						Rename Image and substitute space with a dash ( e.g abc-def )
-					</span>
-				</div>
 				<div className="tw-rounded tw-flex tw-flex-row tw-items-center tw-shadow-xl tw-pl-3 tw-py-2">
 					<label className="tw-mr-3 tw-text-gray-500 tw-text-sm">Image</label>
 					<input

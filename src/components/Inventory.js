@@ -9,7 +9,15 @@ function Inventory() {
 		title: '',
 		brand: '',
 		type: '',
-		price: '',
+		price14: '',
+		price16: '',
+		price18: '',
+		price20: '',
+		price22: '',
+		price24: '',
+		price26: '',
+		price28: '',
+		price30: '',
 		length: '',
 		availablelength: '',
 		description: '',
@@ -23,7 +31,7 @@ function Inventory() {
 	const togglePassword = () => {
 		setIsTrue(!isTrue)
 	}
-
+	console.log(formData)
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 
@@ -33,7 +41,15 @@ function Inventory() {
 				brand: formData.brand,
 				type: formData.type,
 				color: formData.color,
-				price: formData.price,
+				price14: formData.price14,
+				price16: formData.price16,
+				price18: formData.price18,
+				price20: formData.price20,
+				price22: formData.price22,
+				price24: formData.price24,
+				price26: formData.price26,
+				price28: formData.price28,
+				price30: formData.price30,
 				length: formData.length,
 				availablelength: formData.availablelength,
 				availablecolor: formData.availablecolor,
@@ -52,7 +68,15 @@ function Inventory() {
 			brand: '',
 			type: '',
 			color: '',
-			price: '',
+			price14: '',
+			price16: '',
+			price18: '',
+			price20: '',
+			price22: '',
+			price24: '',
+			price26: '',
+			price28: '',
+			price30: '',
 			length: '',
 			availablelength: '',
 			availablecolor: '',
@@ -111,12 +135,70 @@ function Inventory() {
 			value: formData.availablelength,
 			placeholder: 'Available Lengths...',
 		},
+	]
+	const priceList = [
 		{
 			id: '8',
-			name: 'price',
+			name: 'price14',
 			type: 'number',
-			value: formData.price,
-			placeholder: 'Price CA($)...',
+			value: formData.price14,
+			placeholder: '14 inches" CA($)...',
+		},
+		{
+			id: '9',
+			name: 'price16',
+			type: 'number',
+			value: formData.price16,
+			placeholder: '16 inches" CA($)...',
+		},
+		{
+			id: '10',
+			name: 'price18',
+			type: 'number',
+			value: formData.price18,
+			placeholder: '18 inches" CA($)...',
+		},
+		{
+			id: '11',
+			name: 'price20',
+			type: 'number',
+			value: formData.price20,
+			placeholder: '20 inches" CA($)...',
+		},
+		{
+			id: '12',
+			name: 'price22',
+			type: 'number',
+			value: formData.price22,
+			placeholder: '22 inches" CA($)...',
+		},
+		{
+			id: '13',
+			name: 'price24',
+			type: 'number',
+			value: formData.price24,
+			placeholder: '24 inches" CA($)...',
+		},
+		{
+			id: '14',
+			name: 'price26',
+			type: 'number',
+			value: formData.price26,
+			placeholder: '26 inches" CA($)...',
+		},
+		{
+			id: '15',
+			name: 'price28',
+			type: 'number',
+			value: formData.price28,
+			placeholder: '28 inches" CA($)...',
+		},
+		{
+			id: '16',
+			name: 'price30',
+			type: 'number',
+			value: formData.price30,
+			placeholder: '30 inches" CA($)...',
 		},
 	]
 
@@ -145,6 +227,7 @@ function Inventory() {
 		<InventoryForm
 			handleSubmit={handleSubmit}
 			inputTypes={inputTypes}
+			priceList={priceList}
 			handleformDataChange={handleformDataChange}
 			formData={formData}
 			isTrue={isTrue}

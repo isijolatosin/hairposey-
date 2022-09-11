@@ -25,7 +25,6 @@ const HomePageSingleProd = ({
 	setSingleproducts,
 	setSingleCart,
 }) => {
-	console.log(singleProducts)
 	const dispatch = useDispatch()
 	const addToCart = () => {
 		if (length) {
@@ -44,7 +43,8 @@ const HomePageSingleProd = ({
 			setSingleCart(singleProduct)
 		}, 1000)
 	}
-	console.log(singleProducts)
+	const sizeNumeric = sizes.map(Number)
+
 	return (
 		<div className="single tw-fixed tw-z-40 tw-overflow-scroll tw-w-[100%] tw-shadow-lg tw-border-neutral-800 tw-h-[100vh] tw-px-5 tw-right-0 tw-left-0 tw-top-[0px] md:tw-pt-16 tw-flex tw-flex-col tw-items-start tw-justify-center tw-bg-white">
 			<div className=" tw-relative md:tw-w-[80%] xl:tw-w-[70%] md:tw-mx-auto tw-w-[100%] tw-h-full tw-flex md:tw-flex-row tw-flex-col">
@@ -83,12 +83,17 @@ const HomePageSingleProd = ({
 							</div>
 							<div className="tw-flex tw-flex-col tw-mb-5 tw-border-b-[1px] tw-pb-5">
 								<div className="tw-flex tw-flex-wrap">
-									{sizes.map((size, idx) => (
+									{sizeNumeric.map((size, idx) => (
 										<span
 											onClick={() => {
-												setLength(size)
+												singleProducts?.[0].length === size && setLength(size)
+												singleProducts?.[0].length === size && setError(false)
 											}}
-											className="tw-w-[50px] tw-h-[50px] tw-flex tw-items-center tw-justify-center tw-bg-neutral-900 tw-rounded-full tw-mr-2 tw-mb-2 tw-text-[16px] tw-text-white hover:tw-cursor-pointer hover:tw-bg-white hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
+											className={`${
+												singleProducts?.[0].length === size
+													? 'tw-bg-neutral-900 tw-text-white tw-cursor-pointer hover:tw-bg-neutral-300 hover:tw-text-neutral-900 '
+													: 'tw-border-[1px] tw-text-neutral-200 tw-cursor-not-allowed'
+											} tw-w-[50px] tw-h-[50px] tw-flex tw-items-center tw-justify-center tw-rounded-full tw-mr-2 tw-mb-2 tw-text-[16px] tw-ease-in tw-duration-300`}
 											key={idx}>
 											{size}
 										</span>
@@ -98,13 +103,17 @@ const HomePageSingleProd = ({
 						</div>
 					) : (
 						<div className="tw-flex tw-flex-wrap tw-ml-5 md:tw-ml-0">
-							{sizes?.map((size, idx) => (
+							{sizeNumeric?.map((size, idx) => (
 								<span
 									onClick={() => {
-										setLength(size)
-										setError(false)
+										singleProducts?.[0].length === size && setLength(size)
+										singleProducts?.[0].length === size && setError(false)
 									}}
-									className="tw-w-[50px] tw-h-[50px] tw-flex tw-items-center tw-justify-center tw-bg-neutral-900 tw-rounded-full tw-mr-2 tw-mb-2 tw-text-[16px] tw-text-white hover:tw-cursor-pointer hover:tw-bg-neutral-300 hover:tw-text-neutral-900 tw-ease-in tw-duration-300"
+									className={`${
+										singleProducts?.[0].length === size
+											? 'tw-bg-neutral-900 tw-text-white tw-cursor-pointer hover:tw-bg-neutral-300 hover:tw-text-neutral-900 '
+											: 'tw-border-[1px] tw-text-neutral-200 tw-cursor-not-allowed'
+									} tw-w-[50px] tw-h-[50px] tw-flex tw-items-center tw-justify-center tw-rounded-full tw-mr-2 tw-mb-2 tw-text-[16px] tw-ease-in tw-duration-300`}
 									key={idx}>
 									{size}
 								</span>
@@ -125,17 +134,17 @@ const HomePageSingleProd = ({
 							{sales !== 0 &&
 								singleProducts?.[0].sales &&
 								`$${
-									singleProducts?.[0].price -
-									singleProducts?.[0].price * (sales / 100)
+									singleProducts?.[0][`price${length}`] -
+									singleProducts?.[0][`price${length}`] * (sales / 100)
 								}${' '}
-										USD${' '}`}
+										CAD${' '}`}
 							<span
 								className={
 									sales !== 0 &&
 									singleProducts?.[0].sales &&
 									'tw-ml-2 tw-line-through tw-text-neutral-400 tw-border-l-[1px] tw-border-neutral-500 tw-pl-3'
 								}>
-								${singleProducts?.[0].price} USD
+								${singleProducts?.[0][`price${length}`]} CAD
 							</span>
 						</p>
 						<div className="tw-text-xs">

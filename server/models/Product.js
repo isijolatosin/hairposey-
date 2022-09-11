@@ -44,8 +44,48 @@ const ProductSchema = new mongoose.Schema({
 	},
 	price: {
 		type: Number,
-		required: [true, 'must provide a price'],
-		trim: true,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price14: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price16: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price18: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price22: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price24: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price26: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price28: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
+	},
+	price30: {
+		type: Number,
+		// required: [true, 'must provide a price'],
+		// trim: true,
 	},
 	description: {
 		type: String,

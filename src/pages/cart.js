@@ -70,16 +70,16 @@ const Cart = () => {
 							<Button handleFunc={() => navigate('/')}>Shop now</Button>
 						</>
 					) : (
-						<div className="tw-flex tw-flex-col tw-w-full tw-px-5 md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-justify-center tw-items-center lg:tw-items-start">
+						<div className="tw-flex tw-flex-col tw-w-full tw-px-5 md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-justify-center tw-items-start">
 							<div className="tw-w-full tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-5">
 								{cartItems.map((item) => (
 									<CartItems product={item} key={item._id} />
 								))}
 							</div>
-							<div className="tw-w-full tw-mb-1 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-justify-center">
+							<div className="tw-w-fit tw-mb-1 tw-py-2">
 								<span
 									onClick={() => dispatch(clearCartItem())}
-									className="tw-text-white hover:tw-text-slate-900 hover:tw-bg-neutral-300 tw-ease-in tw-duration-500 tw-bg-slate-900 tw-px-5 tw-py-2 hover:tw-cursor-pointer tw-text-sm">
+									className="tw-text-white hover:tw-text-slate-900 hover:tw-bg-neutral-300 tw-ease-in tw-duration-500 tw-bg-slate-900 tw-px-5 tw-py-2 tw-cursor-pointer tw-text-sm">
 									Clear cart
 								</span>
 							</div>

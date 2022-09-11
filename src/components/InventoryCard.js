@@ -26,7 +26,15 @@ function InventoryCard({ product, fetchProducts, setSingleProduct }) {
 				id: product._id,
 				name: product.name,
 				brand: product.brand,
-				price: product.price,
+				price14: product.price14,
+				price16: product.price16,
+				price18: product.price18,
+				price20: product.price20,
+				price22: product.price22,
+				price24: product.price24,
+				price26: product.price26,
+				price28: product.price28,
+				price30: product.price30,
 				description: product.description,
 				sales: product.sales,
 				type: product.type,
@@ -68,7 +76,7 @@ function InventoryCard({ product, fetchProducts, setSingleProduct }) {
 						</span>
 						<span className="tw-w-[100%]">
 							<span className="tw-font-bold">Price: </span> CA$
-							{product.price}
+							{product[`price${product.length}`]}
 						</span>
 						<span className="tw-w-[100%]">
 							<span className="tw-font-bold">Length: </span> {product.length}

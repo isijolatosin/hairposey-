@@ -6,6 +6,7 @@ import { FaOpencart } from 'react-icons/fa'
 
 function Nav({ sales }) {
 	const [isNav, setIsNav] = React.useState(false)
+
 	return (
 		<div>
 			<div className="tw-flex tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-w-[100%] tw-grow tw-flex-row tw-items-center tw-justify-between tw-my-0 tw-mx-auto tw-h-[70px]">
@@ -13,11 +14,12 @@ function Nav({ sales }) {
 					<ImageComponent setIsNav={setIsNav} isNav={isNav} />
 				</div>
 				<div className="tw-flex tw-items-center">
-					{sales && (
-						<div>
-							<span className="tw-text-white tw-text-xs tw-font-bold md:tw-text-sm md:tw-mr-5">{`${sales} % OFF ON SALES`}</span>
-						</div>
-					)}
+					{sales ||
+						((sales || sales !== 0) && (
+							<div>
+								<span className="tw-text-white tw-text-xs tw-font-bold md:tw-text-sm md:tw-mr-5">{`${sales} % OFF ON SALES`}</span>
+							</div>
+						))}
 					<div className="font_cursive md:tw-flex tw-text-pink-800 tw-hidden md:tw-text-2xl tw-tracking-widest">
 						<span>A whole new you with Hairposey...</span>
 						{window.location.pathname.includes('user-cart') && (

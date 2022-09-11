@@ -32,7 +32,7 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 	const color = singleProducts?.[0] && singleProducts?.[0]?.color
 	const description = singleProducts?.[0] && singleProducts?.[0]?.description
 	const width = singleProducts?.[0] && singleProducts?.[0]?.widthlength
-	const price = singleProducts?.[0]?.price
+	const price = singleProducts?.[0][`price${length}`]
 	const hairLength = length
 	const hairColor = _color || color
 	const hairTexture = _hairType && _hairType

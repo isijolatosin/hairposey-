@@ -63,9 +63,9 @@ function MobileLink() {
 			className={`${
 				window.location.pathname !== '/' ? 'tw-top-[105px] ' : 'tw-top-[140px] '
 			} tw-z-40 wrapper tw-h-[100%] md:tw-w-[450px] tw-w-[300px] md:tw-left-[225px] tw-left-[150px]`}>
-			<ui className="mainMenu">
-				{NavHead.map((item) => (
-					<li className="item" id={item.name}>
+			<ul className="mainMenu">
+				{NavHead.map((item, idx) => (
+					<li key={idx} className="item" id={item.name}>
 						<a
 							href={`#${item.name}`}
 							className="_btn tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900">
@@ -73,26 +73,32 @@ function MobileLink() {
 						</a>
 						{item.name === 'Cambodian-Hair' ? (
 							<div className="subMenu">
-								{subLinks1.map((item) => (
-									<a href={item.route}>{item.name}</a>
+								{subLinks1.map((item, idx) => (
+									<a key={idx} href={item.route}>
+										{item.name}
+									</a>
 								))}
 							</div>
 						) : item.name === 'Vietnamese-Hair' ? (
 							<div className="subMenu">
-								{subLinks2.map((item) => (
-									<a href={item.route}>{item.name}</a>
+								{subLinks2.map((item, idx) => (
+									<a key={idx} href={item.route}>
+										{item.name}
+									</a>
 								))}
 							</div>
 						) : (
 							<div className="subMenu">
-								{subLinks3.map((item) => (
-									<a href={item.route}>{item.name}</a>
+								{subLinks3.map((item, idx) => (
+									<a key={idx} href={item.route}>
+										{item.name}
+									</a>
 								))}
 							</div>
 						)}
 					</li>
 				))}
-			</ui>
+			</ul>
 		</div>
 	)
 }

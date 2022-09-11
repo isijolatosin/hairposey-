@@ -65,7 +65,7 @@ function Card({
 				<li>
 					<span className="tw-absolute tw-left-[-95px] tw-text-white tw-text-md tw-font-bold">
 						<span className="tw-text-xs tw-font-light">From</span> CA$
-						{product.price}
+						{product[`price${product.length}`]}
 					</span>
 					<GiMoneyStack />
 				</li>
