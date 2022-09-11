@@ -580,6 +580,29 @@ label input::placeholder {
 		width: 75%;
 	}
 }
+.progress2 {
+	height: 2px;
+	width: 80%;
+	margin: 0 auto;
+	background-color: var(--grey-100);
+	position: absolute;
+	overflow: hidden;
+}
+.progress2 .inner2 {
+	height: 100%;
+	position: absolute;
+	animation: progress2 1s infinite;
+}
+@keyframes progress2 {
+	from {
+		left: -5%;
+		width: 5%;
+	}
+	to {
+		left: 105%;
+		width: 75%;
+	}
+}
 
 @media screen and (min-width: 850px) {
 	.top {
