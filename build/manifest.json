@@ -1,6 +1,6 @@
 {
-	"short_name": "Hairposey",
-	"name": "Hair posey site",
+	"short_name": "React App",
+	"name": "Create React App Sample",
 	"icons": [
 		{
 			"src": "logo.png",
