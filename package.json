@@ -66,7 +66,10 @@
 		"production": [
 			">0.2%",
 			"not dead",
-			"not op_mini all"
+			"not op_mini all",
+			"defaults",
+			"not IE 11",
+			"maintained node versions"
 		],
 		"development": [
 			"last 1 chrome version",
@@ -80,5 +83,5 @@
 		"postcss": "^8.4.5",
 		"tailwindcss": "^3.1.8"
 	},
-	"proxy": "https://www.model-est.com"
+	"proxy": "https://www.hairposey.com"
 }
