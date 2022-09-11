@@ -1,20 +1,14 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import Layout from '../components/shared/Layout'
 import { UserContext } from '../context/user-context'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 function Account() {
-	const database = getDatabase()
 	const { user } = useContext(UserContext)
 	const [sales, setSales] = React.useState(null)
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
-
-			setSales(data.no)
-		})
+		setSales(fetchSalesPercentage())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

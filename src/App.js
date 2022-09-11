@@ -6,6 +6,7 @@ import NotFound from './pages/error'
 import Canceled from './pages/canceled'
 import Success from './pages/success'
 import Checkout from './pages/checkout'
+import Payment from './pages/payment'
 import Management from './pages/management'
 import HairBundles from './pages/hair-bundles'
 import ClosureFrontal from './pages/closure-frontal'
@@ -25,6 +26,7 @@ function App() {
 			<Route exact path="/admin-portal" element={<Management />} />
 			<Route exact path="/user-cart/:userId" element={<Cart />} />
 			<Route exact path="/checkout/:userId" element={<Checkout />} />
+			<Route exact path="/payment" element={<Payment />} />
 
 			{/* Hair route path */}
 			<Route exact path="/bundles/:brand" element={<HairBundles />} />

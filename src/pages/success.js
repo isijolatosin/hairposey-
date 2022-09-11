@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import emailjs from 'emailjs-com'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import { useNavigate } from 'react-router-dom'
 import { GoAlert } from 'react-icons/go'
 import { SiMinutemailer } from 'react-icons/si'
@@ -13,6 +12,7 @@ import { UserContext } from '../context/user-context'
 import Button from '../components/shared/Button'
 import { AUTHORIZED_ID } from '../constant'
 import CartItems from '../components/CartItems'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 const Success = () => {
 	const { user } = useContext(UserContext)
@@ -23,17 +23,13 @@ const Success = () => {
 	const [sales, setSales] = React.useState(false)
 	const payload = localStorage.getItem('payload')
 	const userEmail = user?.email || localStorage.getItem('altEmail')
-	const database = getDatabase()
 
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
+		setSales(fetchSalesPercentage())
 
-			setSales(data.no)
-		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
 	const orderNo = `hairposey${Math.random().toString(36).slice(2)}`
 
 	let nameArray = []
@@ -158,7 +154,7 @@ const Success = () => {
 			<Helmet>
 				<title>Success</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				{payload ? (
 					<div
 						className={

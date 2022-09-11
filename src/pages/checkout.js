@@ -178,7 +178,7 @@ const Cart = () => {
 			<Helmet>
 				<title>Checkout</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<div
 					className={
 						sales

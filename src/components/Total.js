@@ -1,10 +1,10 @@
 import React from 'react'
-import StripeCheckout from './checkout/stripe-checkout'
+import CheckoutForm from './checkout/CheckoutForm'
 
-const Total = ({ itemCount, total }) => {
+const Total = ({ shippingMethod, setWarn }) => {
 	return (
-		<div className="tw-bg-white tw-p-5 tw-rounded-lg">
-			<StripeCheckout total={total} itemCount={itemCount} />
+		<div className="tw-bg-white tw-p-5">
+			<CheckoutForm shippingMethod={shippingMethod} setWarn={setWarn} />
 		</div>
 	)
 }

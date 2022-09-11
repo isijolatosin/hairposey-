@@ -43,8 +43,10 @@ function Card({
 	return (
 		<div className="card tw-w-[90%] tw-mx-auto md:tw-w-[300px] tw-rounded-[30px]">
 			<ul className="ul">
-				<li onClick={() => handleView(product._id)} className="tw-relative">
-					<span className="tw-absolute tw-left-[-80px] tw-text-white tw-text-xs">
+				<li
+					onClick={() => handleView(product._id)}
+					className="tw-relative tw-cursor-pointer">
+					<span className="tw-absolute tw-left-[-80px] tw-text-white tw-text-xs ">
 						Expand Photo
 					</span>
 					<RiSearch2Fill />

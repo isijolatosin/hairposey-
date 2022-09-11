@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../components/shared/Layout'
 import { auth, createUserProfileDocument } from '../firebase'
 import Button from '../components/shared/Button'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 const Register = () => {
 	const navigate = useNavigate()
@@ -14,6 +15,12 @@ const Register = () => {
 		password: '',
 		error: null,
 	})
+	const [sales, setSales] = React.useState(null)
+
+	React.useEffect(() => {
+		setSales(fetchSalesPercentage())
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	// const validate = (values) => {
 	// 	const errors = {}
@@ -59,7 +66,7 @@ const Register = () => {
 			<Helmet>
 				<title>Sign Up</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<section className="tw-flex tw-flex-col tw-items-center tw-mt-[150px] lg:tw-mt-[100px]">
 					<div className="tw-text-center">
 						<h1 className="tw-text-2xl tw-font-bold">Sign Up</h1>

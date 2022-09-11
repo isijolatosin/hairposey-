@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/shared/Layout'
@@ -12,6 +11,7 @@ import {
 } from '../slices/appSlices'
 import Button from '../components/shared/Button'
 import { UserContext } from '../context/user-context'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 const Cart = () => {
 	const { user } = useContext(UserContext)
@@ -22,16 +22,25 @@ const Cart = () => {
 	const cartItems = useSelector(selectCartItems)
 	const navigate = useNavigate()
 	const [sales, setSales] = React.useState(false)
-	const database = getDatabase()
 	const dispatch = useDispatch()
 
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
+		localStorage.removeItem('discountPrice')
+		localStorage.removeItem('ship')
+		localStorage.removeItem('address')
+		localStorage.removeItem('altEmail')
+		localStorage.removeItem('shippingCost')
+		localStorage.removeItem('payload')
+		localStorage.removeItem('finalPriceToPayObject')
+		localStorage.removeItem('finalPriceToPay')
+		localStorage.removeItem('order no')
+		localStorage.removeItem('username')
+		localStorage.removeItem('payMethod')
+		localStorage.removeItem('country')
+		localStorage.removeItem('referral')
+		localStorage.removeItem('phone')
 
-			setSales(data.no)
-		})
+		setSales(fetchSalesPercentage())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

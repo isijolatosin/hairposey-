@@ -3,7 +3,6 @@ import axios from 'axios'
 import styled from 'styled-components'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/shared/Layout'
 import Products from '../components/Products'
@@ -21,6 +20,7 @@ import { CgClose } from 'react-icons/cg'
 import Book from '../components/Book'
 import { db } from '../firebase'
 import { scrollToTop } from '../utils/scrollTop'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 const logo = require('../assets/logo.png')
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
@@ -34,15 +34,9 @@ function HomePage() {
 	const notReady = false
 
 	const [location, setLocation] = React.useState('')
-	const database = getDatabase()
 
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
-
-			setSales(data.no)
-		})
+		setSales(fetchSalesPercentage())
 
 		db.collection('location').onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({

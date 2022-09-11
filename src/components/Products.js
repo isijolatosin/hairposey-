@@ -82,7 +82,6 @@ function Products({ allProducts, sales, setImage, setIsSingleImage }) {
 			{allProducts ? (
 				<div className="tw-flex tw-flex-wrap tw-gap-3 tw-items-center tw-justify-center tw-pb-10 tw-pt-0">
 					{allProducts.map((product) => {
-						localStorage.setItem('isSales', product.sales)
 						return (
 							<div key={product._id} className="tw-mb-2 md:tw-mb-0">
 								<Card

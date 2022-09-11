@@ -5,8 +5,10 @@ import { AiOutlineRollback } from 'react-icons/ai'
 import Button from '../components/shared/Button'
 import Layout from '../components/shared/Layout'
 import CursorText from '../components/shared/CursorText'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 function NotFound() {
+	const [sales, setSales] = React.useState(null)
 	const [showText, setShowText] = React.useState(false)
 	const handleShow = () => {
 		!showText && setShowText(true)
@@ -14,12 +16,18 @@ function NotFound() {
 	const handleHide = () => {
 		setShowText(false)
 	}
+
+	React.useEffect(() => {
+		setSales(fetchSalesPercentage())
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	return (
 		<>
 			<Helmet>
 				<title>Error Page</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<div className="tw-flex tw-flex-col tw-items-center tw-my-[100px] tw-rounded-lg tw-w-[90%] md:tw-w-[60%] xl:tw-w-[40%] tw-p-10 tw-text-center tw-mx-auto tw-shadow-2xl tw-bg-neutral-200">
 					<h1 className="tw-text-3xl tw-font-bold tw-text-red-900">404</h1>
 					<p className="tw-text-neutral-600 tw-mt-2 tw-font-light">

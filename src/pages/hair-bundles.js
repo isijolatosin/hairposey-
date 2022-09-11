@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import axios from 'axios'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import { CgClose } from 'react-icons/cg'
 import { GrCheckmark } from 'react-icons/gr'
 import Layout from '../components/shared/Layout'
@@ -16,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user-context'
 import SingleProductModal from '../components/shared/SingleProductModal'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 function HairBundles() {
 	const [length, setLength] = React.useState(null)
@@ -32,7 +32,6 @@ function HairBundles() {
 	const [sales, setSales] = React.useState(false)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
-	const database = getDatabase()
 
 	async function fetchProducts() {
 		try {
@@ -65,12 +64,7 @@ function HairBundles() {
 		}
 	}
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
-
-			setSales(data.no)
-		})
+		setSales(fetchSalesPercentage())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

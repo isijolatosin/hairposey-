@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { getDatabase, ref, onValue } from 'firebase/database'
 import Layout from '../components/shared/Layout'
 import { CgClose } from 'react-icons/cg'
 import Card from '../components/Card'
@@ -16,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user-context'
 import SingleProductModal from '../components/shared/SingleProductModal'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 function ClosureFrontal() {
 	const itemCount = useSelector(selectItemCount)
@@ -32,15 +32,9 @@ function ClosureFrontal() {
 	const [singleCart, setSingleCart] = React.useState(null)
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
-	const database = getDatabase()
 
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
-
-			setSales(data.no)
-		})
+		setSales(fetchSalesPercentage())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

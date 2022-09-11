@@ -5,9 +5,11 @@ import Layout from '../components/shared/Layout'
 import { auth } from '../firebase'
 import Button from '../components/shared/Button'
 import { Helmet } from 'react-helmet'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 const Login = () => {
 	const navigate = useNavigate()
+	const [sales, setSales] = React.useState(null)
 	const [isReset, setIsReset] = React.useState(false)
 	const [authUser, setAuthUser] = useState({
 		email: '',
@@ -15,6 +17,11 @@ const Login = () => {
 		error: null,
 	})
 	const [showpswd, setShowpswd] = useState(false)
+
+	React.useEffect(() => {
+		setSales(fetchSalesPercentage())
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const handleChangeAuthUser = (e) => {
 		setAuthUser({ ...authUser, [e.target.name]: e.target.value })
@@ -54,7 +61,7 @@ const Login = () => {
 			<Helmet>
 				<title>Sign In</title>
 			</Helmet>
-			<Layout>
+			<Layout sales={sales}>
 				<main className="">
 					<section className="tw-flex tw-flex-col tw-items-center tw-mt-[150px] lg:tw-mt-[100px]">
 						<div className="tw-text-center">

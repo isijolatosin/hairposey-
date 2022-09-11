@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { getDatabase, ref, onValue, set } from 'firebase/database'
+import { getDatabase, ref, set } from 'firebase/database'
 import Heading from '../components/Heading'
 import Inventory from '../components/Inventory'
 import Layout from '../components/shared/Layout'
@@ -11,6 +11,7 @@ import AllInventories from '../components/AllInventories'
 import { UserContext } from '../context/user-context'
 import { AUTHORIZED_ID } from '../constant'
 import { db } from '../firebase'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 function Management() {
 	const database = getDatabase()
@@ -21,12 +22,7 @@ function Management() {
 	const [location, setLocation] = React.useState('')
 
 	React.useEffect(() => {
-		const starCountRef = ref(database, 'sales')
-		onValue(starCountRef, (snapshot) => {
-			const data = snapshot.val()
-
-			setSales(data.no)
-		})
+		setSales(fetchSalesPercentage())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

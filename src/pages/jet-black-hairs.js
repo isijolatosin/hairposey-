@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user-context'
 import SingleProductModal from '../components/shared/SingleProductModal'
+import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
 
 function JetBlackHair() {
 	const itemCount = useSelector(selectItemCount)
@@ -35,7 +36,7 @@ function JetBlackHair() {
 	const database = getDatabase()
 
 	React.useEffect(() => {
-		setSales(localStorage.getItem('isSales'))
+		setSales(fetchSalesPercentage())
 	}, [])
 
 	async function fetchProducts() {

@@ -25,3 +25,8 @@ export const AUTHORIZED_ID = {
 export const googleSearch = 'https://www.google.com/maps/search/'
 export const cloudinaryBaseUrl =
 	'https://res.cloudinary.com/dhdccvkyt/image/upload/v'
+
+export const BASE_CURRENCY_CONVERTER_URL =
+	'https://api.apilayer.com/exchangerates_data/convert?'
+
+export const DISCOUNT_PERCENTAGE = 15

@@ -2,15 +2,33 @@ import React from 'react'
 import { Elements } from '@stripe/react-stripe-js'
 import styled from 'styled-components'
 import { loadStripe } from '@stripe/stripe-js'
-import CheckoutForm from './CheckoutForm'
+import CheckoutForm2 from './CheckoutForm2'
 
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
 
-const StripeCheckout = ({ total, itemCount }) => {
+const StripeCheckout = ({
+	total,
+	itemCount,
+	setRedirect,
+	setPageCancel,
+	discountPrice,
+	sales,
+	showPaypalPayment,
+	showCardPayment,
+}) => {
 	return (
 		<Wrapper>
 			<Elements stripe={promise}>
-				<CheckoutForm total={total} itemCount={itemCount} />
+				<CheckoutForm2
+					total={total}
+					sales={sales}
+					itemCount={itemCount}
+					setRedirect={setRedirect}
+					setPageCancel={setPageCancel}
+					discountPrice={discountPrice}
+					showCardPayment={showCardPayment}
+					showPaypalPayment={showPaypalPayment}
+				/>
 			</Elements>
 		</Wrapper>
 	)
