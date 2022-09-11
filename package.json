@@ -20,8 +20,6 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/react-redux": "^7.1.19",
     "axios": "^0.24.0",
-    "browserslist": "^4.21.3",
-    "caniuse-lite": "^1.0.30001393",
     "cloudinary": "^1.29.0",
     "concurrently": "^6.5.1",
     "cors": "^2.8.5",
