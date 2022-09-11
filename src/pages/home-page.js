@@ -31,7 +31,7 @@ function HomePage() {
 	const [_image, setImage] = React.useState(null)
 	const [isSingleImage, setIsSingleImage] = React.useState(false)
 	const [toggleBookBtn, setToggleBookBtn] = React.useState(false)
-	const notReady = true
+	const notReady = false
 
 	const [location, setLocation] = React.useState('')
 
