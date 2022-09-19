@@ -31,6 +31,7 @@ function HomePage() {
 	const [_image, setImage] = React.useState(null)
 	const [isSingleImage, setIsSingleImage] = React.useState(false)
 	const [toggleBookBtn, setToggleBookBtn] = React.useState(false)
+
 	const notReady = true
 
 	const [location, setLocation] = React.useState('')
@@ -44,6 +45,7 @@ function HomePage() {
 			}))
 			setLocation(results[0].data.location)
 		})
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
@@ -127,7 +129,7 @@ function HomePage() {
 						} tw-ease-in tw-duration-300`}>
 						<Wrapper>
 							<Elements stripe={promise}>
-								<Book />
+								<Book logo={logo} />
 							</Elements>
 						</Wrapper>
 					</div>

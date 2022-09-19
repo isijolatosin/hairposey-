@@ -17,11 +17,15 @@ const UserContextProvider = ({ children }) => {
 						id: snapShot.id,
 						...snapShot.data(),
 					})
-					setLoading(false)
+					setTimeout(() => {
+						setLoading(false)
+					}, 5000)
 				})
 			} else {
-				setUser(userAuth)
-				setLoading(false)
+				setTimeout(() => {
+					setLoading(false)
+					setUser(userAuth)
+				}, 5000)
 			}
 		})
 		return () => unsubscribeFromAuth()

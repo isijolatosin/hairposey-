@@ -1,63 +1,75 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 const NavHead = [
-	{ name: 'Cambodian-Hair', id: '1' },
-	{ name: 'Vietnamese-Hair', id: '1' },
-	{ name: 'Brazilian-Hair', id: '1' },
+	{ name: 'cambodian-Hair', id: '1' },
+	{ name: 'vietnamese-Hair', id: '1' },
+	{ name: 'brazilian-Hair', id: '1' },
 ]
 
 const subLinks1 = [
 	{
 		id: '1',
 		name: 'Bundles',
-		route: '/bundles/cambodian-hair',
+		type: 'bundles',
+		brand: 'cambodian-hair',
 	},
 	{
 		id: '2',
 		name: 'Closure / Frontal',
-		route: '/closure-frontal/cambodian-hair',
+		type: 'closure-frontal',
+		brand: 'cambodian-hair',
 	},
 	{
 		id: '3',
 		name: 'Jet Black / Blonde',
-		route: '/jet-black-&-blonde/cambodian-hair',
+		type: 'jet-black-&-blonde',
+		brand: 'cambodian-hair',
 	},
 ]
 const subLinks2 = [
 	{
 		id: '1',
 		name: 'Bundles',
-		route: '/bundles/vietnamese-hair',
+		type: 'bundles',
+		brand: 'vietnamese-hair',
 	},
 	{
 		id: '2',
 		name: 'Closure / Frontal',
-		route: '/closure-frontal/vietnamese-hair',
+		type: 'closure-frontal',
+		brand: 'vietnamese-hair',
 	},
 	{
 		id: '3',
 		name: 'Jet Black / Blonde',
-		route: '/jet-black-&-blonde/vietnamese-hair',
+		type: 'jet-black-&-blonde',
+		brand: 'vietnamese-hair',
 	},
 ]
 const subLinks3 = [
 	{
 		id: '1',
 		name: 'Bundles',
-		route: '/bundles/brazilian-hair',
+		type: 'bundles',
+		brand: 'brazilian-hair',
 	},
 	{
 		id: '2',
 		name: 'Closure / Frontal',
-		route: '/closure-frontal/brazilian-hair',
+		type: 'closure-frontal',
+		brand: 'brazilian-hair',
 	},
 	{
 		id: '3',
 		name: 'Jet Black / Blonde',
-		route: '/jet-black-&-blonde/brazilian-hair',
+		type: 'jet-black-&-blonde',
+		brand: 'brazilian-hair',
 	},
 ]
 
 function MobileLink() {
+	const navigate = useNavigate()
+
 	return (
 		<div
 			className={`${
@@ -74,25 +86,31 @@ function MobileLink() {
 						{item.name === 'Cambodian-Hair' ? (
 							<div className="subMenu">
 								{subLinks1.map((item, idx) => (
-									<a key={idx} href={item.route}>
+									<span
+										onClick={() => navigate(`/${item.type}/${item.brand}`)}
+										key={idx}>
 										{item.name}
-									</a>
+									</span>
 								))}
 							</div>
 						) : item.name === 'Vietnamese-Hair' ? (
 							<div className="subMenu">
 								{subLinks2.map((item, idx) => (
-									<a key={idx} href={item.route}>
+									<span
+										onClick={() => navigate(`/${item.type}/${item.brand}`)}
+										key={idx}>
 										{item.name}
-									</a>
+									</span>
 								))}
 							</div>
 						) : (
 							<div className="subMenu">
 								{subLinks3.map((item, idx) => (
-									<a key={idx} href={item.route}>
+									<span
+										onClick={() => navigate(`/${item.type}/${item.brand}`)}
+										key={idx}>
 										{item.name}
-									</a>
+									</span>
 								))}
 							</div>
 						)}

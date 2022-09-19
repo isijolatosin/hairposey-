@@ -14,12 +14,11 @@ function Nav({ sales }) {
 					<ImageComponent setIsNav={setIsNav} isNav={isNav} />
 				</div>
 				<div className="tw-flex tw-items-center">
-					{sales ||
-						((sales || sales !== 0) && (
-							<div>
-								<span className="tw-text-white tw-text-xs tw-font-bold md:tw-text-sm md:tw-mr-5">{`${sales} % OFF ON SALES`}</span>
-							</div>
-						))}
+					{(sales || sales === 0) && (
+						<div>
+							<span className="tw-text-white tw-text-xs tw-font-bold md:tw-text-sm md:tw-mr-5">{`${sales} % OFF ON SALES`}</span>
+						</div>
+					)}
 					<div className="font_cursive md:tw-flex tw-text-pink-800 tw-hidden md:tw-text-2xl tw-tracking-widest">
 						<span>A whole new you with Hairposey...</span>
 						{window.location.pathname.includes('user-cart') && (

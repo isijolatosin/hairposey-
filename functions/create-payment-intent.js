@@ -6,20 +6,36 @@ const stripe = require('stripe')(process.env.REACT_APP_STRIPE_PRIVATE_KEY)
 exports.handler = async function (event, context) {
 	if (event.body) {
 		// eslint-disable-next-line no-unused-vars
-		const { cartItems, shipping_fee, totalPrice, tax } = JSON.parse(event.body)
+		const {
+			cartItems,
+			shipCostInCent,
+			priceInCent,
+			taxInCent,
+			sales,
+			shipMethod,
+		} = JSON.parse(event.body)
 
-		let totalCartPrice = 0
-		// eslint-disable-next-line array-callback-return
-		cartItems.map((item) => {
-			totalCartPrice += item?.price * item?.quantity * 100
-		})
+		const totalCartPriceInCent =
+			cartItems.reduce((total, prod) => total + prod.price * prod.quantity, 0) *
+			100
 
 		const calculateOrderAmount = () => {
 			// Note - Check price compare with mongoDB
-			return shipping_fee + totalPrice + tax
+			let finalPrice
+			if (shipMethod === 'ship') {
+				finalPrice = shipCostInCent + priceInCent + taxInCent
+			} else {
+				finalPrice = priceInCent + taxInCent
+			}
+			return finalPrice
 		}
+		const discountedPrice =
+			sales && totalCartPriceInCent - totalCartPriceInCent * (sales / 100)
 
-		if (totalCartPrice === totalPrice) {
+		if (
+			discountedPrice === priceInCent ||
+			totalCartPriceInCent === priceInCent
+		) {
 			try {
 				const paymentIntent = await stripe.paymentIntents.create({
 					amount: calculateOrderAmount(),
@@ -28,18 +44,19 @@ exports.handler = async function (event, context) {
 						enabled: true,
 					},
 				})
-				console.log(paymentIntent)
+
 				return {
 					statusCode: 200,
 					body: JSON.stringify({ clientSecret: paymentIntent.client_secret }),
 				}
 			} catch (error) {
 				return {
-					statusCodes: 500,
+					statusCode: 500,
 					body: JSON.stringify({ msg: error.message }),
 				}
 			}
+		} else {
+			return { statusCode: 500, body: 'Please Create Payment Intent' }
 		}
 	}
-	return { statusCode: 200, body: 'Please Create Payment Intent' }
 }

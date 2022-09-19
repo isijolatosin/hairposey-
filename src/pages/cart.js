@@ -81,8 +81,8 @@ const Cart = () => {
 					) : (
 						<div className="tw-flex tw-flex-col tw-w-full tw-px-5 md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-justify-center tw-items-start">
 							<div className="tw-w-full tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-5">
-								{cartItems.map((item) => (
-									<CartItems product={item} key={item._id} />
+								{cartItems.map((item, idx) => (
+									<CartItems product={item} key={idx} />
 								))}
 							</div>
 							<div className="tw-w-fit tw-mb-1 tw-py-2">

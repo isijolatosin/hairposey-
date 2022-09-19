@@ -461,7 +461,7 @@ const Cart = () => {
 												<div
 													onClick={placeOrder}
 													className="tw-z-40 tw-flex tw-flex-col tw-items-center tw-w-full tw-my-10 md:tw-my-0 md:tw-w-[40%]">
-													<button className="tw-bg-neutral-800 tw-text-white tw-text-xs tw-px-5 tw-py-2 hover:md:tw-bg-neutral-100 hover:md:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-w-[80%] md:tw-w-[50%] tw-mx-auto tw-rounded-[30px]">
+													<button className="tw-bg-neutral-800 tw-text-white tw-text-xs tw-px-5 tw-py-2 hover:md:tw-bg-neutral-100 hover:md:tw-text-neutral-900 tw-ease-in tw-duration-300 tw-w-[80%] md:tw-max-w-[60%] tw-mx-auto tw-rounded-[30px]">
 														PLACE ORDER
 													</button>
 													{error && (

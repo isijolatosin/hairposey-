@@ -107,6 +107,12 @@
 	font-family: var(--Oswald);
 }
 
+* {
+	margin: 0;
+	padding: 0;
+	box-shadow: border-box;
+}
+
 html {
 	scroll-behavior: smooth;
 }
@@ -419,26 +425,26 @@ select:focus {
 }
 
 /* Bookings */
-label {
+.bookLabel {
 	position: relative;
 	margin-top: 2px;
 }
-label > input {
+.bookLabel > input {
 	font-size: 1.1rem;
 	color: var(--grey-1000);
 	font-weight: 300;
-	border: none;
-	outline: none;
+	/* border: none; */
+	/* outline: none; */
 	width: 20.7rem;
-	border-radius: 3px !important;
+	/* border-radius: 3px !important; */
 }
 
-label p {
+.bookLabel p {
 	color: var(--grey-800);
 	font-size: 0.8rem;
 	pointer-events: none;
 	position: absolute;
-	top: 25%;
+	top: 5%;
 	margin-left: 3px;
 	padding: 0 0.5rem;
 	background: #fff;
@@ -449,14 +455,14 @@ label p {
 	border-radius: 3px;
 }
 
-label input:focus + p,
+.bookLabel input:focus + p,
 input:not(:placeholder-shown) + p {
-	transform: translateY(-1.2rem) scale(0.8);
+	transform: translateY(-1.5rem) scale(0.8);
 	margin-left: 3px;
 	color: rgb(157 23 77);
 }
 
-label input::placeholder {
+.bookLabel input::placeholder {
 	color: transparent;
 }
 
@@ -1139,20 +1145,21 @@ label input::placeholder {
 	transition: max-height 0.7s;
 	max-height: 0;
 }
-.subMenu a {
+.subMenu span {
 	display: block;
 	padding: 15px 20px;
 	color: #fff;
 	font-size: 14px;
 	border-bottom: 1px solid #18284d;
 	position: relative;
+	cursor: pointer;
 }
-.subMenu a:before {
+.subMenu span:before {
 	content: '';
 	opacity: 0;
 	transition: opacity 0.3s;
 }
-.subMenu a:hover:before {
+.subMenu span:hover:before {
 	content: '';
 	position: absolute;
 	height: 0;
@@ -1164,12 +1171,12 @@ label input::placeholder {
 	border-left: 11px solid #ff9d00;
 	border-bottom: 24px solid transparent;
 }
-.subMenu a:after {
+.subMenu span:after {
 	content: '';
 	opacity: 0;
 	transition: opacity 0.3s;
 }
-.subMenu a:hover:after {
+.subMenu span:hover:after {
 	content: '';
 	position: absolute;
 	height: 0;
@@ -1181,7 +1188,7 @@ label input::placeholder {
 	border-right: 11px solid #ff9d00;
 	border-bottom: 24px solid transparent;
 }
-.subMenu a:hover {
+.subMenu span:hover {
 	background: #273057;
 	background: linear-gradient(
 		to bottom,
@@ -1194,7 +1201,7 @@ label input::placeholder {
 	transition: all 0.3s;
 	border-bottom: 1px solid #394c7f;
 }
-.subMenu a:last-child {
+.subMenu span:last-child {
 	border: none;
 }
 .item:target .subMenu {

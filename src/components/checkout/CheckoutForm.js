@@ -43,7 +43,17 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 	const handleSubmitAddress = () => {
 		if (shippingMethod === '') {
 			setWarn(true)
-		} else {
+		} else if (
+			(user || email) &&
+			address.country &&
+			address.firstname &&
+			address.lastname &&
+			address.street &&
+			address.city &&
+			address.province &&
+			address.postalcode &&
+			address.phonenumber
+		) {
 			const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`
 			const userName = `${address.firstname} ${address.lastname}`
 			const shippingAd = `${address.street}, ${
@@ -133,6 +143,8 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 			})
 			setEmail('')
 			navigate('/payment')
+		} else {
+			setError(true)
 		}
 	}
 
@@ -145,11 +157,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 						onChange={(e) => setEmail(e.target.value)}
 						placeholder="Email"
 						value={email}
-						className={
+						className={`${
 							error && !ValidateEmail(email)
 								? 'user-email-input tw-border-red-700'
-								: 'user-email-input tw-text-sm tw-border-neutral-400'
-						}
+								: 'tw-border-neutral-400'
+						} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 					/>
 				)}
 				<div className="tw-relative">
@@ -181,11 +193,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 						value={address.firstname}
 						onChange={inputOnchangeHandler}
 						placeholder="First name"
-						className={
+						className={`${
 							error && !address.firstname
 								? 'user-email-input tw-border-red-700'
-								: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400'
-						}
+								: 'tw-border-neutral-400'
+						} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 					/>
 					<input
 						name="lastname"
@@ -193,11 +205,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 						value={address.lastname}
 						onChange={inputOnchangeHandler}
 						placeholder="Last name"
-						className={
+						className={`${
 							error && !address.lastname
 								? 'user-email-input tw-border-red-700'
-								: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400'
-						}
+								: 'tw-border-neutral-400'
+						} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 					/>
 				</div>
 				<input
@@ -206,11 +218,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 					value={address.street}
 					onChange={inputOnchangeHandler}
 					placeholder="Address"
-					className={
+					className={`${
 						error && !address.street
 							? 'user-email-input tw-border-red-700'
-							: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400'
-					}
+							: 'tw-border-neutral-400'
+					} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 				/>
 				<input
 					name="apartment"
@@ -218,11 +230,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 					value={address.apartment}
 					onChange={inputOnchangeHandler}
 					placeholder="Apartment, suite, etc. (optional)"
-					className={
+					className={`${
 						error && !address.apartment
 							? 'user-email-input tw-border-red-700'
-							: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400'
-					}
+							: 'tw-border-neutral-400'
+					} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 				/>
 				<div className="tw-grid tw-grid-cols-3 tw-gap-x-[7px]">
 					<input
@@ -231,11 +243,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 						value={address.city}
 						onChange={inputOnchangeHandler}
 						placeholder="City"
-						className={
+						className={`${
 							error && !address.city
 								? 'user-email-input tw-border-red-700'
-								: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400'
-						}
+								: 'tw-border-neutral-400'
+						} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 					/>
 					<input
 						name="province"
@@ -243,11 +255,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 						value={address.province}
 						onChange={inputOnchangeHandler}
 						placeholder="State / Province"
-						className={
+						className={`${
 							error && !address.province
 								? 'user-email-input tw-border-red-700'
-								: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400'
-						}
+								: 'tw-border-neutral-400'
+						} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 					/>
 					<input
 						name="postalcode"
@@ -255,11 +267,11 @@ const CheckoutForm = ({ shippingMethod, setWarn }) => {
 						value={address.postalcode}
 						onChange={inputOnchangeHandler}
 						placeholder="Postal Code"
-						className={
+						className={`${
 							error && !address.postalcode
 								? 'user-email-input tw-border-red-700'
-								: 'user-email-input tw-text-sm tw-font-light tw-border-[1px] tw-border-neutral-400 tw-rounded-[6px] focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 '
-						}
+								: 'tw-border-neutral-400'
+						} user-email-input tw-font-light tw-border-[1px] tw-rounded-[6px] tw-mb-[10px] tw-py-[9px] tw-text-sm focus:tw-border-neutral-400 focus:tw-ring-0 focus:tw-ring-neutral-400 tw-capitalize`}
 					/>
 				</div>
 				<div

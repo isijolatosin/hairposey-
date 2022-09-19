@@ -13,6 +13,7 @@ import { GoAlert } from 'react-icons/go'
 import axios from 'axios'
 import { db } from '../firebase'
 import { AUTHORIZED_ID, googleSearch } from '../constant'
+import { ValidateEmail } from '../utils/ValidateEmail'
 
 const categories = [
 	{ name: 'Category', id: 1 },
@@ -35,7 +36,7 @@ const sessions = [
 	{ name: '2pm-4pm', id: 3 },
 ]
 
-function Book() {
+function Book({ logo }) {
 	const dateToday = new Date()
 	const elements = useElements()
 	const stripe = useStripe()
@@ -44,11 +45,13 @@ function Book() {
 	const [selectDate, setSelectDate] = React.useState(null)
 	const [succeeded, setSucceeded] = React.useState(false)
 	const [processing, setProcessing] = React.useState(false)
+	const [emailError, setEmailError] = React.useState(false)
 	const [_error, set_Error] = React.useState(null)
 	const [disabled, setDisabled] = React.useState(true)
 	const [clientSecret, setClientSecret] = React.useState('')
 	const [location, setLocation] = React.useState(null)
 	const [allowproceed, setAllowProceed] = React.useState(false) //CHANGE BACK TO FALSE
+	const [permission, setPermission] = React.useState(false)
 	const [bookingData, setBookingData] = React.useState({
 		session: '',
 		category: '',
@@ -64,7 +67,25 @@ function Book() {
 			}))
 			setLocation(results[0].data.location)
 		})
+
+		if (Notification.permission !== 'granted') {
+			Notification.requestPermission().then((perm) => {
+				if (perm === 'granted') {
+					setPermission(perm)
+				}
+			})
+		}
 	}, [])
+
+	if (succeeded && permission) {
+		new Notification('Payment Notification', {
+			body: 'Your Payment Was Successful!',
+			icon: logo,
+			tag: 'payment notification',
+			requireInteraction: true,
+			lang: 'en-US',
+		})
+	}
 
 	const handleSelect = (ranges) => {
 		if (selectDate) {
@@ -122,17 +143,40 @@ function Book() {
 
 	const createPaymentIntent = async () => {
 		const price = Number(process.env.REACT_APP_BOOKING_PRICE)
-		try {
-			const { data } = await axios.post(
-				'/.netlify/functions/create-payment-intent-book',
-				JSON.stringify({ price })
-			)
-			setClientSecret(data.clientSecret)
-			setAllowProceed(true)
-		} catch (error) {
-			set_Error(
-				error?.response?.data ? 'Please contact sosoluxxe Admin...' : ''
-			)
+
+		if (user) {
+			try {
+				const { data } = await axios.post(
+					'/.netlify/functions/create-payment-intent-book',
+					JSON.stringify({ price })
+				)
+				setClientSecret(data.clientSecret)
+				setAllowProceed(true)
+			} catch (error) {
+				set_Error(
+					error?.response?.data ? 'Please contact hairposey Admin...' : ''
+				)
+			}
+		} else if (userEmail) {
+			if (ValidateEmail(userEmail)) {
+				if (emailError) {
+					setEmailError(false)
+				}
+				try {
+					const { data } = await axios.post(
+						'/.netlify/functions/create-payment-intent-book',
+						JSON.stringify({ price })
+					)
+					setClientSecret(data.clientSecret)
+					setAllowProceed(true)
+				} catch (error) {
+					set_Error(
+						error?.response?.data ? 'Please contact hairposey Admin...' : ''
+					)
+				}
+			} else {
+				setEmailError(true)
+			}
 		}
 	}
 
@@ -188,8 +232,8 @@ function Book() {
 		})
 
 		setTimeout(() => {
-			SendClientSuccessfulPurchaseEmail()
-			SendMerchantSuccessfulPurchaseEmail()
+			// SendClientSuccessfulPurchaseEmail()
+			// SendMerchantSuccessfulPurchaseEmail()
 		}, 1000)
 
 		setTimeout(() => {
@@ -295,8 +339,8 @@ function Book() {
 						)}
 
 						{!user && (
-							<div className="tw-w-full">
-								<label>
+							<div className="tw-w-full tw-mt-10 lg:tw-mt-0">
+								<label className="bookLabel">
 									<input
 										type="text"
 										autoComplete="off"
@@ -305,14 +349,18 @@ function Book() {
 										id="email"
 										value={userEmail}
 										onChange={(e) => setUserEmail(e.target.value)}
-										className="tw-shadow-xl"
+										className={
+											emailError
+												? 'tw-border-[1px] tw-border-red-700 tw-bg-red-200'
+												: 'tw-shadow-xl tw-rounded-[6px] tw-border-[0px]'
+										}
 									/>
 									<p>Email Address...</p>
 								</label>
 							</div>
 						)}
 					</div>
-					<div className="tw-flex tw-flex-col">
+					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0">
 						<form
 							onSubmit={(e) => {
 								e.preventDefault()
@@ -324,7 +372,7 @@ function Book() {
 									<label>Session</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-100 tw-rounded-md tw-text-sm tw-shadow-sm tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="Session"
 									value={bookingData.session}
@@ -339,7 +387,7 @@ function Book() {
 									<label>Category</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-100 tw-rounded-md tw-text-sm tw-shadow-sm tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500 disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="category"
 									value={bookingData.category}
@@ -354,7 +402,7 @@ function Book() {
 									<label>Services</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-100 tw-rounded-md tw-text-sm tw-shadow-sm tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-noneinvalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="Service"
 									value={bookingData.service}
@@ -369,7 +417,7 @@ function Book() {
 									<label>Personnel</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-100 tw-rounded-md tw-text-sm tw-shadow-sm tw-placeholder-gray-200 focus:tw-outline-none focus:tw-border-sky-500 focus:tw-ring-1 focus:tw-ring-sky-500disabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-noneinvalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="Personnel"
 									value={bookingData.personnel}

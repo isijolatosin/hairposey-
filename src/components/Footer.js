@@ -110,7 +110,7 @@ function Footer() {
 		e.preventDefault()
 		try {
 			window.open(
-				`mailto:'modelEst1010@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
+				`mailto:'hairposey@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
 			)
 			setcontactInput({
 				name: '',
@@ -127,7 +127,7 @@ function Footer() {
 	}
 
 	return (
-		<footer className="tw-flex tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex-col tw-py-5 tw-justify-center tw-items-center tw-border-t-[1px] tw-border-neutral-300 tw-text-white">
+		<footer className="tw-flex tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex-col tw-pt-20 tw-pb-5 tw-justify-center tw-items-center tw-border-t-[1px] tw-border-neutral-300 tw-text-white">
 			<span className="tw-text-center tw-mb-5 tw-text-sm tw-font-light">
 				Quick Links
 			</span>
@@ -198,7 +198,7 @@ function Footer() {
 										  }
 										: null
 								}
-								className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
+								className="tw-cursor-pointer hover:tw-underline tw-mb-1 ">
 								{link.name}
 							</li>
 						))}
@@ -226,19 +226,20 @@ function Footer() {
 			{showContactForm && (
 				<form
 					onSubmit={handleSubmit}
-					className="tw-w-full tw-flex tw-flex-col tw-items-center md:tw-max-w-[80%] tw-bg-neutral-50 tw-py-5 tw-mb-5">
+					className="tw-w-full tw-flex tw-flex-col tw-items-center md:tw-max-w-[80%] tw-bg-transparent tw-py-5 tw-mb-5">
 					<span className="tw-text-2xl tw-font-light tw-mb-1 tw-mt-5">
-						Contact - ModelEst
+						Contact - Hairposey
 					</span>
 					<p className="tw-font-light tw-text-[14px] tw-max-w-[80%] lg:tw-max-w-[50%] tw-my-5">
-						We at modelEst are customer centric, we take pride in our customers.
-						We are committed in helping with picking the right hair for you,
-						adequate information regarding education on hair maintenance, and
-						providing high quality hair extensions. We value you our customers
-						and we are committed to long time support. Our customers are our
-						sister’s. We respond within 24-48 business hours Monday - Friday.
+						We at Hairposey are customer centric, we take pride in our
+						customers. We are committed in helping with picking the right hair
+						for you, adequate information regarding education on hair
+						maintenance, and providing high quality hair extensions. We value
+						you our customers and we are committed to long time support. Our
+						customers are our sister’s. We respond within 24-48 business hours
+						Monday - Friday.
 					</p>
-					<div className="md:tw-w-[90%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-mx-auto tw-flex tw-flex-col tw-items-center">
+					<div className="tw-w-[90%] lg:tw-w-[70%] 2xl:tw-w-[50%] tw-mx-auto tw-flex tw-flex-col tw-items-center">
 						<input
 							type="text"
 							name="name"
@@ -769,7 +770,7 @@ function Footer() {
 						<br />
 						<br />
 						Questions about the Terms of Service should be sent to us at
-						modelEst1010@gmail.com.
+						hairposey@gmail.com.
 					</p>
 				</div>
 			)}

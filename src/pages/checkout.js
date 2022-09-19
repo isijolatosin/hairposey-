@@ -38,6 +38,7 @@ const Cart = () => {
 	const [pickupNote, setPickupNote] = React.useState(false)
 	const [resultArry, setResultArray] = React.useState([])
 	const [code, setCode] = React.useState('')
+	const userPostalAddress = localStorage.getItem('address')
 
 	const generateCode = () => {
 		const genCode = `ModelEst${Math.random().toString(18).slice(2)}`
@@ -219,8 +220,13 @@ const Cart = () => {
 										</span>
 										<MdKeyboardArrowRight size={23} />
 									</Link>
-									<Link to={`/payment`} className="tw-text-neutral-300">
-										<span>Payment</span>
+									<Link
+										to={
+											userPostalAddress
+												? `/payment`
+												: `/checkout/${user?.displayName}`
+										}>
+										<span className="tw-mr-2 tw-text-white">Payment</span>
 									</Link>
 								</div>
 								<div className="tw-w-full lg:tw-w-[60%] xl:tw-w-[50%] tw-mx-auto tw-h-full tw-bg-neutral-200 tw-p-1 md:tw-p-5 tw-px-3 tw-pt-3">
