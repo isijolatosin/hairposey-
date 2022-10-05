@@ -1,53 +1,53 @@
-import React from 'react'
-import axios from 'axios'
-import styled from 'styled-components'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
-import { Helmet } from 'react-helmet'
-import Layout from '../components/shared/Layout'
-import Products from '../components/Products'
-import { FaTiktok } from 'react-icons/fa'
-import { AiOutlineInstagram } from 'react-icons/ai'
+import React from "react";
+import axios from "axios";
+import styled from "styled-components";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { Helmet } from "react-helmet";
+import Layout from "../components/shared/Layout";
+import Products from "../components/Products";
+import { FaTiktok } from "react-icons/fa";
+import { AiOutlineInstagram } from "react-icons/ai";
 import {
 	MdLocationPin,
 	MdOutlineConstruction,
 	MdOutlineKeyboardArrowDown,
 	MdOutlineKeyboardArrowUp,
-} from 'react-icons/md'
-import { googleSearch } from '../constant'
-import { SiTreyarch } from 'react-icons/si'
-import { CgClose } from 'react-icons/cg'
-import Book from '../components/Book'
-import { db } from '../firebase'
-import { scrollToTop } from '../utils/scrollTop'
-import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
+} from "react-icons/md";
+import { googleSearch } from "../constant";
+import { SiTreyarch } from "react-icons/si";
+import { CgClose } from "react-icons/cg";
+import Book from "../components/Book";
+import { db } from "../firebase";
+import { scrollToTop } from "../utils/scrollTop";
+import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
-const logo = require('../assets/logo.png')
-const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
+const logo = require("../assets/logo.png");
+const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 function HomePage() {
-	const [allProducts, setAllproducts] = React.useState([])
-	const [sales, setSales] = React.useState(null)
-	const [_image, setImage] = React.useState(null)
-	const [isSingleImage, setIsSingleImage] = React.useState(false)
-	const [toggleBookBtn, setToggleBookBtn] = React.useState(false)
+	const [allProducts, setAllproducts] = React.useState([]);
+	const [sales, setSales] = React.useState(null);
+	const [_image, setImage] = React.useState(null);
+	const [isSingleImage, setIsSingleImage] = React.useState(false);
+	const [toggleBookBtn, setToggleBookBtn] = React.useState(false);
 
-	const notReady = true
+	const notReady = false;
 
-	const [location, setLocation] = React.useState('')
+	const [location, setLocation] = React.useState("");
 
 	React.useEffect(() => {
-		setSales(fetchSalesPercentage())
+		setSales(fetchSalesPercentage());
 
-		db.collection('location').onSnapshot((snapshot) => {
+		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
 				data: doc.data(),
-			}))
-			setLocation(results[0].data.location)
-		})
+			}));
+			setLocation(results[0].data.location);
+		});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	async function fetchProducts() {
 		try {
@@ -56,19 +56,19 @@ function HomePage() {
 					products,
 					//  curUser
 				},
-			} = await axios.get('/api/v1/products')
+			} = await axios.get("/api/v1/products");
 
 			setTimeout(() => {
-				setAllproducts(products.sort((a, b) => a.name.localeCompare(b.name)))
-			}, 3000)
+				setAllproducts(products.sort((a, b) => a.name.localeCompare(b.name)));
+			}, 3000);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
 	}
 
 	React.useEffect(() => {
-		fetchProducts()
-	}, [])
+		fetchProducts();
+	}, []);
 
 	return (
 		<div className="tw-bg-neutral-200 relative">
@@ -78,7 +78,7 @@ function HomePage() {
 			<Layout sales={sales}>
 				<div
 					className={`tw-relative ${
-						allProducts.length === 0 ? 'tw-mt-[70px]' : 'tw-pt-[60px]'
+						allProducts.length === 0 ? "tw-mt-[70px]" : "tw-pt-[60px]"
 					} `}>
 					<div className="tw-fixed tw-top-[70px] tw-left-0 tw-right-0 tw-z-20 tw-w-full tw-bg-white tw-h-fit tw-text-black tw-font-thin  tw-py-2 tw-text-xs">
 						<div className="tw-flex tw-items-center tw-justify-start lg:tw-justify-center tw-ml-3 lg:tw-ml-0 tw-font-bold">
@@ -92,8 +92,8 @@ function HomePage() {
 							) : (
 								<button
 									onClick={() => {
-										setToggleBookBtn(true)
-										scrollToTop()
+										setToggleBookBtn(true);
+										scrollToTop();
 									}}
 									className="tw-ml-2 tw-bg-black tw-text-white tw-rounded-full hover:tw-bg-white hover:tw-text-black tw-ease-in tw-duration-300">
 									<MdOutlineKeyboardArrowDown size={20} />
@@ -125,7 +125,7 @@ function HomePage() {
 					</div>
 					<div
 						className={`${
-							toggleBookBtn ? 'tw-opacity-1 tw-h-fit' : 'tw-opacity-0 tw-h-0'
+							toggleBookBtn ? "tw-opacity-1 tw-h-fit" : "tw-opacity-0 tw-h-0"
 						} tw-ease-in tw-duration-300`}>
 						<Wrapper>
 							<Elements stripe={promise}>
@@ -158,8 +158,8 @@ function HomePage() {
 								/>
 								<div
 									onClick={() => {
-										setImage(null)
-										setIsSingleImage(false)
+										setImage(null);
+										setIsSingleImage(false);
 									}}
 									className="tw-text-2xl tw-bg-neutral-200 tw-w-10 tw-h-10 tw-flex tw-items-center tw-justify-center tw-rounded-full tw-shadow-lg tw-absolute tw-top-[20px] md:tw-right-[150px] tw-right-[20px] tw-ease-in tw-duration-300 hover:tw-cursor-pointer hover:tw-bg-neutral-900 hover:tw-text-white">
 									<CgClose />
@@ -222,7 +222,7 @@ function HomePage() {
 								</div>
 								<div className="md:tw-flex tw-ml-1">
 									<p className="tw-flex tw-items-center">
-										Designed by{' '}
+										Designed by{" "}
 										<span className="rose-gold tw-ml-1">
 											<a
 												href="https://www.linkedin.com/in/oluwatosin-isijola-33333ba8/"
@@ -239,7 +239,7 @@ function HomePage() {
 				</div>
 			</Layout>
 		</div>
-	)
+	);
 }
 
 const Wrapper = styled.section`
@@ -338,7 +338,7 @@ const Wrapper = styled.section`
 	.spinner:before,
 	.spinner:after {
 		position: absolute;
-		content: '';
+		content: "";
 	}
 
 	.spinner:before {
@@ -383,6 +383,6 @@ const Wrapper = styled.section`
 			width: 80vw;
 		}
 	}
-`
+`;
 
-export default HomePage
+export default HomePage;
