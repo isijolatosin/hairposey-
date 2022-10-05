@@ -1,211 +1,211 @@
-import React, { useContext } from 'react'
-import emailjs from 'emailjs-com'
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js'
-import 'react-date-range/dist/styles.css' // main style file
-import 'react-date-range/dist/theme/default.css' // theme css file
-import { Calendar } from 'react-date-range'
-import Button from './shared/Button'
-import { UserContext } from '../context/user-context'
-import { SiAmericanexpress, SiMastercard } from 'react-icons/si'
-import { RiVisaLine } from 'react-icons/ri'
-import { MdLocationPin } from 'react-icons/md'
-import { GoAlert } from 'react-icons/go'
-import axios from 'axios'
-import { db } from '../firebase'
-import { AUTHORIZED_ID, googleSearch } from '../constant'
-import { ValidateEmail } from '../utils/ValidateEmail'
+import React, { useContext } from "react";
+import emailjs from "emailjs-com";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { Calendar } from "react-date-range";
+import Button from "./shared/Button";
+import { UserContext } from "../context/user-context";
+import { SiAmericanexpress, SiMastercard } from "react-icons/si";
+import { RiVisaLine } from "react-icons/ri";
+import { MdLocationPin } from "react-icons/md";
+import { GoAlert } from "react-icons/go";
+import axios from "axios";
+import { db } from "../firebase";
+import { AUTHORIZED_ID, googleSearch } from "../constant";
+import { ValidateEmail } from "../utils/ValidateEmail";
 
 const categories = [
-	{ name: 'Category', id: 1 },
-	{ name: 'cat A', id: 2 },
-	{ name: 'cat B', id: 3 },
-]
+	{ name: "Category", id: 1 },
+	{ name: "cat A", id: 2 },
+	{ name: "cat B", id: 3 },
+];
 const staffs = [
-	{ name: 'Staff', id: 1 },
-	{ name: 'staff A', id: 2 },
-	{ name: 'staff B', id: 3 },
-]
+	{ name: "Staff", id: 1 },
+	{ name: "staff A", id: 2 },
+	{ name: "staff B", id: 3 },
+];
 const services = [
-	{ name: 'Services', id: 1 },
-	{ name: 'service A', id: 2 },
-	{ name: 'service B', id: 3 },
-]
+	{ name: "Services", id: 1 },
+	{ name: "service A", id: 2 },
+	{ name: "service B", id: 3 },
+];
 const sessions = [
-	{ name: 'Sessions', id: 1 },
-	{ name: '12pm-2pm', id: 2 },
-	{ name: '2pm-4pm', id: 3 },
-]
+	{ name: "Sessions", id: 1 },
+	{ name: "12pm-2pm", id: 2 },
+	{ name: "2pm-4pm", id: 3 },
+];
 
 function Book({ logo }) {
-	const dateToday = new Date()
-	const elements = useElements()
-	const stripe = useStripe()
-	const { user } = useContext(UserContext)
-	const [bookArr, setBookArr] = React.useState([])
-	const [selectDate, setSelectDate] = React.useState(null)
-	const [succeeded, setSucceeded] = React.useState(false)
-	const [processing, setProcessing] = React.useState(false)
-	const [emailError, setEmailError] = React.useState(false)
-	const [_error, set_Error] = React.useState(null)
-	const [disabled, setDisabled] = React.useState(true)
-	const [clientSecret, setClientSecret] = React.useState('')
-	const [location, setLocation] = React.useState(null)
-	const [allowproceed, setAllowProceed] = React.useState(false) //CHANGE BACK TO FALSE
-	const [permission, setPermission] = React.useState(false)
+	const dateToday = new Date();
+	const elements = useElements();
+	const stripe = useStripe();
+	const { user } = useContext(UserContext);
+	const [bookArr, setBookArr] = React.useState([]);
+	const [selectDate, setSelectDate] = React.useState(null);
+	const [succeeded, setSucceeded] = React.useState(false);
+	const [processing, setProcessing] = React.useState(false);
+	const [emailError, setEmailError] = React.useState(false);
+	const [_error, set_Error] = React.useState(null);
+	const [disabled, setDisabled] = React.useState(true);
+	const [clientSecret, setClientSecret] = React.useState("");
+	const [location, setLocation] = React.useState(null);
+	const [allowproceed, setAllowProceed] = React.useState(false); //CHANGE BACK TO FALSE
+	const [permission, setPermission] = React.useState(false);
 	const [bookingData, setBookingData] = React.useState({
-		session: '',
-		category: '',
-		service: '',
-		personnel: '',
-	})
-	const [userEmail, setUserEmail] = React.useState('')
+		session: "",
+		category: "",
+		service: "",
+		personnel: "",
+	});
+	const [userEmail, setUserEmail] = React.useState("");
 
 	React.useEffect(() => {
-		db.collection('location').onSnapshot((snapshot) => {
+		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
 				data: doc.data(),
-			}))
-			setLocation(results[0].data.location)
-		})
+			}));
+			setLocation(results[0].data.location);
+		});
 
-		if (Notification.permission !== 'granted') {
+		if (Notification.permission !== "granted") {
 			Notification.requestPermission().then((perm) => {
-				if (perm === 'granted') {
-					setPermission(perm)
+				if (perm === "granted") {
+					setPermission(perm);
 				}
-			})
+			});
 		}
-	}, [])
+	}, []);
 
 	if (succeeded && permission) {
-		new Notification('Payment Notification', {
-			body: 'Your Payment Was Successful!',
+		new Notification("Payment Notification", {
+			body: "Your Payment Was Successful!",
 			icon: logo,
-			tag: 'payment notification',
+			tag: "payment notification",
 			requireInteraction: true,
-			lang: 'en-US',
-		})
+			lang: "en-US",
+		});
 	}
 
 	const handleSelect = (ranges) => {
 		if (selectDate) {
-			setSelectDate(null)
+			setSelectDate(null);
 		}
 		if (ranges > dateToday) {
-			db.collection('bookings')
+			db.collection("bookings")
 				.doc(`${AUTHORIZED_ID.id_one}/`)
 				.collection(ranges.toDateString())
 				.onSnapshot((snapshot) => {
 					const results = snapshot.docs.map((doc) => ({
 						data: doc.data(),
-					}))
+					}));
 					// console.log(results)
 					const dt = results?.filter(
 						(booking) => booking?.data.date === ranges.toDateString()
-					)
+					);
 
-					setBookArr(dt)
+					setBookArr(dt);
 					if (dt.length === 3) {
-						return
+						return;
 					} else {
-						setSelectDate(ranges.toDateString())
+						setSelectDate(ranges.toDateString());
 					}
-				})
+				});
 		}
-	}
+	};
 
 	const handleOnChange = (e) => {
-		setBookingData({ ...bookingData, [e.target.name]: e.target.value })
-	}
+		setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+	};
 
 	const handleChange = async (event) => {
-		setDisabled(event.empty)
-		set_Error(event.error ? event.error.message : '')
-	}
+		setDisabled(event.empty);
+		set_Error(event.error ? event.error.message : "");
+	};
 
 	const cardStyle = {
 		style: {
 			base: {
-				color: '#32325d',
-				fontFamily: 'Arial, sans-serif',
-				fontSmoothing: 'antialiased',
-				fontSize: '16px',
-				'::placeholder': {
-					color: '#32325d',
+				color: "#32325d",
+				fontFamily: "Arial, sans-serif",
+				fontSmoothing: "antialiased",
+				fontSize: "16px",
+				"::placeholder": {
+					color: "#32325d",
 				},
 			},
 			invalid: {
-				color: '#fa755a',
-				iconColor: '#fa755a',
+				color: "#fa755a",
+				iconColor: "#fa755a",
 			},
 		},
-	}
+	};
 
 	const createPaymentIntent = async () => {
-		const price = Number(process.env.REACT_APP_BOOKING_PRICE)
+		const price = Number(process.env.REACT_APP_BOOKING_PRICE);
 
 		if (user) {
 			try {
 				const { data } = await axios.post(
-					'/.netlify/functions/create-payment-intent-book',
+					"/.netlify/functions/create-payment-intent-book",
 					JSON.stringify({ price })
-				)
-				setClientSecret(data.clientSecret)
-				setAllowProceed(true)
+				);
+				setClientSecret(data.clientSecret);
+				setAllowProceed(true);
 			} catch (error) {
 				set_Error(
-					error?.response?.data ? 'Please contact hairposey Admin...' : ''
-				)
+					error?.response?.data ? "Please contact hairposey Admin..." : ""
+				);
 			}
 		} else if (userEmail) {
 			if (ValidateEmail(userEmail)) {
 				if (emailError) {
-					setEmailError(false)
+					setEmailError(false);
 				}
 				try {
 					const { data } = await axios.post(
-						'/.netlify/functions/create-payment-intent-book',
+						"/.netlify/functions/create-payment-intent-book",
 						JSON.stringify({ price })
-					)
-					setClientSecret(data.clientSecret)
-					setAllowProceed(true)
+					);
+					setClientSecret(data.clientSecret);
+					setAllowProceed(true);
 				} catch (error) {
 					set_Error(
-						error?.response?.data ? 'Please contact hairposey Admin...' : ''
-					)
+						error?.response?.data ? "Please contact hairposey Admin..." : ""
+					);
 				}
 			} else {
-				setEmailError(true)
+				setEmailError(true);
 			}
 		}
-	}
+	};
 
 	// Proceed function
 	const handleSubmit = async (ev) => {
-		ev.preventDefault()
+		ev.preventDefault();
 		// One time payment
-		setProcessing(true)
+		setProcessing(true);
 
 		if (clientSecret) {
 			const payload = await stripe.confirmCardPayment(clientSecret, {
 				payment_method: {
 					card: elements.getElement(CardElement),
 				},
-			})
+			});
 
 			if (payload.error) {
-				set_Error(`Payment failed ${payload.error.message}`)
-				setProcessing(false)
+				set_Error(`Payment failed ${payload.error.message}`);
+				setProcessing(false);
 			} else {
 				if (payload?.paymentIntent?.client_secret) {
-					set_Error(null)
-					setProcessing(false)
-					setSucceeded(true)
+					set_Error(null);
+					setProcessing(false);
+					setSucceeded(true);
 				}
 			}
 		}
 
-		db.collection('bookings')
+		db.collection("bookings")
 			.doc(`${AUTHORIZED_ID.id_one}/`)
 			.collection(selectDate)
 			.add({
@@ -218,28 +218,28 @@ function Book({ logo }) {
 				personnel: bookingData.personnel,
 			})
 			.then(() => {
-				console.log(`SUCCESSFULL`)
+				console.log(`SUCCESSFULL`);
 			})
-			.catch((error) => console.log('Error' + error.message))
+			.catch((error) => console.log("Error" + error.message));
 
-		setUserEmail('')
-		setSelectDate('')
+		setUserEmail("");
+		setSelectDate("");
 		setBookingData({
-			session: '',
-			category: '',
-			service: '',
-			personnel: '',
-		})
+			session: "",
+			category: "",
+			service: "",
+			personnel: "",
+		});
 
 		setTimeout(() => {
-			// SendClientSuccessfulPurchaseEmail()
-			// SendMerchantSuccessfulPurchaseEmail()
-		}, 1000)
+			SendClientSuccessfulPurchaseEmail();
+			SendMerchantSuccessfulPurchaseEmail();
+		}, 1000);
 
 		setTimeout(() => {
-			window.location.reload()
-		}, 5000)
-	}
+			window.location.reload();
+		}, 5000);
+	};
 
 	const messageParams = {
 		name: user?.displayName || userEmail,
@@ -253,22 +253,22 @@ function Book({ logo }) {
 			bookingData.personnel
 		}. Please ensure to come early. Thank you for your patronage!`,
 		client: user?.email || userEmail,
-		sender: 'Hairposey',
-	}
+		sender: "Hairposey",
+	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
 			.send(
-				'service_vvie6xo',
-				'template_d72ypjk',
+				"service_vvie6xo",
+				"template_d72ypjk",
 				messageParams,
-				'gIT1RsNcapyNz6JR2'
+				"gIT1RsNcapyNz6JR2"
 			)
 			.then((res) => {})
-			.catch((err) => console.log(err))
-	}
+			.catch((err) => console.log(err));
+	};
 
 	const ManagementMessage = {
-		name: 'Hairposey',
+		name: "Hairposey",
 		message: `Hello. Hair appointment for ${
 			user?.displayName || userEmail
 		} has been booked for ${selectDate}. Here are the details of booking: Category: ${
@@ -279,19 +279,19 @@ function Book({ logo }) {
 			user?.email || userEmail
 		}`,
 		client: AUTHORIZED_ID.id_one,
-		sender: 'Hairposey Bookings',
-	}
+		sender: "Hairposey Bookings",
+	};
 	const SendMerchantSuccessfulPurchaseEmail = () => {
 		emailjs
 			.send(
-				'service_vvie6xo',
-				'template_d72ypjk',
+				"service_vvie6xo",
+				"template_d72ypjk",
 				ManagementMessage,
-				'gIT1RsNcapyNz6JR2'
+				"gIT1RsNcapyNz6JR2"
 			)
 			.then((res) => {})
-			.catch((err) => console.log(err))
-	}
+			.catch((err) => console.log(err));
+	};
 
 	return (
 		<div className="bg-blur3 tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-p-5 lg:tw-pl-0 tw-mx-auto">
@@ -304,12 +304,12 @@ function Book({ logo }) {
 						className="tw-flex-col tw-text-neutral-400 tw-text-xs tw-font-light tw-flex tw-items-center tw-justify-center tw-mb-7 hover:tw-text-neutral-600 tw-ease tw-duration-300 ">
 						<MdLocationPin size={35} className="tw-text-yellow-500 tw-mb-2" />
 						<span className="navStyleChildWhite">
-							<span className="tw-text-green-500">Currently</span>, we are in{' '}
+							<span className="tw-text-green-500">Currently</span>, we are in{" "}
 							{location}
 						</span>
 					</a>
 					<h2>
-						For Your Hair Appointment, Schedule{' '}
+						For Your Hair Appointment, Schedule{" "}
 						<span className="tw-text-yellow-500">Now!</span>
 					</h2>
 				</div>
@@ -327,8 +327,8 @@ function Book({ logo }) {
 							<div
 								className={
 									selectDate
-										? 'tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-shadow-gray-300 tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300'
-										: 'tw-opacity-0'
+										? "tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-shadow-gray-300 tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300"
+										: "tw-opacity-0"
 								}>
 								<span>- You have selected {selectDate} -</span>
 							</div>
@@ -351,8 +351,8 @@ function Book({ logo }) {
 										onChange={(e) => setUserEmail(e.target.value)}
 										className={
 											emailError
-												? 'tw-border-[1px] tw-border-red-700 tw-bg-red-200'
-												: 'tw-shadow-xl tw-rounded-[6px] tw-border-[0px]'
+												? "tw-border-[1px] tw-border-red-700 tw-bg-red-200"
+												: "tw-shadow-xl tw-rounded-[6px] tw-border-[0px]"
 										}
 									/>
 									<p>Email Address...</p>
@@ -363,8 +363,8 @@ function Book({ logo }) {
 					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0">
 						<form
 							onSubmit={(e) => {
-								e.preventDefault()
-								createPaymentIntent()
+								e.preventDefault();
+								createPaymentIntent();
 							}}
 							className="tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] tw-mt-[-25px]">
 							<div className="tw-mb-[20px] tw-w-full">
@@ -446,8 +446,8 @@ function Book({ logo }) {
 						<form
 							className={
 								allowproceed
-									? 'tw-block tw-ease-in tw-duration-300 tw-w-full tw-pt-2'
-									: 'tw-hidden tw-ease-in tw-duration-300'
+									? "tw-block tw-ease-in tw-duration-300 tw-w-full tw-pt-2"
+									: "tw-hidden tw-ease-in tw-duration-300"
 							}
 							id="payment-form"
 							onSubmit={handleSubmit}>
@@ -482,13 +482,13 @@ function Book({ logo }) {
 									<span
 										className={
 											processing || disabled || succeeded
-												? 'tw-text-neutral-50 tw-font-light'
-												: 'tw-text-orange-500 tw-font-light'
+												? "tw-text-neutral-50 tw-font-light"
+												: "tw-text-orange-500 tw-font-light"
 										}>
 										{processing ? (
 											<div className="spinner" id="spinner"></div>
 										) : (
-											'Pay now'
+											"Pay now"
 										)}
 									</span>
 								</button>
@@ -506,20 +506,20 @@ function Book({ logo }) {
 								<div className="tw-w-[90%] tw-mx-auto tw-pt-1">
 									<p className="tw-text-center tw-text-xs tw-font-light tw-mt-2 tw-text-green-500">
 										Payment Succeeded.
-										{user?.email === 'tisijola7@gmail.com' && (
+										{user?.email === "tisijola7@gmail.com" && (
 											<span>
-												{' '}
+												{" "}
 												see the result in your
 												<a
 													className="tw-text-blue-600"
 													href={`https://dashboard.stripe.com/test/payments`}
 													target="_blank"
 													rel="noreferrer">
-													{' '}
+													{" "}
 													Stripe Dashboard.
 												</a>
 											</span>
-										)}{' '}
+										)}{" "}
 										Page will refresh in 10 seconds...
 									</p>
 								</div>
@@ -529,7 +529,7 @@ function Book({ logo }) {
 				</div>
 			</div>
 		</div>
-	)
+	);
 }
 
-export default Book
+export default Book;
