@@ -3,9 +3,15 @@ function Button(props) {
 		<button
 			onClick={props.handleFunc}
 			type={props.type}
-			className={`tw-bg-neutral-900 tw-text-xs tw-text-white tw-py-1.5 tw-px-6 tw-rounded-sm tw-font-light hover:tw-bg-white hover:tw-text-black tw-ease-in tw-duration-300`}>
+			className={`${
+				props.isTrans
+					? "tw-bg-transparent tw-border-[1px] tw-border-pink-900"
+					: "tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-800"
+			} tw-text-${
+				props.sizes
+			} tw-text-white tw-py-1.5 tw-px-12 tw-font-light  tw-shadow-lg tw-ease-in tw-duration-300 tw-rounded-lg hover:tw-text-pink-900`}>
 			{props.children}
 		</button>
-	)
+	);
 }
-export default Button
+export default Button;

@@ -1,12 +1,12 @@
-import React from 'react'
-import { AiOutlineInstagram } from 'react-icons/ai'
-import { FaTiktok } from 'react-icons/fa'
-import { SiMastercard } from 'react-icons/si'
-import { SiTreyarch } from 'react-icons/si'
-import { RiVisaLine } from 'react-icons/ri'
-import { SiAmericanexpress } from 'react-icons/si'
-import { countries } from '../country'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { AiOutlineInstagram } from "react-icons/ai";
+import { FaTiktok } from "react-icons/fa";
+import { SiMastercard } from "react-icons/si";
+import { SiTreyarch } from "react-icons/si";
+import { RiVisaLine } from "react-icons/ri";
+import { SiAmericanexpress } from "react-icons/si";
+import { countries } from "../country";
+import { Link } from "react-router-dom";
 // import { MdLocationPin } from 'react-icons/md'
 // import { googleSearch, location } from '../constant'
 
@@ -15,119 +15,119 @@ function Footer() {
 		{ id: 1, type: <SiMastercard size={20} color="darkorange" /> },
 		{ id: 2, type: <RiVisaLine size={20} color="white" /> },
 		{ id: 3, type: <SiAmericanexpress size={20} color="white" /> },
-	]
-	const [country, setCountry] = React.useState('United States')
-	const [showContactForm, setShowContactForm] = React.useState(false)
-	const [showTerms, setShowTerms] = React.useState(false)
+	];
+	const [country, setCountry] = React.useState("United States");
+	const [showContactForm, setShowContactForm] = React.useState(false);
+	const [showTerms, setShowTerms] = React.useState(false);
 	const handleOnChange = (e) => {
-		setCountry(e.target.value)
-		localStorage.setItem('country', e.target.value)
-	}
+		setCountry(e.target.value);
+		localStorage.setItem("country", e.target.value);
+	};
 	const [contactInput, setcontactInput] = React.useState({
-		name: '',
-		email: '',
-		subject: '',
-		message: '',
+		name: "",
+		email: "",
+		subject: "",
+		message: "",
 		error: null,
-	})
+	});
 
 	const links = [
 		{
 			id: 1,
-			name: 'Contact Us',
+			name: "Contact Us",
 		},
 		{
 			id: 2,
-			name: 'Terms and Conditions',
+			name: "Terms and Conditions",
 		},
 		{
 			id: 3,
-			name: 'Shipping & Returns',
+			name: "Shipping & Returns",
 		},
 		{
 			id: 4,
-			name: 'Privacy Policy',
+			name: "Privacy Policy",
 		},
-	]
+	];
 
 	const Cambodian = [
 		{
-			id: '1',
-			name: 'Bundles',
-			route: '/bundles/cambodian-hair',
+			id: "1",
+			name: "Bundles",
+			route: "/bundles/cambodian-hair",
 		},
 		{
-			id: '2',
-			name: 'Closure / Frontal',
-			route: '/closure-frontal/cambodian-hair',
+			id: "2",
+			name: "Closure / Frontal",
+			route: "/closure-frontal/cambodian-hair",
 		},
 		{
-			id: '3',
-			name: 'Jet Black / Blonde',
-			route: '/jet-black-&-blonde/cambodian-hair',
+			id: "3",
+			name: "Jet Black / Blonde",
+			route: "/jet-black-&-blonde/cambodian-hair",
 		},
-	]
+	];
 	const vietnamese = [
 		{
-			id: '1',
-			name: 'Bundles',
-			route: '/bundles/vietnamese-hair',
+			id: "1",
+			name: "Bundles",
+			route: "/bundles/vietnamese-hair",
 		},
 		{
-			id: '2',
-			name: 'Closure / Frontal',
-			route: '/closure-frontal/vietnamese-hair',
+			id: "2",
+			name: "Closure / Frontal",
+			route: "/closure-frontal/vietnamese-hair",
 		},
 		{
-			id: '3',
-			name: 'Jet Black / Blonde',
-			route: '/jet-black-&-blonde/vietnamese-hair',
+			id: "3",
+			name: "Jet Black / Blonde",
+			route: "/jet-black-&-blonde/vietnamese-hair",
 		},
-	]
+	];
 	const Brazillian = [
 		{
-			id: '1',
-			name: 'Bundles',
-			route: '/bundles/brazilian-hair',
+			id: "1",
+			name: "Bundles",
+			route: "/bundles/brazilian-hair",
 		},
 		{
-			id: '2',
-			name: 'Closure / Frontal',
-			route: '/closure-frontal/brazilian-hair',
+			id: "2",
+			name: "Closure / Frontal",
+			route: "/closure-frontal/brazilian-hair",
 		},
 		{
-			id: '3',
-			name: 'Jet Black / Blonde',
-			route: '/jet-black-&-blonde/brazilian-hair',
+			id: "3",
+			name: "Jet Black / Blonde",
+			route: "/jet-black-&-blonde/brazilian-hair",
 		},
-	]
+	];
 
 	const handleContactInput = (e) => {
-		setcontactInput({ ...contactInput, [e.target.name]: e.target.value })
-	}
+		setcontactInput({ ...contactInput, [e.target.name]: e.target.value });
+	};
 
 	function handleSubmit(e) {
-		e.preventDefault()
+		e.preventDefault();
 		try {
 			window.open(
 				`mailto:'hairposey@gmail.com'?subject=${contactInput.subject}&body=${contactInput.name}: ${contactInput.message}. My email is ${contactInput.email}`
-			)
+			);
 			setcontactInput({
-				name: '',
-				email: '',
-				subject: '',
-				message: '',
+				name: "",
+				email: "",
+				subject: "",
+				message: "",
 				error: null,
-			})
+			});
 		} catch (error) {
-			console.log(error)
-			setcontactInput({ ...contactInput, error: error.message })
+			console.log(error);
+			setcontactInput({ ...contactInput, error: error.message });
 		}
-		setShowContactForm(false)
+		setShowContactForm(false);
 	}
 
 	return (
-		<footer className="tw-flex tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex-col tw-pt-20 tw-pb-5 tw-justify-center tw-items-center tw-border-t-[1px] tw-border-neutral-300 tw-text-white">
+		<footer className="tw-flex tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex-col tw-pt-20 tw-pb-5 tw-justify-center tw-items-center tw-border-t-[1px] tw-border-pink-800 tw-text-white">
 			<span className="tw-text-center tw-mb-5 tw-text-sm tw-font-light">
 				Quick Links
 			</span>
@@ -139,7 +139,8 @@ function Footer() {
 							{Cambodian.map((ind) => (
 								<Link
 									key={ind.id}
-									to={ind.route}
+									to=""
+									// to={ind.route}
 									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
 									{ind.name}
 								</Link>
@@ -154,7 +155,8 @@ function Footer() {
 							{vietnamese.map((veit) => (
 								<Link
 									key={veit.id}
-									to={veit.route}
+									to=""
+									// to={veit.route}
 									// onClick={() => navigate(`/${veit.route}`)}
 									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
 									{veit.name}
@@ -170,7 +172,8 @@ function Footer() {
 							{Brazillian.map((braz) => (
 								<Link
 									key={braz.id}
-									to={braz.route}
+									to=""
+									// to={braz.route}
 									// onClick={() => navigate(`/${braz.route}`)}
 									className="hover:tw-cursor-pointer hover:tw-underline tw-mb-1 ">
 									{braz.name}
@@ -186,15 +189,15 @@ function Footer() {
 							<li
 								key={link.id}
 								onClick={
-									link.name === 'Contact Us'
+									link.name === "Contact Us"
 										? () => {
-												setShowContactForm(!showContactForm)
-												setShowTerms(false)
+												setShowContactForm(!showContactForm);
+												setShowTerms(false);
 										  }
-										: link.name === 'Terms and Conditions'
+										: link.name === "Terms and Conditions"
 										? () => {
-												setShowTerms(!showTerms)
-												setShowContactForm(false)
+												setShowTerms(!showTerms);
+												setShowContactForm(false);
 										  }
 										: null
 								}
@@ -780,8 +783,8 @@ function Footer() {
 						key={item.id}
 						className={
 							item.id !== 3
-								? 'tw-mx-2 tw-border tw-border-gray-300 tw-rounded-sm tw-px-1'
-								: 'tw-mx-2'
+								? "tw-mx-2 tw-border tw-border-gray-300 tw-rounded-sm tw-px-1"
+								: "tw-mx-2"
 						}>
 						{item.type}
 					</div>
@@ -796,7 +799,7 @@ function Footer() {
 				</div>
 				<div className="md:tw-flex tw-ml-1">
 					<p className="tw-flex tw-items-center">
-						<span>Design by</span>{' '}
+						<span>Design by</span>{" "}
 						<span className="rose-gold tw-ml-1">
 							<a
 								href="https://www.linkedin.com/in/oluwatosin-isijola-33333ba8/"
@@ -827,7 +830,7 @@ function Footer() {
 				</a>
 			</div>
 		</footer>
-	)
+	);
 }
 
-export default Footer
+export default Footer;
