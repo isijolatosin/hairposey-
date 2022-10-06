@@ -1,6 +1,6 @@
 /* @import url("https://fonts.googleapis.com/css?family=Montserrat:400|Inconsolata:400"); */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Display:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 :root {
 	/* COLORS  */
@@ -87,9 +87,9 @@
 	--shadow-6: 0px 2px 5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0);
 	/* typography */
 	--defaultFontSize: 87.5%;
-	--headingFont: 'Noto Sans Display', monospace;
-	--bodyFont: 'Noto Sans Display', sans-serif;
-	--Oswald: 'Oswald';
+	--headingFont: "Noto Sans Display", monospace;
+	--bodyFont: "Noto Sans Display", sans-serif;
+	--Oswald: "Oswald";
 	--smallText: 0.8em;
 	--extraSmallText: 0.7em;
 	/* rest */
@@ -433,10 +433,8 @@ select:focus {
 	font-size: 1.1rem;
 	color: var(--grey-1000);
 	font-weight: 300;
-	/* border: none; */
-	/* outline: none; */
 	width: 20.7rem;
-	/* border-radius: 3px !important; */
+	margin-top: 20px;
 }
 
 .bookLabel p {
@@ -759,7 +757,7 @@ input:not(:placeholder-shown) + p {
 	transition: transform 0.3s;
 }
 .social-media-list a::before {
-	content: '';
+	content: "";
 	position: absolute;
 	width: 115%;
 	height: 115%;
@@ -784,7 +782,7 @@ input:not(:placeholder-shown) + p {
 }
 .navStyleChild::after {
 	position: absolute;
-	content: '';
+	content: "";
 	width: 0%;
 	height: 1px;
 	background-color: rgb(133 77 14);
@@ -801,7 +799,7 @@ input:not(:placeholder-shown) + p {
 }
 .navStyleChildWhite::after {
 	position: absolute;
-	content: '';
+	content: "";
 	width: 0%;
 	height: 1px;
 	background-color: rgb(255, 255, 255);
@@ -999,7 +997,7 @@ input:not(:placeholder-shown) + p {
 }
 .card:after {
 	width: 100%;
-	content: '';
+	content: "";
 	left: 0px;
 	bottom: 0px;
 	height: 150px;
@@ -1032,8 +1030,8 @@ input:not(:placeholder-shown) + p {
 	align-items: center;
 	justify-content: flex-end;
 	flex-direction: column;
-	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 .card button {
 	padding: 2px 17px;
@@ -1048,8 +1046,8 @@ input:not(:placeholder-shown) + p {
 	font-size: 0.75rem;
 	font-weight: bold;
 	outline: none;
-	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
-		'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+		"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 .card button:hover {
 	background: #fff;
@@ -1126,7 +1124,7 @@ input:not(:placeholder-shown) + p {
 	font-size: 12px;
 }
 ._btn:before {
-	content: '';
+	content: "";
 	position: absolute;
 	width: 0;
 	height: 0;
@@ -1155,12 +1153,12 @@ input:not(:placeholder-shown) + p {
 	cursor: pointer;
 }
 .subMenu span:before {
-	content: '';
+	content: "";
 	opacity: 0;
 	transition: opacity 0.3s;
 }
 .subMenu span:hover:before {
-	content: '';
+	content: "";
 	position: absolute;
 	height: 0;
 	width: 6px;
@@ -1172,12 +1170,12 @@ input:not(:placeholder-shown) + p {
 	border-bottom: 24px solid transparent;
 }
 .subMenu span:after {
-	content: '';
+	content: "";
 	opacity: 0;
 	transition: opacity 0.3s;
 }
 .subMenu span:hover:after {
-	content: '';
+	content: "";
 	position: absolute;
 	height: 0;
 	width: 6px;
@@ -1273,12 +1271,12 @@ input:not(:placeholder-shown) + p {
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-	content: '';
+	content: "";
 	position: absolute;
 	display: none;
 }
 .checkmark2:after {
-	content: '';
+	content: "";
 	position: absolute;
 	display: none;
 }
@@ -1359,7 +1357,7 @@ input:not(:placeholder-shown) + p {
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark-radio:after {
-	content: '';
+	content: "";
 	position: absolute;
 	display: none;
 }
@@ -1379,7 +1377,27 @@ input:not(:placeholder-shown) + p {
 	background: white;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Arizonia&family=Oswald:wght@200&display=swap');
+progress {
+	border: none;
+	height: 5px;
+	width: 300px;
+}
+
+progress::-moz-progress-bar {
+	background: lightcolor;
+}
+
+progress::-webkit-progress-value {
+	border-radius: 5px;
+	background: darkgreen;
+}
+
+progress::-webkit-progress-bar {
+	border-radius: 5px;
+	background: rgb(48, 48, 48);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Arizonia&family=Oswald:wght@200&display=swap");
 .font_cursive {
-	font-family: 'Arizonia';
+	font-family: "Arizonia";
 }

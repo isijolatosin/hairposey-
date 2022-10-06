@@ -63,7 +63,6 @@ function HomePage() {
 
 	const handBack = () => {
 		setSelected(false);
-		console.log("first");
 	};
 
 	return (
@@ -95,7 +94,7 @@ function HomePage() {
 										type="button"
 										children="Shop"
 										size={sizes.medium}
-										isTrans={true}
+										isgradBG={true}
 									/>
 								</div>
 								<div className="tw-mx-5">
@@ -104,7 +103,7 @@ function HomePage() {
 										type="button"
 										children="Booking"
 										size={sizes.medium}
-										isTrans={true}
+										isgradBG={true}
 									/>
 								</div>
 							</div>

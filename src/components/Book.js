@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useContext } from "react";
 import emailjs from "emailjs-com";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
@@ -12,29 +13,23 @@ import { MdLocationPin } from "react-icons/md";
 import { GoAlert } from "react-icons/go";
 import axios from "axios";
 import { db } from "../firebase";
-import { AUTHORIZED_ID, googleSearch } from "../constant";
+import { AUTHORIZED_ID, googleSearch, information } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
+import Progressbar from "./shared/Progressbar";
 
-const categories = [
-	{ name: "Category", id: 1 },
-	{ name: "cat A", id: 2 },
-	{ name: "cat B", id: 3 },
-];
-const staffs = [
-	{ name: "Staff", id: 1 },
-	{ name: "staff A", id: 2 },
-	{ name: "staff B", id: 3 },
-];
-const services = [
-	{ name: "Services", id: 1 },
-	{ name: "service A", id: 2 },
-	{ name: "service B", id: 3 },
-];
-const sessions = [
-	{ name: "Sessions", id: 1 },
-	{ name: "12pm-2pm", id: 2 },
-	{ name: "2pm-4pm", id: 3 },
-];
+const categories = [];
+const services = [];
+const addOnServices = [];
+
+information.map((data) => {
+	if (data.title === "Category") {
+		categories.push(...data.info);
+	} else if (data.title === "Services") {
+		services.push(...data.info);
+	} else if (data.title === "Add On Services") {
+		addOnServices.push(...data.info);
+	}
+});
 
 function Book({ logo }) {
 	const dateToday = new Date();
@@ -52,13 +47,12 @@ function Book({ logo }) {
 	const [location, setLocation] = React.useState(null);
 	const [allowproceed, setAllowProceed] = React.useState(false); //CHANGE BACK TO FALSE
 	const [permission, setPermission] = React.useState(false);
-	const [bookingData, setBookingData] = React.useState({
-		session: "",
-		category: "",
-		service: "",
-		personnel: "",
-	});
+	const [authDate, setAuthDate] = React.useState(false);
+	const [error, setError] = React.useState(false);
+	const [bookingData, setBookingData] = React.useState({});
 	const [userEmail, setUserEmail] = React.useState("");
+	const [timeleft, setTimeleft] = React.useState(0);
+	const [count, setCount] = React.useState(10);
 
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
@@ -87,30 +81,36 @@ function Book({ logo }) {
 		});
 	}
 
-	const handleSelect = (ranges) => {
-		if (selectDate) {
-			setSelectDate(null);
-		}
-		if (ranges > dateToday) {
-			db.collection("bookings")
-				.doc(`${AUTHORIZED_ID.id_one}/`)
-				.collection(ranges.toDateString())
-				.onSnapshot((snapshot) => {
-					const results = snapshot.docs.map((doc) => ({
-						data: doc.data(),
-					}));
-					// console.log(results)
-					const dt = results?.filter(
-						(booking) => booking?.data.date === ranges.toDateString()
-					);
+	const handleSelect = (date) => {
+		if (date.getDate() >= dateToday.getDate() + 7) {
+			if (selectDate) {
+				setSelectDate(null);
+			}
+			if (date > dateToday) {
+				db.collection("bookings")
+					.doc(`${AUTHORIZED_ID.id_one}/`)
+					.collection(date.toDateString())
+					.onSnapshot((snapshot) => {
+						const results = snapshot.docs.map((doc) => ({
+							data: doc.data(),
+						}));
+						// console.log(results)
+						const dt = results?.filter(
+							(booking) => booking?.data.date === date.toDateString()
+						);
 
-					setBookArr(dt);
-					if (dt.length === 3) {
-						return;
-					} else {
-						setSelectDate(ranges.toDateString());
-					}
-				});
+						setBookArr(dt);
+						if (dt.length === 10) {
+							return;
+						} else {
+							setSelectDate(date.toDateString());
+						}
+					});
+			}
+			setAuthDate(false);
+		} else {
+			setAuthDate(true);
+			setSelectDate(false);
 		}
 	};
 
@@ -201,44 +201,34 @@ function Book({ logo }) {
 					set_Error(null);
 					setProcessing(false);
 					setSucceeded(true);
+
+					db.collection("bookings")
+						.doc(`${AUTHORIZED_ID.id_one}/`)
+						.collection(selectDate)
+						.add({
+							date: selectDate,
+							customer: user?.displayName || userEmail,
+							email: user?.email || userEmail,
+							category: bookingData.category,
+							service: bookingData.service,
+							addOnServices: bookingData.addOnServices,
+						})
+						.then(() => {
+							console.log(`SUCCESSFULL`);
+						})
+						.catch((error) => console.log("Error" + error.message));
+
+					setUserEmail("");
+					setSelectDate("");
+					setBookingData({});
+
+					setTimeout(() => {
+						// SendClientSuccessfulPurchaseEmail();
+						// SendMerchantSuccessfulPurchaseEmail();
+					}, 1000);
 				}
 			}
 		}
-
-		db.collection("bookings")
-			.doc(`${AUTHORIZED_ID.id_one}/`)
-			.collection(selectDate)
-			.add({
-				date: selectDate,
-				customer: user?.displayName || userEmail,
-				email: user?.email || userEmail,
-				category: bookingData.category,
-				session: bookingData.session,
-				service: bookingData.service,
-				personnel: bookingData.personnel,
-			})
-			.then(() => {
-				console.log(`SUCCESSFULL`);
-			})
-			.catch((error) => console.log("Error" + error.message));
-
-		setUserEmail("");
-		setSelectDate("");
-		setBookingData({
-			session: "",
-			category: "",
-			service: "",
-			personnel: "",
-		});
-
-		setTimeout(() => {
-			SendClientSuccessfulPurchaseEmail();
-			SendMerchantSuccessfulPurchaseEmail();
-		}, 1000);
-
-		setTimeout(() => {
-			window.location.reload();
-		}, 5000);
 	};
 
 	const messageParams = {
@@ -247,10 +237,8 @@ function Book({ logo }) {
 			user?.displayName || userEmail
 		}. Your hair appointment has been booked for ${selectDate}. Your details are as follow - Category: ${
 			bookingData.category
-		}, Services: ${bookingData.service}, Session: ${
-			bookingData.session
-		}, Personnel: ${
-			bookingData.personnel
+		}, Services: ${bookingData.service}, Add-On-Service: ${
+			bookingData.addOnServices
 		}. Please ensure to come early. Thank you for your patronage!`,
 		client: user?.email || userEmail,
 		sender: "Hairposey",
@@ -273,11 +261,9 @@ function Book({ logo }) {
 			user?.displayName || userEmail
 		} has been booked for ${selectDate}. Here are the details of booking: Category: ${
 			bookingData.category
-		}, Services: ${bookingData.service}, Session: ${
-			bookingData.session
-		}, Personnel: ${bookingData.personnel} Customer's Email: ${
-			user?.email || userEmail
-		}`,
+		}, Services: ${bookingData.service}, add-On-Services: ${
+			bookingData.addOnServices
+		}. Customer's Email: ${user?.email || userEmail}`,
 		client: AUTHORIZED_ID.id_one,
 		sender: "Hairposey Bookings",
 	};
@@ -292,6 +278,35 @@ function Book({ logo }) {
 			.then((res) => {})
 			.catch((err) => console.log(err));
 	};
+
+	React.useEffect(() => {
+		if (succeeded) {
+			const interval = setInterval(() => {
+				setTimeleft((oldValue) => {
+					const newValue = oldValue + 10;
+
+					if (newValue === 100) {
+						clearInterval(interval);
+					}
+
+					return newValue;
+				});
+				setCount((oldValue) => {
+					const newValue = oldValue - 1;
+
+					if (newValue === 0) {
+						clearInterval(interval);
+					}
+
+					return newValue;
+				});
+			}, 1000);
+
+			window.setTimeout(function () {
+				window.location.reload();
+			}, 10000);
+		}
+	}, [succeeded]);
 
 	return (
 		<div className="bg-blur3 tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-p-5 lg:tw-pl-0 tw-mx-auto">
@@ -314,86 +329,99 @@ function Book({ logo }) {
 					</h2>
 				</div>
 				<div className=" tw-p-2 lg:tw-p-5 xl:tw-pr-[20px] tw-flex tw-flex-col lg:tw-flex-row  xl:tw-flex-row">
-					<div className="tw-flex tw-flex-col tw-items-center tw-mt-[-40px] tw-px-5 lg:tw-mr-10">
+					<div className="tw-flex tw-flex-col tw-items-center tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
 						<div className="xl:tw-ml-0">
 							<Calendar
 								color="rgb(157 23 77)"
 								date={new Date()}
 								onChange={handleSelect}
 								dateDisplayFormat="yyyy-MM-dd"
+								showSelectionPreview={true}
 							/>
 						</div>
-						{bookArr.length < 3 ? (
-							<div
-								className={
-									selectDate
-										? "tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-shadow-gray-300 tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300"
-										: "tw-opacity-0"
-								}>
-								<span>- You have selected {selectDate} -</span>
-							</div>
-						) : (
-							<div className="tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-shadow-gray-300 tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300">
-								<span>We are booked for this date</span>
-							</div>
-						)}
+						<div className="tw-w-[332px]">
+							{authDate ? (
+								<div
+									className={
+										authDate
+											? "tw-w-full tw-text-xs tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+											: "tw-opacity-0"
+									}>
+									<span>BOOKINGS ARE ALLOWED 7 DAYS FROM TODAY</span>
+								</div>
+							) : (
+								<>
+									{bookArr.length <= 10 ? (
+										<div
+											className={
+												selectDate
+													? "tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+													: "tw-opacity-0"
+											}>
+											<span>Date selected {selectDate}</span>
+										</div>
+									) : (
+										<div className="tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300">
+											<span>We are booked for this date</span>
+										</div>
+									)}
+								</>
+							)}
 
-						{!user && (
-							<div className="tw-w-full tw-mt-10 lg:tw-mt-0">
-								<label className="bookLabel">
-									<input
-										type="text"
-										autoComplete="off"
-										placeholder=" "
-										name="email"
-										id="email"
-										value={userEmail}
-										onChange={(e) => setUserEmail(e.target.value)}
-										className={
-											emailError
-												? "tw-border-[1px] tw-border-red-700 tw-bg-red-200"
-												: "tw-shadow-xl tw-rounded-[6px] tw-border-[0px]"
-										}
-									/>
-									<p>Email Address...</p>
-								</label>
-							</div>
-						)}
+							{!user && (
+								<div className="tw-w-full tw-mt-10 lg:tw-mt-0">
+									<label className="bookLabel">
+										<input
+											type="text"
+											autoComplete="off"
+											placeholder=" "
+											name="email"
+											id="email"
+											value={userEmail}
+											onChange={(e) => setUserEmail(e.target.value)}
+											className={
+												emailError
+													? "tw-border-[1px] tw-border-red-700 tw-bg-red-200"
+													: "tw-shadow-xl tw-border-[0px]"
+											}
+										/>
+										<p>Email Address...</p>
+									</label>
+								</div>
+							)}
+						</div>
 					</div>
 					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0">
 						<form
 							onSubmit={(e) => {
 								e.preventDefault();
-								createPaymentIntent();
+								if (
+									!bookingData.service ||
+									!bookingData.category ||
+									!bookingData.addOnServices ||
+									(!selectDate && (!userEmail || !user?.email))
+								) {
+									setError(true);
+								} else {
+									createPaymentIntent();
+								}
 							}}
 							className="tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] tw-mt-[-25px]">
-							<div className="tw-mb-[20px] tw-w-full">
-								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
-									<label>Session</label>
-								</div>
-								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
-									onChange={handleOnChange}
-									id="Session"
-									value={bookingData.session}
-									name="session">
-									{sessions?.map((session) => (
-										<option key={session.id}>{session.name}</option>
-									))}
-								</select>
-							</div>
 							<div className="tw-mb-[20px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
 									<label>Category</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="category"
 									value={bookingData.category}
 									name="category">
+									<option value="" disabled selected>
+										Select category
+									</option>
 									{categories?.map((category) => (
-										<option key={category.id}>{category.name}</option>
+										<option key={category.id}>{category.desc}</option>
 									))}
 								</select>
 							</div>
@@ -402,40 +430,45 @@ function Book({ logo }) {
 									<label>Services</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="Service"
 									value={bookingData.service}
 									name="service">
+									<option value="" disabled selected>
+										Select service
+									</option>
 									{services?.map((service) => (
-										<option key={service.id}>{service.name}</option>
+										<option key={service.id}>{service.desc}</option>
 									))}
 								</select>
 							</div>
 							<div className="tw-mb-[20px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
-									<label>Personnel</label>
+									<label>Add-On Services</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-placeholder-gray-200 tw-ring-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
-									id="Personnel"
-									value={bookingData.personnel}
-									name="personnel">
-									{staffs?.map((staff) => (
-										<option key={staff.id}>{staff.name}</option>
+									id="addOnServices"
+									value={bookingData.addOnServices}
+									name="addOnServices">
+									<option value="" disabled selected>
+										Select add-on
+									</option>
+									{addOnServices?.map((ad) => (
+										<option key={ad.id}>{ad.desc}</option>
 									))}
 								</select>
-								{bookingData.personnel && !selectDate && (
+								{error && (
 									<span className="tw-text-rose-600 tw-text-[14px] tw-w-[100%] tw-mx-auto tw-mb-10">
 										Missing Condential: Date...
 									</span>
 								)}
 								<div className="tw-text-center tw-mt-[30px]">
-									{bookingData.personnel &&
-										bookingData.service &&
+									{bookingData.service &&
 										bookingData.category &&
-										bookingData.session &&
+										bookingData.addOnServices &&
 										selectDate &&
 										(userEmail || user?.email) && (
 											<Button type="submit">Submit Booking</Button>
@@ -503,8 +536,8 @@ function Book({ logo }) {
 								</div>
 							)}
 							{succeeded && (
-								<div className="tw-w-[90%] tw-mx-auto tw-pt-1">
-									<p className="tw-text-center tw-text-xs tw-font-light tw-mt-2 tw-text-green-500">
+								<div className="tw-w-[100%] tw-mx-auto tw-pt-1">
+									<p className="tw-text-xs tw-font-light tw-mt-2 tw-mb-[-9px] tw-text-green-500">
 										Payment Succeeded.
 										{user?.email === "tisijola7@gmail.com" && (
 											<span>
@@ -520,8 +553,10 @@ function Book({ logo }) {
 												</a>
 											</span>
 										)}{" "}
-										Page will refresh in 10 seconds...
+										Page will refresh in {count}{" "}
+										{count === 0 ? "second..." : "seconds..."}
 									</p>
+									<Progressbar value={timeleft} max={100} />
 								</div>
 							)}
 						</form>
