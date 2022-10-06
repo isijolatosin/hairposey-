@@ -42,7 +42,7 @@ export const Policy = [
 	{
 		id: 1,
 		policy:
-			"A $30 Nonrefundable deposit Is required for all Appointment confirmation. Booking must be done through the booking app.",
+			"A $30 Nonrefundable deposit Is required for all Appointment confirmation which will be paid on completion of booking. Booking must be done through the booking app.",
 	},
 	{
 		id: 2,

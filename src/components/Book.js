@@ -485,23 +485,38 @@ function Book({ logo }) {
 							id="payment-form"
 							onSubmit={handleSubmit}>
 							<div className="tw-bg-neutral-50 tw-pb-5 tw-rounded-lg">
-								<div className="tw-flex tw-max-w-[95%] tw-mb-1 tw-items-center tw-mx-auto tw-justify-end tw-mr-4 md:tw-mr-6 lg:tw-mr-5 xl:tw-mr-6">
-									<SiMastercard
-										size={20}
-										className="tw-text-yellow-500 tw-mr-3"
-									/>
-									<RiVisaLine size={30} className="tw-mr-3 tw-text-blue-900" />
-									<div className="tw-relative tw-flex tw-items-center tw-mr-5">
-										<RiVisaLine size={30} className="tw-text-blue-800" />
-										<span className="tw-absolute tw-bottom-[0px] tw-right-[1px] tw-text-[7px] tw-italic">
-											DEBIT
+								<div className="tw-flex tw-items-center tw-justify-between tw-ml-4">
+									<div>
+										<span className="tw-text-[10px]">
+											Amount due to payment:{" "}
+											<span className="tw-text-green-700 tw-text-[14px]">
+												CAD$30.00
+											</span>
 										</span>
 									</div>
-									<SiAmericanexpress
-										size={20}
-										className="tw-text-blue-600 tw-mt-2"
-									/>
+
+									<div className="tw-flex tw-max-w-[95%] tw-mb-1 tw-items-center tw-mx-auto tw-justify-end tw-mr-4 md:tw-mr-6 lg:tw-mr-5 xl:tw-mr-6">
+										<SiMastercard
+											size={20}
+											className="tw-text-yellow-500 tw-mr-3"
+										/>
+										<RiVisaLine
+											size={30}
+											className="tw-mr-3 tw-text-blue-900"
+										/>
+										<div className="tw-relative tw-flex tw-items-center tw-mr-5">
+											<RiVisaLine size={30} className="tw-text-blue-800" />
+											<span className="tw-absolute tw-bottom-[0px] tw-right-[1px] tw-text-[7px] tw-italic">
+												DEBIT
+											</span>
+										</div>
+										<SiAmericanexpress
+											size={20}
+											className="tw-text-blue-600 tw-mt-2"
+										/>
+									</div>
 								</div>
+
 								<CardElement
 									id="card-element"
 									options={cardStyle}
