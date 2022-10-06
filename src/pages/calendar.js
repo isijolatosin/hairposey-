@@ -149,12 +149,12 @@ const CalendarPage = () => {
 				<title>my-calendar</title>
 			</Helmet>
 			<div className="tw-bg-neutral-300 tw-h-[100vh] tw-flex tw-flex-col tw-items-center tw-justify-center">
-				<div className="tw-relative tw-w-full tw-px-10 md:tw-px-0 md:tw-w-[60%] lg:tw-w-[40%]">
+				<div className="tw-relative tw-w-full tw-mt-10 tw-px-10 md:tw-px-0 md:tw-w-[60%] lg:tw-w-[40%]">
 					{user?.email === AUTHORIZED_ID.id_one ||
 					user?.email === AUTHORIZED_ID.id_two ? (
 						<>
 							<Link to="/">
-								<RiHome5Fill className="tw-bg-white tw-absolute -tw-top-14 tw-left-10 md:tw-left-0 tw-shadow-lg tw-w-[40px] tw-h-[40px] tw-text-pink-900 tw-rounded-full tw-p-2 md:hover:tw-bg-pink-900 md:hover:tw-text-white hover:tw-w-[35px] hover:tw-p-4 hover:tw-h-[35px] tw-ease-in tw-duration-300" />
+								<RiHome5Fill className="tw-bg-white tw-absolute -tw-top-6 tw-left-10 md:tw-left-0 tw-shadow-lg tw-w-[40px] tw-h-[40px] tw-text-pink-900 tw-rounded-full tw-p-2 md:hover:tw-bg-pink-900 md:hover:tw-text-white hover:tw-w-[35px] hover:tw-p-4 hover:tw-h-[35px] tw-ease-in tw-duration-300" />
 							</Link>
 							<div className="tw-w-full tw-text-center tw-mb-5">
 								<p className="font_cursive tw-text-4xl">My Calendar</p>
