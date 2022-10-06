@@ -51,6 +51,7 @@ function HomePage() {
 	}, []);
 
 	const handlePath = (id) => {
+		// change the logic when shop is ready
 		if (id === "shop") {
 			return;
 		} else {
