@@ -223,8 +223,8 @@ function Book({ logo }) {
 					setBookingData({});
 
 					setTimeout(() => {
-						// SendClientSuccessfulPurchaseEmail();
-						// SendMerchantSuccessfulPurchaseEmail();
+						SendClientSuccessfulPurchaseEmail();
+						SendMerchantSuccessfulPurchaseEmail();
 					}, 1000);
 				}
 			}
