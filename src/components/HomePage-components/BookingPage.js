@@ -13,6 +13,7 @@ import { scrollToTop } from "../../utils/scrollTop";
 import { BiArrowBack } from "react-icons/bi";
 import Heading from "../shared/Heading";
 import { information, Policy, sizes } from "../../constant";
+import { Link } from "react-router-dom";
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 const logo = require("../../assets/logo.png");
 
@@ -34,14 +35,17 @@ const BookingPage = ({ isBooking, handBack }) => {
 			{isBooking === "book" && (
 				<div>
 					<div className="tw-fixed tw-top-[70px] tw-left-0 tw-right-0 tw-z-20 tw-w-full tw-bg-white tw-h-fit tw-text-black tw-font-thin  tw-py-2 tw-text-xs">
-						<div className="tw-text-black tw-bg-white tw-shadow-lg tw-rounded-full tw-text-lg md:tw-text-2xl tw-p-3 hover:md:tw-bg-neutral-900 hover:md:tw-text-white tw-ease-in tw-duration-300 tw-cursor-pointer tw-absolute tw-left-5 md:tw-left-10 tw-top-[40px] md:tw-top-[50px] tw-z-10">
+						<Link
+							to="/"
+							className="tw-text-black tw-bg-white tw-shadow-lg tw-rounded-full tw-text-lg md:tw-text-2xl tw-p-3 hover:md:tw-bg-neutral-900 hover:md:tw-text-white tw-ease-in tw-duration-300 tw-cursor-pointer tw-absolute tw-left-5 md:tw-left-10 tw-top-[40px] md:tw-top-[50px] tw-z-10">
 							<BiArrowBack
 								onClick={() => {
 									handBack();
 									setIsAccept(false);
+									setToggleBookBtn(false);
 								}}
 							/>
-						</div>
+						</Link>
 						<div className="tw-flex tw-items-center tw-justify-start lg:tw-justify-center tw-ml-3 lg:tw-ml-0 tw-font-bold">
 							<p>For your hair appointment, book now !</p>
 							{toggleBookBtn ? (

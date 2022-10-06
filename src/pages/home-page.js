@@ -8,6 +8,7 @@ import BookingPage from "../components/HomePage-components/BookingPage";
 import ShopPage from "../components/HomePage-components/ShopPage";
 import Button from "../components/shared/Button";
 import { sizes } from "../constant";
+import { Link } from "react-router-dom";
 
 const logo = require("../assets/logo.png");
 
@@ -50,6 +51,12 @@ function HomePage() {
 
 	React.useEffect(() => {
 		fetchProducts();
+
+		if (window.location.pathname === "/booking") {
+			setSelected("book");
+		}
+		// change the logic when shop is ready
+		if (window.location.pathname === "/shooping") return;
 	}, []);
 
 	const handlePath = (id) => {
@@ -88,7 +95,7 @@ function HomePage() {
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
-								<div className="tw-mx-5">
+								<Link to="/shopping" className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("shop")}
 										type="button"
@@ -96,8 +103,8 @@ function HomePage() {
 										size={sizes.medium}
 										isgradBG={true}
 									/>
-								</div>
-								<div className="tw-mx-5">
+								</Link>
+								<Link to="/booking" className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("book")}
 										type="button"
@@ -105,7 +112,7 @@ function HomePage() {
 										size={sizes.medium}
 										isgradBG={true}
 									/>
-								</div>
+								</Link>
 							</div>
 						</div>
 					)}
