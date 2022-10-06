@@ -53,6 +53,7 @@ function Book({ logo }) {
 	const [userEmail, setUserEmail] = React.useState("");
 	const [timeleft, setTimeleft] = React.useState(0);
 	const [count, setCount] = React.useState(10);
+	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
@@ -212,6 +213,13 @@ function Book({ logo }) {
 							category: bookingData.category,
 							service: bookingData.service,
 							addOnServices: bookingData.addOnServices,
+							orderNo: orderNo,
+							quantity: 1,
+							transactionDate: dateToday.toDateString(),
+							payMethod: "Card",
+							product: "Hair Appointment",
+							sender: "Hairposey",
+							total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 						})
 						.then(() => {
 							console.log(`SUCCESSFULL`);
@@ -242,6 +250,12 @@ function Book({ logo }) {
 		}. Please ensure to come early. Thank you for your patronage!`,
 		client: user?.email || userEmail,
 		sender: "Hairposey",
+		quantity: 1,
+		product: "Hair Appointment",
+		payMethod: "Card",
+		total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
+		orderNo: orderNo,
+		date: dateToday.toDateString(),
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
