@@ -35,7 +35,12 @@ const BookingPage = ({ isBooking, handBack }) => {
 				<div>
 					<div className="tw-fixed tw-top-[70px] tw-left-0 tw-right-0 tw-z-20 tw-w-full tw-bg-white tw-h-fit tw-text-black tw-font-thin  tw-py-2 tw-text-xs">
 						<div className="tw-text-black tw-bg-white tw-shadow-lg tw-rounded-full tw-text-lg md:tw-text-2xl tw-p-3 hover:md:tw-bg-neutral-900 hover:md:tw-text-white tw-ease-in tw-duration-300 tw-cursor-pointer tw-absolute tw-left-5 md:tw-left-10 tw-top-[40px] md:tw-top-[50px] tw-z-10">
-							<BiArrowBack onClick={handBack} />
+							<BiArrowBack
+								onClick={() => {
+									handBack();
+									setIsAccept(false);
+								}}
+							/>
 						</div>
 						<div className="tw-flex tw-items-center tw-justify-start lg:tw-justify-center tw-ml-3 lg:tw-ml-0 tw-font-bold">
 							<p>For your hair appointment, book now !</p>
@@ -109,12 +114,18 @@ const BookingPage = ({ isBooking, handBack }) => {
 								/>
 								<div className="tw-text-blue-600 tw-font-light tw-text-sm">
 									<span
-										onClick={() => setIsAccept(true)}
+										onClick={() => {
+											setIsAccept(true);
+											setIsDecline(false);
+										}}
 										className="tw-cursor-pointer tw-border-r-[1px] tw-pr-3 tw-border-blue-600 tw-font-[400]">
 										Accept
 									</span>
 									<span
-										onClick={() => setIsDecline(true)}
+										onClick={() => {
+											setIsDecline(true);
+											setIsAccept(false);
+										}}
 										className="tw-cursor-pointer tw-pl-3 tw-border-blue-600 tw-font-[400]">
 										Decline
 									</span>
@@ -155,7 +166,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 							))}
 						</div>
 						{isDecline && (
-							<div className="tw-text-green-700 tw-mt-10 tw-text-xs tw-italic tw-absolute tw-top-10 tw-right-10 ">
+							<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-absolute tw-top-14 tw-right-5 md:tw-right-16 ">
 								<p>Routing back to home page...</p>
 							</div>
 						)}
