@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import Layout from "../components/shared/Layout";
 import { db } from "../firebase";
