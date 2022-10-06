@@ -51,7 +51,9 @@ function HomePage() {
 	}, []);
 
 	const handlePath = (id) => {
-		if (id) {
+		if (id === "shop") {
+			return;
+		} else {
 			setSelected(id);
 		}
 	};
