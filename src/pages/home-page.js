@@ -9,6 +9,8 @@ import ShopPage from "../components/HomePage-components/ShopPage";
 import Button from "../components/shared/Button";
 import { sizes } from "../constant";
 
+const logo = require("../assets/logo.png");
+
 function HomePage() {
 	const [allProducts, setAllproducts] = React.useState([]);
 	const [sales, setSales] = React.useState(null);
@@ -76,11 +78,14 @@ function HomePage() {
 					} `}>
 					{!selected && (
 						<div
-							className={`tw-relative tw-h-[700px] tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex tw-flex-col tw-items-center tw-pt-[70%] md:tw-pt-[35%] lg:tw-pt-[22%] 2xl:tw-pt-[18%]`}>
+							className={`tw-relative tw-h-[700px] lg:tw-h-[900px] tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex tw-flex-col tw-items-center tw-pt-[55%] md:tw-pt-[35%] lg:tw-pt-[22%] 2xl:tw-pt-[18%]`}>
+							<div className="tw-absolute tw-opacity-[0.15] tw-mt-10">
+								<img src={logo} alt="" />
+							</div>
 							<span className="tw-hidden md:tw-inline-block md:tw-text-[80px] lg:tw-text-[100px] xl:tw-text-[150px] 2xl:tw-text-[170px] tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[0.4] font_cursive tw-absolute md:tw-top-40 lg:tw-top-[90px] 2xl:tw-top-20">
 								Welcome to Hairposey
 							</span>
-							<span className="md:tw-hidden tw-text-4xl tw-inline-block tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] font_cursive tw-absolute tw-top-[30%]">
+							<span className="md:tw-hidden tw-text-4xl tw-inline-block tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] font_cursive tw-absolute tw-top-[20%]">
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
