@@ -442,7 +442,7 @@ select:focus {
 	font-size: 0.8rem;
 	pointer-events: none;
 	position: absolute;
-	top: 5%;
+	/* top: 5%; */
 	margin-left: 3px;
 	padding: 0 0.5rem;
 	background: #fff;

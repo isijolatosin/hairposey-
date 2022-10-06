@@ -13,6 +13,7 @@ import ClosureFrontal from "./pages/closure-frontal";
 import JetBlackHair from "./pages/jet-black-hairs";
 import Cart from "./pages/cart";
 import Account from "./pages/account";
+import Calendar from "./pages/calendar";
 
 function App() {
 	return (
@@ -28,6 +29,7 @@ function App() {
 			<Route exact path="/checkout/:userId" element={<Checkout />} />
 			<Route exact path="/payment" element={<Payment />} />
 			<Route exact path="/:pathname" element={<HomePage />} />
+			<Route exact path="/calendar" element={<Calendar />} />
 
 			{/* Hair route path */}
 			<Route exact path="/bundles/:brand" element={<HairBundles />} />

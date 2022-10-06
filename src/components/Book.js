@@ -343,67 +343,68 @@ function Book({ logo }) {
 					</h2>
 				</div>
 				<div className=" tw-p-2 lg:tw-p-5 xl:tw-pr-[20px] tw-flex tw-flex-col lg:tw-flex-row  xl:tw-flex-row">
-					<div className="tw-flex tw-flex-col tw-items-center tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
-						<div className="xl:tw-ml-0">
-							<Calendar
-								color="rgb(157 23 77)"
-								date={new Date()}
-								onChange={handleSelect}
-								dateDisplayFormat="yyyy-MM-dd"
-								showSelectionPreview={true}
-							/>
+					<div className="tw-flex tw-flex-col tw-items-center tw-mx-auto tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
+						<div className="tw-h-[350px]">
+							<div className="xl:tw-ml-0">
+								<Calendar
+									color="rgb(157 23 77)"
+									date={new Date()}
+									onChange={handleSelect}
+									dateDisplayFormat="yyyy-MM-dd"
+									showSelectionPreview={true}
+								/>
+							</div>
+							<div className="tw-w-[332px]">
+								{authDate ? (
+									<div
+										className={
+											authDate
+												? "tw-w-full tw-text-xs tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+												: "tw-opacity-0"
+										}>
+										<span>BOOKINGS ARE ALLOWED 7 DAYS FROM TODAY</span>
+									</div>
+								) : (
+									<>
+										{bookArr.length <= 10 ? (
+											<div
+												className={
+													selectDate
+														? "tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+														: "tw-opacity-0"
+												}>
+												<span>Date selected {selectDate}</span>
+											</div>
+										) : (
+											<div className="tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300">
+												<span>We are booked for this date</span>
+											</div>
+										)}
+									</>
+								)}
+							</div>
 						</div>
-						<div className="tw-w-[332px]">
-							{authDate ? (
-								<div
-									className={
-										authDate
-											? "tw-w-full tw-text-xs tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-											: "tw-opacity-0"
-									}>
-									<span>BOOKINGS ARE ALLOWED 7 DAYS FROM TODAY</span>
-								</div>
-							) : (
-								<>
-									{bookArr.length <= 10 ? (
-										<div
-											className={
-												selectDate
-													? "tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-													: "tw-opacity-0"
-											}>
-											<span>Date selected {selectDate}</span>
-										</div>
-									) : (
-										<div className="tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300">
-											<span>We are booked for this date</span>
-										</div>
-									)}
-								</>
-							)}
-
-							{!user && (
-								<div className="tw-w-full tw-mt-10 lg:tw-mt-0">
-									<label className="bookLabel">
-										<input
-											type="text"
-											autoComplete="off"
-											placeholder=" "
-											name="email"
-											id="email"
-											value={userEmail}
-											onChange={(e) => setUserEmail(e.target.value)}
-											className={
-												emailError
-													? "tw-border-[1px] tw-border-red-700 tw-bg-red-200"
-													: "tw-shadow-xl tw-border-[0px]"
-											}
-										/>
-										<p>Email Address...</p>
-									</label>
-								</div>
-							)}
-						</div>
+						{!user && (
+							<div className="tw-flex tw-justify-center tw-mt-10">
+								<label className="bookLabel">
+									<input
+										type="text"
+										autoComplete="off"
+										placeholder=" "
+										name="email"
+										id="email"
+										value={userEmail}
+										onChange={(e) => setUserEmail(e.target.value)}
+										className={`${
+											emailError
+												? "tw-border-[1px] tw-border-red-700 tw-bg-red-200"
+												: "tw-border-[0px]"
+										} tw-w-[332px]`}
+									/>
+									<p className="tw-top-[33px]">Email Address...</p>
+								</label>
+							</div>
+						)}
 					</div>
 					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0">
 						<form
@@ -426,7 +427,7 @@ function Book({ logo }) {
 									<label>Category</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none  tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="category"
 									value={bookingData.category}
@@ -444,7 +445,7 @@ function Book({ logo }) {
 									<label>Services</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none  tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="Service"
 									value={bookingData.service}
@@ -462,7 +463,7 @@ function Book({ logo }) {
 									<label>Add-On Services</label>
 								</div>
 								<select
-									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-rounded-md tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
+									className="tw-mt-1 tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none  tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
 									onChange={handleOnChange}
 									id="addOnServices"
 									value={bookingData.addOnServices}
