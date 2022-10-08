@@ -103,6 +103,14 @@
 	--fixed-width: 600px;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.general-scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+.general-scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
 .Oswald {
 	font-family: var(--Oswald);
 }
@@ -1380,7 +1388,8 @@ input:not(:placeholder-shown) + p {
 progress {
 	border: none;
 	height: 5px;
-	width: 300px;
+	/* width: 300px; */
+	border-radius: 30px;
 }
 
 progress::-moz-progress-bar {
@@ -1388,12 +1397,12 @@ progress::-moz-progress-bar {
 }
 
 progress::-webkit-progress-value {
-	border-radius: 5px;
-	background: darkgreen;
+	border-radius: 30px;
+	background: green;
 }
 
 progress::-webkit-progress-bar {
-	border-radius: 5px;
+	border-radius: 30px;
 	background: rgb(48, 48, 48);
 }
 

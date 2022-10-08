@@ -16,6 +16,7 @@ import { db } from "../firebase";
 import { AUTHORIZED_ID, googleSearch, information } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
+import { triggerProgress } from "../utils/triggerProgress";
 
 const categories = [];
 const services = [];
@@ -36,7 +37,7 @@ function Book({ logo }) {
 	const elements = useElements();
 	const stripe = useStripe();
 	const { user } = useContext(UserContext);
-	const [bookArr, setBookArr] = React.useState([]);
+	const [bookLimit, setBookLimit] = React.useState(false);
 	const [selectDate, setSelectDate] = React.useState(null);
 	const [succeeded, setSucceeded] = React.useState(false);
 	const [processing, setProcessing] = React.useState(false);
@@ -54,6 +55,7 @@ function Book({ logo }) {
 	const [timeleft, setTimeleft] = React.useState(0);
 	const [count, setCount] = React.useState(10);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
+	const isReload = true;
 
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
@@ -88,25 +90,25 @@ function Book({ logo }) {
 				setSelectDate(null);
 			}
 			if (date > dateToday) {
-				db.collection("bookings")
-					.doc(`${AUTHORIZED_ID.id_one}/`)
-					.collection(date.toDateString())
-					.onSnapshot((snapshot) => {
-						const results = snapshot.docs.map((doc) => ({
-							data: doc.data(),
-						}));
-						// console.log(results)
-						const dt = results?.filter(
-							(booking) => booking?.data.date === date.toDateString()
-						);
+				db.collection("bookings").onSnapshot((snapshot) => {
+					const results = snapshot.docs.map((doc) => ({
+						data: doc.data(),
+					}));
+					const filterBydate = results?.filter(
+						(booking) => booking?.data.date === date.toDateString()
+					);
 
-						setBookArr(dt);
-						if (dt.length === 10) {
-							return;
-						} else {
+					if (filterBydate.length > 0) {
+						if (filterBydate.length < 1) {
 							setSelectDate(date.toDateString());
+						} else {
+							setBookLimit(true);
 						}
-					});
+					} else {
+						setBookLimit(false);
+						setSelectDate(date.toDateString());
+					}
+				});
 			}
 			setAuthDate(false);
 		} else {
@@ -203,9 +205,7 @@ function Book({ logo }) {
 					setProcessing(false);
 					setSucceeded(true);
 
-					db.collection("bookings")
-						.doc(`${AUTHORIZED_ID.id_one}/`)
-						.collection(selectDate)
+					db.collection("all-bookings")
 						.add({
 							date: selectDate,
 							customer: user?.displayName || userEmail,
@@ -220,6 +220,7 @@ function Book({ logo }) {
 							product: "Hair Appointment",
 							sender: "Hairposey",
 							total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
+							hour: 3,
 						})
 						.then(() => {
 							console.log(`SUCCESSFULL`);
@@ -295,32 +296,9 @@ function Book({ logo }) {
 
 	React.useEffect(() => {
 		if (succeeded) {
-			const interval = setInterval(() => {
-				setTimeleft((oldValue) => {
-					const newValue = oldValue + 10;
-
-					if (newValue === 100) {
-						clearInterval(interval);
-					}
-
-					return newValue;
-				});
-				setCount((oldValue) => {
-					const newValue = oldValue - 1;
-
-					if (newValue === 0) {
-						clearInterval(interval);
-					}
-
-					return newValue;
-				});
-			}, 1000);
-
-			window.setTimeout(function () {
-				window.location.reload();
-			}, 10000);
+			triggerProgress(setTimeleft, setCount, isReload);
 		}
-	}, [succeeded]);
+	}, [succeeded, isReload]);
 
 	return (
 		<div className="bg-blur3 tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-p-5 lg:tw-pl-0 tw-mx-auto">
@@ -359,25 +337,31 @@ function Book({ logo }) {
 									<div
 										className={
 											authDate
-												? "tw-w-full tw-text-xs tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+												? "tw-w-full tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
 												: "tw-opacity-0"
 										}>
 										<span>BOOKINGS ARE ALLOWED 7 DAYS FROM TODAY</span>
 									</div>
 								) : (
 									<>
-										{bookArr.length <= 10 ? (
-											<div
-												className={
-													selectDate
-														? "tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-														: "tw-opacity-0"
-												}>
-												<span>Date selected {selectDate}</span>
+										{selectDate && (
+											<div className="tw-w-[332px] tw-mx-auto">
+												<div
+													className={
+														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+													}>
+													<span>Date selected {selectDate}</span>
+												</div>
 											</div>
-										) : (
-											<div className="tw-text-sm tw-text-black tw-bg-gray-100 tw-m-[10px] tw-px-[10px] tw-py-[5px] tw-border-r-4 tw-opacity-1 tw-rounded-lg tw-ease-in tw-duration-300">
-												<span>We are booked for this date</span>
+										)}
+										{bookLimit && (
+											<div className="tw-w-[332px] tw-mx-auto">
+												<div
+													className={
+														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+													}>
+													<span>We are booked for this date</span>
+												</div>
 											</div>
 										)}
 									</>
@@ -406,7 +390,7 @@ function Book({ logo }) {
 							</div>
 						)}
 					</div>
-					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0">
+					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0 tw-mt-5">
 						<form
 							onSubmit={(e) => {
 								e.preventDefault();

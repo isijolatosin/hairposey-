@@ -116,24 +116,6 @@ const BookingPage = ({ isBooking, handBack }) => {
 									// isBlue={true}
 									isGreyLight={true}
 								/>
-								<div className="tw-text-blue-600 tw-font-light tw-text-sm">
-									<span
-										onClick={() => {
-											setIsAccept(true);
-											setIsDecline(false);
-										}}
-										className="tw-cursor-pointer tw-border-r-[1px] tw-pr-3 tw-border-blue-600 tw-font-[400]">
-										Accept
-									</span>
-									<span
-										onClick={() => {
-											setIsDecline(true);
-											setIsAccept(false);
-										}}
-										className="tw-cursor-pointer tw-pl-3 tw-border-blue-600 tw-font-[400]">
-										Decline
-									</span>
-								</div>
 							</div>
 							<div className="">
 								{Policy.map((child) => (
@@ -144,6 +126,37 @@ const BookingPage = ({ isBooking, handBack }) => {
 									</p>
 								))}
 							</div>
+							<div className="tw-text-blue-600 tw-font-light tw-text-sm tw-border-t-[1px] tw-border-red-300 tw-mt-5 tw-pt-5">
+								<span
+									onClick={() => {
+										setIsAccept(true);
+										setIsDecline(false);
+									}}
+									className="tw-cursor-pointer tw-border-r-[1px] tw-pr-3 tw-border-blue-600 tw-font-[400]">
+									Accept
+								</span>
+								<span
+									onClick={() => {
+										setIsDecline(true);
+										setIsAccept(false);
+									}}
+									className="tw-cursor-pointer tw-pl-3 tw-border-blue-600 tw-font-[400]">
+									Decline
+								</span>
+							</div>
+							{isDecline && (
+								<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-mt-2">
+									<p>Routing back to home page...</p>
+								</div>
+							)}
+							{isAccept && info && (
+								<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-mt-2">
+									<p>
+										Continue your experience. Click the down button at the
+										top...
+									</p>
+								</div>
+							)}
 						</div>
 						<div className="tw-grid lg:tw-grid-cols-2 tw-gap-2 lg:tw-gap-5 tw-border-t-[1px] tw-pt-5 tw-mt-5 tw-text-sm">
 							{information.map((inform) => (
@@ -169,18 +182,6 @@ const BookingPage = ({ isBooking, handBack }) => {
 								</div>
 							))}
 						</div>
-						{isDecline && (
-							<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-absolute tw-top-14 tw-right-5 md:tw-right-16 ">
-								<p>Routing back to home page...</p>
-							</div>
-						)}
-						{isAccept && info && (
-							<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-absolute tw-top-14 tw-right-5 md:tw-right-16 ">
-								<p>
-									Continue your experience. Click the down button at the top...
-								</p>
-							</div>
-						)}
 					</div>
 				</div>
 			)}
