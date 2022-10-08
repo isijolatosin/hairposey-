@@ -12,14 +12,23 @@ import { useSelector } from "react-redux";
 function NavIcons() {
 	const { user } = useContext(UserContext);
 	const itemCount = useSelector(selectItemCount);
+	const [signOut, setSignout] = React.useState(false);
+
 	const navigate = useNavigate();
 	const handleSignOut = () => {
+		setSignout(true);
 		auth.signOut();
 		navigate("/");
 	};
 
+	if (signOut) {
+		setTimeout(() => {
+			setSignout(false);
+		}, 5000);
+	}
+
 	return (
-		<div className=" tw-flex tw-flex-row tw-w-46 tw-mr-5 tw-justify-center tw-items-center">
+		<div className="tw-relative tw-flex tw-flex-row tw-w-46 tw-mr-5 tw-justify-center tw-items-center">
 			<div
 				// onClick={() =>
 				// 	navigate(`/user-cart/${user?.displayName || 'new-customer'}`)
@@ -62,6 +71,11 @@ function NavIcons() {
 							sign up
 						</span>
 					</div>
+				</div>
+			)}
+			{signOut && (
+				<div className="tw-absolute tw-right-0 tw-bottom-[-20px]">
+					<span className="tw-text-white tw-text-[10px]">Signing out...</span>
 				</div>
 			)}
 		</div>

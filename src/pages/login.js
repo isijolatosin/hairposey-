@@ -1,47 +1,47 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import firebase from '../firebase'
-import Layout from '../components/shared/Layout'
-import { auth } from '../firebase'
-import Button from '../components/shared/Button'
-import { Helmet } from 'react-helmet'
-import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import firebase from "../firebase";
+import Layout from "../components/shared/Layout";
+import { auth } from "../firebase";
+import Button from "../components/shared/Button";
+import { Helmet } from "react-helmet";
+import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
 const Login = () => {
-	const navigate = useNavigate()
-	const [sales, setSales] = React.useState(null)
-	const [isReset, setIsReset] = React.useState(false)
+	const navigate = useNavigate();
+	const [sales, setSales] = React.useState(null);
+	const [isReset, setIsReset] = React.useState(false);
 	const [authUser, setAuthUser] = useState({
-		email: '',
-		password: '',
+		email: "",
+		password: "",
 		error: null,
-	})
-	const [showpswd, setShowpswd] = useState(false)
+	});
+	const [showpswd, setShowpswd] = useState(false);
 
 	React.useEffect(() => {
-		setSales(fetchSalesPercentage())
+		setSales(fetchSalesPercentage());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	const handleChangeAuthUser = (e) => {
-		setAuthUser({ ...authUser, [e.target.name]: e.target.value })
-	}
+		setAuthUser({ ...authUser, [e.target.name]: e.target.value });
+	};
 
 	const togglePassword = () => {
-		setShowpswd(!showpswd)
-	}
+		setShowpswd(!showpswd);
+	};
 
 	const handleSubmit = async (e) => {
-		e.preventDefault()
+		e.preventDefault();
 
 		try {
-			await auth.signInWithEmailAndPassword(authUser.email, authUser.password)
-			navigate('/')
+			await auth.signInWithEmailAndPassword(authUser.email, authUser.password);
+			navigate("/");
 		} catch (error) {
-			console.log(error)
-			setAuthUser({ ...authUser, error: error.message })
+			console.log(error);
+			setAuthUser({ ...authUser, error: error.message });
 		}
-	}
+	};
 
 	const resetPassword = (email) => {
 		firebase
@@ -49,12 +49,12 @@ const Login = () => {
 			.sendPasswordResetEmail(authUser.email)
 			.then(() => {
 				try {
-					setIsReset(true)
+					setIsReset(true);
 				} catch (error) {
-					console.log(`error message - ${error.message}`)
+					console.log(`error message - ${error.message}`);
 				}
-			})
-	}
+			});
+	};
 
 	return (
 		<div>
@@ -86,7 +86,7 @@ const Login = () => {
 								</div>
 								<div className="tw-relative tw-h-[38.4px] lg:tw-w-[30%] tw-w-[70%] tw-mx-auto tw-shadow-xl">
 									<input
-										type={showpswd ? 'text' : 'password'}
+										type={showpswd ? "text" : "password"}
 										name="password"
 										id="password"
 										value={authUser.password}
@@ -106,7 +106,10 @@ const Login = () => {
 									{authUser.error ? <p>{authUser.error}</p> : null}
 								</div>
 								<div className="tw-flex tw-flex-row tw-my-10 tw-justify-center">
-									<Button onClick={handleSubmit} type="submit">
+									<Button
+										onClick={handleSubmit}
+										type="submit"
+										isBlackTxt={true}>
 										Sign In
 									</Button>
 								</div>
@@ -114,7 +117,7 @@ const Login = () => {
 						</article>
 						<div className="tw-text-neutral-700 tw-items-center tw-text-sm tw-flex tw-flex-col tw-font-light ">
 							<span>
-								Forgot Password? |{' '}
+								Forgot Password? |{" "}
 								<button
 									onClick={() => resetPassword(authUser.email)}
 									className="tw-text-yellow-800 navStyleChild">
@@ -127,7 +130,7 @@ const Login = () => {
 								</div>
 							)}
 							<p className="tw-mt-5 tw-mb-10">
-								Not a Member? |{' '}
+								Not a Member? |{" "}
 								<Link to="/register">
 									<button className="tw-text-yellow-800 navStyleChild">
 										Create Account
@@ -139,7 +142,7 @@ const Login = () => {
 				</main>
 			</Layout>
 		</div>
-	)
-}
+	);
+};
 
-export default Login
+export default Login;
