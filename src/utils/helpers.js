@@ -1,9 +1,11 @@
+import { REACT_APP_HTTPS_LINK } from "../constant";
+
 export const isInCart = (singleProduct, cartItems) => {
 	return cartItems.find((item) => item._id === singleProduct._id);
 };
 
 // This is where the server is running. When we deploy the app, this will be the hosting url
-const API = process.env.REACT_APP_HTTPS_LINK;
+const API = REACT_APP_HTTPS_LINK;
 
 export async function fetchFromAPI(endpoint, opts) {
 	const { method, body } = { method: "POST", body: null, ...opts };
