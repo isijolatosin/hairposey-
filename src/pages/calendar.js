@@ -7,7 +7,6 @@ import {
 	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_AUTHORIZED_ID_TWO,
-	REACT_APP_SITE_URL,
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
@@ -128,7 +127,7 @@ const CalendarPage = () => {
 		total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
-		link: `${REACT_APP_SITE_URL}/${orderNo}`,
+		link: `${process.env.REACT_APP_SITE_URL}${orderNo}`,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
