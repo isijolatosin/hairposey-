@@ -32,7 +32,7 @@ information.map((data) => {
 	} else if (data.title === "Services") {
 		services.push(...data.info);
 	} else if (data.title === "Add On Services") {
-		addOnServices.push(...data.info);
+		addOnServices.push(...data.info.slice(0, data.info.length - 1));
 	}
 });
 
