@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgMenuLeft, CgClose } from "react-icons/cg";
 import { RiDatabase2Fill, RiHomeFill } from "react-icons/ri";
 import { SUPER_USER1, SUPER_USER2 } from "../../constant";
@@ -7,7 +7,8 @@ import { UserContext } from "../../context/user-context";
 import CursorText from "../shared/CursorText";
 import { BsFillPersonFill } from "react-icons/bs";
 
-function ImageComponent({ setIsNav, isNav }) {
+function ImageComponent({ setIsNav, isNav, setSelected }) {
+	const navigate = useNavigate();
 	const { user } = useContext(UserContext);
 	const [showText, setShowText] = React.useState(false);
 	const [showOpt, setShowOpt] = React.useState(false);
@@ -61,18 +62,24 @@ function ImageComponent({ setIsNav, isNav }) {
 				<div
 					className={`tw-top-[100px] tw-flex tw-flex-col tw-absolute tw-z-40 tw-left-[25px]`}>
 					{window?.location?.pathname !== "/" && (
-						<Link
-							to="/"
+						<div
+							onClick={() => {
+								navigate("/");
+								setSelected(false);
+								setShowOpt(false);
+							}}
 							className="tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300">
 							<RiHomeFill size={25} />
-						</Link>
+						</div>
 					)}
 					{user && (
-						<Link
-							to={`/user-account/${user?.email || user?.displayName}`}
+						<div
+							onClick={() =>
+								navigate(`/user-account/${user?.email || user?.displayName}`)
+							}
 							className="tw-border-b-[1px] tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300">
 							<BsFillPersonFill size={25} />
-						</Link>
+						</div>
 					)}
 				</div>
 			)}

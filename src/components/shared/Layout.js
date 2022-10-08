@@ -1,11 +1,11 @@
 import Footer from "../Footer";
 import Nav from "../Navigation/Nav";
 
-function Layout({ children, sales }) {
+function Layout({ children, sales, setSelected }) {
 	return (
 		<div>
 			<div className="bg-blur2 tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-20 tw-max-w-screen ">
-				<Nav sales={sales} />
+				<Nav sales={sales} setSelected={setSelected} />
 			</div>
 			<div className="tw-mt-2">{children}</div>
 			<div>

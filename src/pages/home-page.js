@@ -7,7 +7,13 @@ import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 import BookingPage from "../components/HomePage-components/BookingPage";
 import ShopPage from "../components/HomePage-components/ShopPage";
 import Button from "../components/shared/Button";
-import { REACT_APP_BOOK, REACT_APP_SHOP, sizes } from "../constant";
+import {
+	REACT_APP_BOOK,
+	REACT_APP_ISBOOKING,
+	REACT_APP_ISSHOPPING,
+	REACT_APP_SHOP,
+	sizes,
+} from "../constant";
 import { Link } from "react-router-dom";
 
 const logo = require("../assets/logo.png");
@@ -16,21 +22,7 @@ function HomePage() {
 	const [allProducts, setAllproducts] = React.useState([]);
 	const [sales, setSales] = React.useState(null);
 	const [selected, setSelected] = React.useState(false);
-
 	const [location, setLocation] = React.useState("");
-
-	React.useEffect(() => {
-		setSales(fetchSalesPercentage());
-
-		db.collection("location").onSnapshot((snapshot) => {
-			const results = snapshot.docs.map((doc) => ({
-				data: doc.data(),
-			}));
-			setLocation(results[0].data.location);
-		});
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	async function fetchProducts() {
 		try {
@@ -50,18 +42,23 @@ function HomePage() {
 	}
 
 	React.useEffect(() => {
+		setSales(fetchSalesPercentage());
+
+		db.collection("location").onSnapshot((snapshot) => {
+			const results = snapshot.docs.map((doc) => ({
+				data: doc.data(),
+			}));
+			setLocation(results[0].data.location);
+		});
+
 		fetchProducts();
-		if (
-			window.location.pathname.split("/")[2] === process.env.REACT_APP_ISBOOKING
-		) {
+		if (window.location.pathname.split("/")[2] === REACT_APP_ISBOOKING) {
 			setSelected("book");
 		}
 		// change the logic when shop is ready
-		if (
-			window.location.pathname.split("/")[2] ===
-			process.env.REACT_APP_ISSHOPPING
-		)
-			return;
+		if (window.location.pathname.split("/")[2] === REACT_APP_ISSHOPPING) return;
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handlePath = (id) => {
@@ -82,7 +79,7 @@ function HomePage() {
 			<Helmet>
 				<title>Home</title>
 			</Helmet>
-			<Layout sales={sales}>
+			<Layout sales={sales} setSelected={setSelected}>
 				<div
 					className={`tw-relative ${
 						allProducts.length === 0 ? "tw-mt-[70px]" : "tw-pt-[60px]"
