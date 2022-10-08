@@ -353,116 +353,132 @@ const CalendarPage = () => {
 							</div>
 
 							<div className="tw-w-full tw-grid md:tw-grid-cols-2 tw-gap-3 tw-border-t-[1px] tw-pt-5">
-								{calendarList.map((list) => (
-									<div>
-										<div
-											className={`tw-mb-[-10] tw-w-[100%] tw-mx-auto tw-flex tw-items-center ${
-												showProgress && confirmDel && picked === list.id
-													? "tw-opacity-[1]"
-													: "tw-opacity-[0]"
-											} tw-ease-in tw-duration-300`}>
-											<Progressbar value={timeleft} max={100} />
-										</div>
-										<ul
-											key={list.id}
-											className="tw-bg-white tw-p-2 tw-rounded-b-md">
-											<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
-												{list.data.customer === list.data.email ? (
-													<li className="tw-text-xs tw-text-neutral-600">
-														Customer: {list.data.customer}
-													</li>
-												) : (
-													<div clasName="tw-flex tw-flex-col">
-														<li className="tw-text-xs tw-text-neutral-600">{`Customer: ${list.data.customer}`}</li>
-														<li className="tw-text-xs tw-text-neutral-400">{`Email: ${list.data.email}`}</li>
-													</div>
-												)}
-												<div className="tw-flex tw-items-center tw-justify-center tw-relative">
-													<li className="tw-text-xs tw-bg-pink-600 tw-py-1 tw-px-3 tw-rounded-full tw-text-white">
-														Duration:{" "}
-														{list.data.hour > 1
-															? `${list.data.hour}hrs`
-															: `${list.data.hour}hr`}
-													</li>
-													{(new Date().getDate() >
-														new Date(list.data.date).getDate() ||
-														list.data.status !== REACT_APP_STATUS) && (
-														<>
-															{confirmDel && picked === list.id ? (
-																<button
-																	disabled={showProgress}
-																	onClick={() => handleDelete(list.id)}
-																	className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
-																	<MdDeleteForever
-																		size={25}
-																		color={showProgress ? "grey" : "darkred"}
-																	/>
-																</button>
-															) : (
-																<button
-																	disabled={showProgress}
-																	onClick={() => {
-																		setPicked(list.id);
-																		setConfirmDel(true);
-																	}}
-																	className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
-																	<FaTrash
-																		size={19}
-																		color={showProgress ? "grey" : "lightgrey"}
-																	/>
-																	<span className="tw-absolute tw-top-1 tw-right-[12px] tw-font-bold tw-text-xs tw-text-white">
-																		?
-																	</span>
-																</button>
-															)}
-														</>
-													)}
-													<div
-														className={`${
-															confirmDel && picked === list.id
-																? "tw-opacity-1"
-																: "tw-opacity-0"
-														} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}>
-														<p className="tw- tw-text-[10px]">Are you sure ?</p>
-													</div>
+								{calendarList.length ? (
+									<>
+										{calendarList.map((list) => (
+											<div>
+												<div
+													className={`tw-mb-[-10] tw-w-[100%] tw-mx-auto tw-flex tw-items-center ${
+														showProgress && confirmDel && picked === list.id
+															? "tw-opacity-[1]"
+															: "tw-opacity-[0]"
+													} tw-ease-in tw-duration-300`}>
+													<Progressbar value={timeleft} max={100} />
 												</div>
-											</div>
+												<ul
+													key={list.id}
+													className="tw-bg-white tw-p-2 tw-rounded-b-md">
+													<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
+														{list.data.customer === list.data.email ? (
+															<li className="tw-text-xs tw-text-neutral-600">
+																Customer: {list.data.customer}
+															</li>
+														) : (
+															<div clasName="tw-flex tw-flex-col">
+																<li className="tw-text-xs tw-text-neutral-600">{`Customer: ${list.data.customer}`}</li>
+																<li className="tw-text-xs tw-text-neutral-400">{`Email: ${list.data.email}`}</li>
+															</div>
+														)}
+														<div className="tw-flex tw-items-center tw-justify-center tw-relative">
+															<li className="tw-text-xs tw-bg-pink-600 tw-py-1 tw-px-3 tw-rounded-full tw-text-white">
+																Duration:{" "}
+																{list.data.hour > 1
+																	? `${list.data.hour}hrs`
+																	: `${list.data.hour}hr`}
+															</li>
+															{(new Date().getDate() >
+																new Date(list.data.date).getDate() ||
+																list.data.status !== REACT_APP_STATUS) && (
+																<>
+																	{confirmDel && picked === list.id ? (
+																		<button
+																			disabled={showProgress}
+																			onClick={() => handleDelete(list.id)}
+																			className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
+																			<MdDeleteForever
+																				size={25}
+																				color={
+																					showProgress ? "grey" : "darkred"
+																				}
+																			/>
+																		</button>
+																	) : (
+																		<button
+																			disabled={showProgress}
+																			onClick={() => {
+																				setPicked(list.id);
+																				setConfirmDel(true);
+																			}}
+																			className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
+																			<FaTrash
+																				size={19}
+																				color={
+																					showProgress ? "grey" : "lightgrey"
+																				}
+																			/>
+																			<span className="tw-absolute tw-top-1 tw-right-[12px] tw-font-bold tw-text-xs tw-text-white">
+																				?
+																			</span>
+																		</button>
+																	)}
+																</>
+															)}
+															<div
+																className={`${
+																	confirmDel && picked === list.id
+																		? "tw-opacity-1"
+																		: "tw-opacity-0"
+																} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}>
+																<p className="tw- tw-text-[10px]">
+																	Are you sure ?
+																</p>
+															</div>
+														</div>
+													</div>
 
-											<li className="tw-text-xs tw-text-pink-800">
-												Appointment Date: {list.data.date}
-											</li>
-											<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-												Service: {list.data.service}
-											</li>
-											<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-												Category: {list.data.category}
-											</li>
-											<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-												Add-on Service: {list.data.addOnServices}
-											</li>
-											<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-												Status:{" "}
-												<span
-													className={`${
-														new Date().getDate() <
-															new Date(list.data.date).getDate() &&
-														list.data.status !== REACT_APP_CANCELED &&
-														"tw-text-green-700"
-													} ${
-														(new Date().getDate() >
-															new Date(list.data.date).getDate() ||
-															list.data.status === REACT_APP_CANCELED) &&
-														"tw-text-neutral-400 tw-italic tw-line-through"
-													} `}>
-													{new Date().getDate() >
-													new Date(list.data.date).getDate()
-														? "Past Appointment Date"
-														: list.data.status}
-												</span>
-											</li>
-										</ul>
+													<li className="tw-text-xs tw-text-pink-800">
+														Appointment Date: {list.data.date}
+													</li>
+													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
+														Service: {list.data.service}
+													</li>
+													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
+														Category: {list.data.category}
+													</li>
+													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
+														Add-on Service: {list.data.addOnServices}
+													</li>
+													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
+														Status:{" "}
+														<span
+															className={`${
+																new Date().getDate() <
+																	new Date(list.data.date).getDate() &&
+																list.data.status !== REACT_APP_CANCELED &&
+																"tw-text-green-700"
+															} ${
+																(new Date().getDate() >
+																	new Date(list.data.date).getDate() ||
+																	list.data.status === REACT_APP_CANCELED) &&
+																"tw-text-neutral-400 tw-italic tw-line-through"
+															} `}>
+															{new Date().getDate() >
+															new Date(list.data.date).getDate()
+																? "Past Appointment Date"
+																: list.data.status}
+														</span>
+													</li>
+												</ul>
+											</div>
+										))}
+									</>
+								) : (
+									<div>
+										<span className="tw-text-red-800 tw-text-xs">
+											No data to display...
+										</span>
 									</div>
-								))}
+								)}
 							</div>
 						</div>
 					) : (
