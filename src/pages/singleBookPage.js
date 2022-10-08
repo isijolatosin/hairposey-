@@ -28,6 +28,7 @@ const SingleBookPage = () => {
 			const filterSingleBooking = results?.filter(
 				(booking) => booking?.data.orderNo === orderNo
 			);
+
 			setSingleBookingData(filterSingleBooking[0]);
 		});
 
@@ -96,51 +97,63 @@ const SingleBookPage = () => {
 							<span className="font_cursive tw-text-5xl">Hairposey</span>
 						</div>
 						<div className="tw-absolute -tw-top-16 tw-right-0 tw-bg-green-600 tw-px-8 tw-capitalize tw-py-2 tw-rounded-l-full tw-text-white">
-							<p>{singleBookingData.data?.status}</p>
+							{singleBookingData?.length ? (
+								<p>{singleBookingData?.data?.status}</p>
+							) : (
+								<p>Empty</p>
+							)}
 						</div>
 					</div>
-					<div className="tw-px-8">
-						<div className="tw-mt-5 tw-w-full tw-flex tw-justify-start">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Order No: {singleBookingData.data?.orderNo}
+					{singleBookingData?.length ? (
+						<div className="tw-px-8">
+							<div className="tw-mt-5 tw-w-full tw-flex tw-justify-start">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Order No: {singleBookingData?.data?.orderNo}
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Appointment Date: {singleBookingData?.data?.date}
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-start">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Duration: {singleBookingData?.data?.hour} Hours
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Duration: {singleBookingData?.data?.hour} Hours
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-start">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Category: {singleBookingData?.data?.category}
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Service: {singleBookingData?.data?.service}
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-start">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Add-on Services: {singleBookingData?.data?.addOnServices}
+								</span>
+							</div>
+							<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
+								<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
+									Transaction Date: {singleBookingData?.data?.transactionDate}
+								</span>
+							</div>
+						</div>
+					) : (
+						<div className=" tw-mt-5">
+							<span className="tw-ml-10 tw-text-red-800">
+								No data to deplay...
 							</span>
 						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Appointment Date: {singleBookingData.data?.date}
-							</span>
-						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-start">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Duration: {singleBookingData.data?.hour} Hours
-							</span>
-						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Duration: {singleBookingData.data?.hour} Hours
-							</span>
-						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-start">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Category: {singleBookingData.data?.category}
-							</span>
-						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Service: {singleBookingData.data?.service}
-							</span>
-						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-start">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Add-on Services: {singleBookingData.data?.addOnServices}
-							</span>
-						</div>
-						<div className="tw-mt-1 tw-w-full tw-flex tw-justify-end">
-							<span className="tw-bg-pink-100 tw-text-neutral-600 tw-rounded-full tw-px-5 tw-py-2 tw-text-sm">
-								Transaction Date: {singleBookingData.data?.transactionDate}
-							</span>
-						</div>
-					</div>
+					)}
 					<div className="tw-mt-5">
 						<a
 							href={`${process.env.REACT_APP_GOOGLESEARCH + location}`}
@@ -175,9 +188,9 @@ const SingleBookPage = () => {
 						</Link>
 						<div
 							onClick={() =>
-								singleBookingData.data?.status !==
+								singleBookingData?.data?.status !==
 									process.env.REACT_APP_CANCELED &&
-								handleCancel(singleBookingData.id)
+								handleCancel(singleBookingData?.id)
 							}
 							className="tw-mx-2">
 							<Button
@@ -186,7 +199,7 @@ const SingleBookPage = () => {
 								isBlackTxt={true}
 								isSmallTxt={true}
 								isCancel={
-									singleBookingData.data?.status ===
+									singleBookingData?.data?.status ===
 										process.env.REACT_APP_CANCELED && true
 								}
 							/>
