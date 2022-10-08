@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { Calendar } from "react-date-range";
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
-import { AUTHORIZED_ID, information } from "../constant";
+import { information } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
 import { RiHome5Fill } from "react-icons/ri";
@@ -42,6 +42,7 @@ const CalendarPage = () => {
 	const [showProgress, setShowProgress] = React.useState(false);
 	const [confirmDel, setConfirmDel] = React.useState(false);
 	const [picked, setPicked] = React.useState("");
+	const status = process.env.REACT_APP_STATUS;
 
 	React.useEffect(() => {
 		db.collection("all-bookings").onSnapshot((snapshot) => {
@@ -122,6 +123,7 @@ const CalendarPage = () => {
 		total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
+		link: `${process.env.REACT_APP_SITE_URL}/${orderNo}`,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
@@ -138,7 +140,7 @@ const CalendarPage = () => {
 	const ManagementMessage = {
 		name: "Hairposey",
 		message: `Hello. Hair appointment for ${userEmail} has been booked for ${selectDate}. Here are the details of booking: Category: ${bookingData.category}, Services: ${bookingData.service}, add-On-Services: ${bookingData.addOnServices}. Customer's Email: ${userEmail}`,
-		client: AUTHORIZED_ID.id_one,
+		client: process.env.REACT_APP_AUTHORIZED_ID_ONE,
 		sender: "Hairposey Bookings",
 	};
 	const SendMerchantSuccessfulPurchaseEmail = () => {
@@ -170,6 +172,7 @@ const CalendarPage = () => {
 				sender: "Hairposey",
 				total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
 				hour: 3,
+				status: status,
 			})
 			.then(() => {
 				console.log(`SUCCESSFULL`);
@@ -194,8 +197,8 @@ const CalendarPage = () => {
 			</Helmet>
 			<div className="tw-bg-neutral-300 tw-pt-[60px] tw-pb-[80px]">
 				<div className="tw-relative tw-w-full tw-px-10 md:tw-px-0 md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[60%] tw-mx-auto">
-					{user?.email === AUTHORIZED_ID.id_one ||
-					user?.email === AUTHORIZED_ID.id_two ? (
+					{user?.email === process.env.REACT_APP_AUTHORIZED_ID_ONE ||
+					user?.email === process.env.REACT_APP_AUTHORIZED_ID_TWO ? (
 						<div>
 							<Link to="/">
 								<RiHome5Fill className="tw-bg-white tw-absolute -tw-top-8 tw-left-10 md:tw-left-0 tw-shadow-lg tw-w-[40px] tw-h-[40px] tw-text-pink-900 tw-rounded-full tw-p-2 md:hover:tw-bg-pink-900 md:hover:tw-text-white hover:tw-w-[35px] hover:tw-p-4 hover:tw-h-[35px] tw-ease-in tw-duration-300" />
@@ -373,32 +376,37 @@ const CalendarPage = () => {
 															? `${list.data.hour}hrs`
 															: `${list.data.hour}hr`}
 													</li>
-													{confirmDel && picked === list.id ? (
-														<button
-															disabled={showProgress}
-															onClick={() => handleDelete(list.id)}
-															className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
-															<MdDeleteForever
-																size={25}
-																color={showProgress ? "grey" : "darkred"}
-															/>
-														</button>
-													) : (
-														<button
-															disabled={showProgress}
-															onClick={() => {
-																setPicked(list.id);
-																setConfirmDel(true);
-															}}
-															className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
-															<FaTrash
-																size={19}
-																color={showProgress ? "grey" : "lightgrey"}
-															/>
-															<span className="tw-absolute tw-top-1 tw-right-[12px] tw-font-bold tw-text-xs tw-text-white">
-																?
-															</span>
-														</button>
+													{list.data.status !==
+														process.env.REACT_APP_STATUS && (
+														<>
+															{confirmDel && picked === list.id ? (
+																<button
+																	disabled={showProgress}
+																	onClick={() => handleDelete(list.id)}
+																	className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
+																	<MdDeleteForever
+																		size={25}
+																		color={showProgress ? "grey" : "darkred"}
+																	/>
+																</button>
+															) : (
+																<button
+																	disabled={showProgress}
+																	onClick={() => {
+																		setPicked(list.id);
+																		setConfirmDel(true);
+																	}}
+																	className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
+																	<FaTrash
+																		size={19}
+																		color={showProgress ? "grey" : "lightgrey"}
+																	/>
+																	<span className="tw-absolute tw-top-1 tw-right-[12px] tw-font-bold tw-text-xs tw-text-white">
+																		?
+																	</span>
+																</button>
+															)}
+														</>
 													)}
 													<div
 														className={`${
@@ -422,6 +430,17 @@ const CalendarPage = () => {
 											</li>
 											<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
 												Add-on Service: {list.data.addOnServices}
+											</li>
+											<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
+												Status:{" "}
+												<span
+													className={`${
+														list.data.status === process.env.REACT_APP_STATUS
+															? "tw-text-green-700"
+															: "tw-text-neutral-400 tw-line-through tw-italic"
+													}  `}>
+													{list.data.status}
+												</span>
 											</li>
 										</ul>
 									</div>

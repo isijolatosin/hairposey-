@@ -3,7 +3,6 @@ import { AiOutlineInstagram } from "react-icons/ai";
 import { CgClose } from "react-icons/cg";
 import { FaTiktok } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
-import { googleSearch } from "../../constant";
 import { MdLocationPin, MdOutlineConstruction } from "react-icons/md";
 import { SiTreyarch } from "react-icons/si";
 import Products from "../Products";
@@ -75,7 +74,7 @@ const ShopPage = ({ isShop, allProducts, sales, location, handBack }) => {
 								<div className="circle"></div>
 							</div>
 							<a
-								href={`${googleSearch + location}`}
+								href={`${process.env.REACT_APP_GOOGLESEARCH + location}`}
 								target="_blank"
 								rel="noreferrer"
 								className="tw-flex-col tw-text-neutral-400 tw-text-xs tw-mt-[100px] tw-font-light tw-flex tw-items-center tw-justify-center tw-mb-7 hover:tw-text-neutral-600 tw-ease tw-duration-300 ">

@@ -1,26 +1,26 @@
-import React, { useState } from 'react'
-import { Helmet } from 'react-helmet'
-import { Link, useNavigate } from 'react-router-dom'
-import Layout from '../components/shared/Layout'
-import { auth, createUserProfileDocument } from '../firebase'
-import Button from '../components/shared/Button'
-import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
+import { Link, useNavigate } from "react-router-dom";
+import Layout from "../components/shared/Layout";
+import { auth, createUserProfileDocument } from "../firebase";
+import Button from "../components/shared/Button";
+import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
 const Register = () => {
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	const [authUser, setAuthUser] = useState({
-		name: '',
-		email: '',
-		phone: '',
-		password: '',
+		name: "",
+		email: "",
+		phone: "",
+		password: "",
 		error: null,
-	})
-	const [sales, setSales] = React.useState(null)
+	});
+	const [sales, setSales] = React.useState(null);
 
 	React.useEffect(() => {
-		setSales(fetchSalesPercentage())
+		setSales(fetchSalesPercentage());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	// const validate = (values) => {
 	// 	const errors = {}
@@ -39,27 +39,27 @@ const Register = () => {
 	// }
 
 	const handleChangeAuthUser = (e) => {
-		setAuthUser({ ...authUser, [e.target.name]: e.target.value })
-	}
+		setAuthUser({ ...authUser, [e.target.name]: e.target.value });
+	};
 
 	const handleSubmit = async (e) => {
-		e.preventDefault()
+		e.preventDefault();
 
 		try {
 			const { user } = await auth.createUserWithEmailAndPassword(
 				authUser.email,
 				authUser.password
-			)
+			);
 			await createUserProfileDocument(user, {
 				displayName: authUser.name,
 				Phone: authUser.phone,
-			})
-			navigate('/')
+			});
+			navigate("/");
 		} catch (error) {
-			console.log(error)
-			setAuthUser({ ...authUser, error: error.message })
+			console.log(error);
+			setAuthUser({ ...authUser, error: error.message });
 		}
-	}
+	};
 
 	return (
 		<div>
@@ -72,7 +72,7 @@ const Register = () => {
 						<h1 className="tw-text-2xl tw-font-bold">Sign Up</h1>
 						<p className="tw-w-[55%] tw-mx-auto tw-my-10">
 							By creating account with us, you consent to receiving newsletters
-							or promotions from{' '}
+							or promotions from{" "}
 							<Link to="/">
 								<span className="navStyleChild tw-text-yellow-800">
 									hairposey.
@@ -138,39 +138,39 @@ const Register = () => {
 					</article>
 					<div>
 						<p className="tw-text-neutral-500 tw-font-light">
-							Already have an account with us?{' '}
+							Already have an account with us?{" "}
 							<Link to="/login">
 								<button className="tw-text-yellow-800 tw-mb-10 navStyleChild">
 									Login
 								</button>
-							</Link>{' '}
+							</Link>{" "}
 						</p>
 					</div>
 					<div>
 						<p className="tw-font-light tw-mb-10 tw-w-[70%] tw-mx-auto tw-text-center">
-							This site is protected by Google{' '}
+							This site is protected by Google{" "}
 							<a
-								href="https://policies.google.com/privacy"
+								href={`${process.env.REACT_APP_GOOGLEPRIVACY}`}
 								rel="noopener noreferrer">
 								<span className="tw-text-yellow-800 tw-mb-10 tw-text-sm navStyleChild">
 									Privacy Policy
 								</span>
-							</a>{' '}
-							and{' '}
+							</a>{" "}
+							and{" "}
 							<a
-								href="https://policies.google.com/terms"
+								href={`${process.env.REACT_APP_GOOGLETERMS}`}
 								rel="noopener noreferrer">
 								<span className="tw-text-yellow-800 tw-mb-10 tw-text-sm navStyleChild">
 									Terms of Service
 								</span>
-							</a>{' '}
+							</a>{" "}
 							apply
 						</p>
 					</div>
 				</section>
 			</Layout>
 		</div>
-	)
-}
+	);
+};
 
-export default Register
+export default Register;

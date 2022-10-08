@@ -13,7 +13,7 @@ import { MdLocationPin } from "react-icons/md";
 import { GoAlert } from "react-icons/go";
 import axios from "axios";
 import { db } from "../firebase";
-import { AUTHORIZED_ID, googleSearch, information } from "../constant";
+import { information } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
@@ -56,6 +56,7 @@ function Book({ logo }) {
 	const [count, setCount] = React.useState(10);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const isReload = true;
+	const status = process.env.REACT_APP_STATUS;
 
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
@@ -221,6 +222,7 @@ function Book({ logo }) {
 							sender: "Hairposey",
 							total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 							hour: 3,
+							status: status,
 						})
 						.then(() => {
 							console.log(`SUCCESSFULL`);
@@ -257,6 +259,7 @@ function Book({ logo }) {
 		total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
+		link: `${process.env.REACT_APP_SITE_URL}/${orderNo}`,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
@@ -279,7 +282,7 @@ function Book({ logo }) {
 		}, Services: ${bookingData.service}, add-On-Services: ${
 			bookingData.addOnServices
 		}. Customer's Email: ${user?.email || userEmail}`,
-		client: AUTHORIZED_ID.id_one,
+		client: process.env.REACT_APP_AUTHORIZED_ID_ONE,
 		sender: "Hairposey Bookings",
 	};
 	const SendMerchantSuccessfulPurchaseEmail = () => {
@@ -305,7 +308,7 @@ function Book({ logo }) {
 			<div className="tw-flex tw-flex-col tw-items-center lg:tw-mx-auto lg:tw-pl-[10px] lg:tw-flex-1 lg-tw-w-full">
 				<div className="tw-text-neutral-300 tw-text-center tw-text-2xl tw-mt-[20px] tw-mb-[70px] tw-px-[10px] tw-py-1">
 					<a
-						href={`${googleSearch + location}`}
+						href={`${process.env.REACT_APP_GOOGLESEARCH + location}`}
 						target="_blank"
 						rel="noreferrer"
 						className="tw-flex-col tw-text-neutral-400 tw-text-xs tw-font-light tw-flex tw-items-center tw-justify-center tw-mb-7 hover:tw-text-neutral-600 tw-ease tw-duration-300 ">

@@ -1,178 +1,177 @@
-import React, { useContext } from 'react'
-import { Helmet } from 'react-helmet'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { FaHandPointRight } from 'react-icons/fa'
-import Layout from '../components/shared/Layout'
-import CartItemsCheckout from '../components/CartItemsCheckout'
-import { selectCartItems, selectTotal } from '../slices/appSlices'
-import Total from '../components/Total'
-import Button from '../components/shared/Button'
-import { UserContext } from '../context/user-context'
-import { MdKeyboardArrowRight } from 'react-icons/md'
-import { HiTruck } from 'react-icons/hi'
-import { GiCardPickup } from 'react-icons/gi'
-import Heading from '../components/Heading'
-import { BsFillQuestionCircleFill } from 'react-icons/bs'
-import { db } from '../firebase'
-import { AUTHORIZED_ID } from '../constant'
-import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
+import React, { useContext } from "react";
+import { Helmet } from "react-helmet";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { FaHandPointRight } from "react-icons/fa";
+import Layout from "../components/shared/Layout";
+import CartItemsCheckout from "../components/CartItemsCheckout";
+import { selectCartItems, selectTotal } from "../slices/appSlices";
+import Total from "../components/Total";
+import Button from "../components/shared/Button";
+import { UserContext } from "../context/user-context";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { HiTruck } from "react-icons/hi";
+import { GiCardPickup } from "react-icons/gi";
+import Heading from "../components/Heading";
+import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { db } from "../firebase";
+import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
-const logo = require('../assets/logo.png')
+const logo = require("../assets/logo.png");
 
 const Cart = () => {
-	const { user } = useContext(UserContext)
-	const total = useSelector(selectTotal)
-	const cartItems = useSelector(selectCartItems)
-	const navigate = useNavigate()
-	const [sales, setSales] = React.useState(false)
-	const [redirect, setRedirect] = React.useState(false)
-	const [pageCancel, setPageCancel] = React.useState(false)
-	const [error, setError] = React.useState(false)
-	const [discount, setDiscount] = React.useState('')
-	const [discountPrice, setDiscountPrice] = React.useState('')
-	const [shippingMethod, setShippingMethod] = React.useState('')
-	const [warn, setWarn] = React.useState(false)
-	const [showLoad, setShowLoad] = React.useState(false)
-	const [showInfo, setShowInfo] = React.useState(false)
-	const [pickupNote, setPickupNote] = React.useState(false)
-	const [resultArry, setResultArray] = React.useState([])
-	const [code, setCode] = React.useState('')
-	const userPostalAddress = localStorage.getItem('address')
+	const { user } = useContext(UserContext);
+	const total = useSelector(selectTotal);
+	const cartItems = useSelector(selectCartItems);
+	const navigate = useNavigate();
+	const [sales, setSales] = React.useState(false);
+	const [redirect, setRedirect] = React.useState(false);
+	const [pageCancel, setPageCancel] = React.useState(false);
+	const [error, setError] = React.useState(false);
+	const [discount, setDiscount] = React.useState("");
+	const [discountPrice, setDiscountPrice] = React.useState("");
+	const [shippingMethod, setShippingMethod] = React.useState("");
+	const [warn, setWarn] = React.useState(false);
+	const [showLoad, setShowLoad] = React.useState(false);
+	const [showInfo, setShowInfo] = React.useState(false);
+	const [pickupNote, setPickupNote] = React.useState(false);
+	const [resultArry, setResultArray] = React.useState([]);
+	const [code, setCode] = React.useState("");
+	const userPostalAddress = localStorage.getItem("address");
 
 	const generateCode = () => {
-		const genCode = `ModelEst${Math.random().toString(18).slice(2)}`
-		setCode(genCode)
-		db.collection('admin')
-			.doc(`${AUTHORIZED_ID.id_one}/`)
-			.collection('discount-code')
+		const genCode = `ModelEst${Math.random().toString(18).slice(2)}`;
+		setCode(genCode);
+		db.collection("admin")
+			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.collection("discount-code")
 			.add({
 				code: genCode,
 			})
 			.then(() => {
-				console.log(`SUCCESSFULL ADDED CODE`)
+				console.log(`SUCCESSFULL ADDED CODE`);
 			})
-			.catch((error) => console.log('Error ' + error.message))
-	}
+			.catch((error) => console.log("Error " + error.message));
+	};
 
 	React.useEffect(() => {
-		localStorage.removeItem('discountPrice')
-		localStorage.removeItem('ship')
-		localStorage.removeItem('address')
-		localStorage.removeItem('altEmail')
-		localStorage.removeItem('shippingCost')
-		localStorage.removeItem('payload')
-		localStorage.removeItem('finalPriceToPayObject')
-		localStorage.removeItem('finalPriceToPay')
-		localStorage.removeItem('order no')
-		localStorage.removeItem('username')
-		localStorage.removeItem('payMethod')
-		localStorage.removeItem('country')
-		localStorage.removeItem('referral')
-		localStorage.removeItem('phone')
+		localStorage.removeItem("discountPrice");
+		localStorage.removeItem("ship");
+		localStorage.removeItem("address");
+		localStorage.removeItem("altEmail");
+		localStorage.removeItem("shippingCost");
+		localStorage.removeItem("payload");
+		localStorage.removeItem("finalPriceToPayObject");
+		localStorage.removeItem("finalPriceToPay");
+		localStorage.removeItem("order no");
+		localStorage.removeItem("username");
+		localStorage.removeItem("payMethod");
+		localStorage.removeItem("country");
+		localStorage.removeItem("referral");
+		localStorage.removeItem("phone");
 
-		setSales(fetchSalesPercentage())
+		setSales(fetchSalesPercentage());
 
-		db.collection('admin')
-			.doc(`${AUTHORIZED_ID.id_one}/`)
-			.collection('discount-code')
+		db.collection("admin")
+			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.collection("discount-code")
 			.onSnapshot((snapshot) => {
 				const results = snapshot.docs.map((doc) => ({
 					data: doc.data(),
-				}))
+				}));
 
-				const resultArry = []
+				const resultArry = [];
 				for (const result of results) {
-					resultArry.push(result?.data?.code)
+					resultArry.push(result?.data?.code);
 				}
-				setResultArray(resultArry)
-			})
+				setResultArray(resultArry);
+			});
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	if (redirect) {
 		setTimeout(function () {
-			setRedirect(false)
+			setRedirect(false);
 
-			navigate('/success')
-		}, 5000)
+			navigate("/success");
+		}, 5000);
 	}
 	if (pageCancel) {
 		setTimeout(function () {
-			setPageCancel(false)
+			setPageCancel(false);
 
-			navigate('/canceled')
-		}, 5000)
+			navigate("/canceled");
+		}, 5000);
 	}
 	if (showLoad) {
 		setTimeout(function () {
-			setShowLoad(false)
-		}, 5000)
+			setShowLoad(false);
+		}, 5000);
 	}
 
 	const handleDisount = (e) => {
-		setDiscount(e.target.value)
-	}
+		setDiscount(e.target.value);
+	};
 
 	const handleApply = () => {
 		if (error) {
 			setTimeout(function () {
-				setError(false)
-			}, 5000)
+				setError(false);
+			}, 5000);
 		}
 		if (code) {
 			setTimeout(function () {
-				setCode('')
-			}, 3000)
+				setCode("");
+			}, 3000);
 		}
 		if (resultArry.includes(discount)) {
-			if (discount === '') {
-				setError(true)
+			if (discount === "") {
+				setError(true);
 			} else {
 				if (sales > 0) {
-					const salesPrice = total * (sales / 100)
-					setDiscountPrice(total - salesPrice)
+					const salesPrice = total * (sales / 100);
+					setDiscountPrice(total - salesPrice);
 
-					localStorage.setItem('discountPrice', total - salesPrice)
-					setShowLoad(true)
+					localStorage.setItem("discountPrice", total - salesPrice);
+					setShowLoad(true);
 				}
-				setDiscount('')
+				setDiscount("");
 			}
 
-			db.collection('admin')
-				.doc(`${AUTHORIZED_ID.id_one}/`)
-				.collection('discount-code')
+			db.collection("admin")
+				.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+				.collection("discount-code")
 				.onSnapshot((snapshot) => {
 					snapshot.docs.map(
 						// eslint-disable-next-line array-callback-return
 						(doc) => {
 							if (doc.data().code === discount) {
-								db.collection('admin')
-									.doc(`${AUTHORIZED_ID.id_one}/`)
-									.collection('discount-code')
+								db.collection("admin")
+									.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+									.collection("discount-code")
 									.doc(doc.id)
-									.delete()
+									.delete();
 							}
 						}
-					)
-				})
+					);
+				});
 		} else {
-			setError(true)
+			setError(true);
 		}
-	}
+	};
 
 	const handleShipMethod = (method, event) => {
 		if (event) {
-			setShippingMethod(method)
-			localStorage.setItem('ship', method)
-			setWarn(false)
+			setShippingMethod(method);
+			localStorage.setItem("ship", method);
+			setWarn(false);
 		} else {
-			setShippingMethod('')
-			localStorage.removeItem('ship', '')
-			setWarn(true)
+			setShippingMethod("");
+			localStorage.removeItem("ship", "");
+			setWarn(true);
 		}
-	}
+	};
 
 	return (
 		<>
@@ -183,8 +182,8 @@ const Cart = () => {
 				<div
 					className={
 						sales
-							? 'tw-pt-[125px] tw-bg-neutral-200 md:tw-pt-[105px] tw-pb-[30px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative'
-							: 'tw-bg-neutral-200 tw-pt-[57px] md:tw-pt-[60px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative'
+							? "tw-pt-[125px] tw-bg-neutral-200 md:tw-pt-[105px] tw-pb-[30px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative"
+							: "tw-bg-neutral-200 tw-pt-[57px] md:tw-pt-[60px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative"
 					}>
 					{cartItems.length === 0 ? (
 						<div className="tw-flex tw-items-center">
@@ -192,7 +191,7 @@ const Cart = () => {
 								Your Cart is Empty
 							</div>
 							<FaHandPointRight className="tw-text-white tw-mr-5 tw-text-2xl" />
-							<Button handleFunc={() => navigate('/')}>Shop now</Button>
+							<Button handleFunc={() => navigate("/")}>Shop now</Button>
 						</div>
 					) : (
 						<div className="tw-w-full tw-h-[100%] md:tw-pr-5 tw-bg-neutral-900">
@@ -212,9 +211,9 @@ const Cart = () => {
 										className="tw-flex tw-items-center tw-mr-2">
 										<span
 											className={`${
-												window.location.pathname.includes('checkout')
-													? 'tw-text-[#bba371] tw-font-bold'
-													: 'tw-text-neutral-400'
+												window.location.pathname.includes("checkout")
+													? "tw-text-[#bba371] tw-font-bold"
+													: "tw-text-neutral-400"
 											} tw-mr-2`}>
 											Information
 										</span>
@@ -245,9 +244,9 @@ const Cart = () => {
 													onChange={handleDisount}
 													placeholder="Discount code"
 													className={`${
-														error && discount === ''
-															? 'tw-border-red-700 tw-border-[1px]'
-															: 'tw-border-neutral-400 tw-border-[1px]'
+														error && discount === ""
+															? "tw-border-red-700 tw-border-[1px]"
+															: "tw-border-neutral-400 tw-border-[1px]"
 													} tw-text-sm tw-font-light tw-rounded-md tw-w-[70%] tw-py-2 placeholder:tw-text-xs `}
 												/>
 												<button
@@ -287,7 +286,7 @@ const Cart = () => {
 									<div className="tw-relative">
 										<div
 											className={`${
-												error ? 'tw-border-t-[1px]' : 'tw-border-t-0'
+												error ? "tw-border-t-[1px]" : "tw-border-t-0"
 											} tw-border-b-[1px] tw-border-[#b59248] tw-py-5 tw-text-neutral-700`}>
 											<div className="tw-flex tw-items-center tw-justify-between tw-text-sm">
 												<span>Subtotal</span>
@@ -354,7 +353,7 @@ const Cart = () => {
 											<label className="radio-container tw-mr-2 tw-mt-[-10px]">
 												<input
 													onClick={(e) =>
-														handleShipMethod('ship', e.target.checked)
+														handleShipMethod("ship", e.target.checked)
 													}
 													type="radio"
 													name="radio"
@@ -362,13 +361,13 @@ const Cart = () => {
 												/>
 												<span
 													className={`checkmark-radio ${
-														warn && 'tw-border-red-500 tw-border-[1px]'
+														warn && "tw-border-red-500 tw-border-[1px]"
 													}`}></span>
 											</label>
 
 											<div
 												className={`tw-flex tw-items-center ${
-													warn ? 'tw-text-red-500' : 'tw-text-slate-900'
+													warn ? "tw-text-red-500" : "tw-text-slate-900"
 												}`}>
 												<HiTruck size={25} />
 												<span className="tw-text-[16px] tw-m-3">Ship</span>
@@ -378,19 +377,19 @@ const Cart = () => {
 											<label className="radio-container tw-mr-2 tw-mt-[-10px]">
 												<input
 													onClick={(e) =>
-														handleShipMethod('pick up', e.target.checked)
+														handleShipMethod("pick up", e.target.checked)
 													}
 													type="radio"
 													name="radio"
 												/>
 												<span
 													className={`checkmark-radio ${
-														warn && 'tw-border-red-500 tw-border-[1px]'
+														warn && "tw-border-red-500 tw-border-[1px]"
 													}`}></span>
 											</label>
 											<div
 												className={`tw-flex tw-items-center ${
-													warn ? 'tw-text-red-500' : 'tw-text-slate-900'
+													warn ? "tw-text-red-500" : "tw-text-slate-900"
 												}`}>
 												<GiCardPickup size={20} />
 												<span className="tw-text-[16px] tw-m-3">Pick up</span>
@@ -403,7 +402,7 @@ const Cart = () => {
 											isWhite={true}
 											size3={true}
 										/>
-										{shippingMethod === 'pick up' && (
+										{shippingMethod === "pick up" && (
 											<>
 												<BsFillQuestionCircleFill
 													size={20}
@@ -432,7 +431,7 @@ const Cart = () => {
 				</div>
 			</Layout>
 		</>
-	)
-}
+	);
+};
 
-export default Cart
+export default Cart;

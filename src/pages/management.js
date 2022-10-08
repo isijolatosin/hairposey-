@@ -1,66 +1,65 @@
-import React, { useContext } from 'react'
-import { Helmet } from 'react-helmet'
-import { getDatabase, ref, set } from 'firebase/database'
-import Heading from '../components/Heading'
-import Inventory from '../components/Inventory'
-import Layout from '../components/shared/Layout'
-import Shippment from '../components/Shippment'
-import { BsFillArrowUpSquareFill } from 'react-icons/bs'
-import { RiSendPlaneLine } from 'react-icons/ri'
-import AllInventories from '../components/AllInventories'
-import { UserContext } from '../context/user-context'
-import { AUTHORIZED_ID } from '../constant'
-import { db } from '../firebase'
-import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
+import React, { useContext } from "react";
+import { Helmet } from "react-helmet";
+import { getDatabase, ref, set } from "firebase/database";
+import Heading from "../components/Heading";
+import Inventory from "../components/Inventory";
+import Layout from "../components/shared/Layout";
+import Shippment from "../components/Shippment";
+import { BsFillArrowUpSquareFill } from "react-icons/bs";
+import { RiSendPlaneLine } from "react-icons/ri";
+import AllInventories from "../components/AllInventories";
+import { UserContext } from "../context/user-context";
+import { db } from "../firebase";
+import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
 function Management() {
-	const database = getDatabase()
-	const [sales, setSales] = React.useState(null)
-	const [section, setSection] = React.useState('all-inventory')
-	const [percentSale, setPercentSale] = React.useState(null)
-	const { user } = useContext(UserContext)
-	const [location, setLocation] = React.useState('')
+	const database = getDatabase();
+	const [sales, setSales] = React.useState(null);
+	const [section, setSection] = React.useState("all-inventory");
+	const [percentSale, setPercentSale] = React.useState(null);
+	const { user } = useContext(UserContext);
+	const [location, setLocation] = React.useState("");
 
 	React.useEffect(() => {
-		setSales(fetchSalesPercentage())
+		setSales(fetchSalesPercentage());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	const toggleSection = (e) => {
-		setSection(e.target.id)
-	}
+		setSection(e.target.id);
+	};
 
 	const SectionComp = () => {
-		if (section === 'all-inventory') {
-			return <AllInventories />
+		if (section === "all-inventory") {
+			return <AllInventories />;
 		}
-		if (section === 'inventory') {
-			return <Inventory />
+		if (section === "inventory") {
+			return <Inventory />;
 		}
-		if (section === 'shipping') {
-			return <Shippment />
+		if (section === "shipping") {
+			return <Shippment />;
 		}
-	}
+	};
 	const handleSubmit = () => {
-		if (percentSale !== null || percentSale !== '') {
-			set(ref(database, 'sales'), {
+		if (percentSale !== null || percentSale !== "") {
+			set(ref(database, "sales"), {
 				no: percentSale,
-			})
+			});
 		}
-		setPercentSale('')
-	}
+		setPercentSale("");
+	};
 
 	const handleLocation = (e) => {
-		e.preventDefault()
-		setLocation(e.target.value)
-	}
+		e.preventDefault();
+		setLocation(e.target.value);
+	};
 	const handleSubmitLoc = (e) => {
-		e.preventDefault()
-		db.collection('location')
-			.doc(`${AUTHORIZED_ID.id_one}/`)
-			.set({ location: location }, { merge: true })
-		setLocation('')
-	}
+		e.preventDefault();
+		db.collection("location")
+			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.set({ location: location }, { merge: true });
+		setLocation("");
+	};
 
 	return (
 		<>
@@ -71,8 +70,8 @@ function Management() {
 				<div
 					className={
 						sales
-							? 'tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-slate-100'
-							: 'tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100%] tw-items-center tw-bg-slate-100'
+							? "tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-[100vw] tw-items-center tw-bg-slate-100"
+							: "tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100%] tw-items-center tw-bg-slate-100"
 					}>
 					<div className="tw-flex tw-flex-col tw-items-left tw-justify-between tw-w-[100%] lg:tw-w-[70%] tw-mb-10 tw-px-3">
 						<div className="tw-mb-2">
@@ -158,7 +157,7 @@ function Management() {
 				</div>
 			</Layout>
 		</>
-	)
+	);
 }
 
-export default Management
+export default Management;

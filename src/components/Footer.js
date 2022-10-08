@@ -7,8 +7,6 @@ import { RiVisaLine } from "react-icons/ri";
 import { SiAmericanexpress } from "react-icons/si";
 import { countries } from "../country";
 import { Link } from "react-router-dom";
-// import { MdLocationPin } from 'react-icons/md'
-// import { googleSearch, location } from '../constant'
 
 function Footer() {
 	const paymentType = [

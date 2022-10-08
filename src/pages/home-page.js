@@ -51,12 +51,17 @@ function HomePage() {
 
 	React.useEffect(() => {
 		fetchProducts();
-
-		if (window.location.pathname === "/booking") {
+		if (
+			window.location.pathname.split("/")[2] === process.env.REACT_APP_ISBOOKING
+		) {
 			setSelected("book");
 		}
 		// change the logic when shop is ready
-		if (window.location.pathname === "/shooping") return;
+		if (
+			window.location.pathname.split("/")[2] ===
+			process.env.REACT_APP_ISSHOPPING
+		)
+			return;
 	}, []);
 
 	const handlePath = (id) => {
@@ -95,7 +100,7 @@ function HomePage() {
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
-								<Link to="/hairposey/shopping" className="tw-mx-5">
+								<Link to={`${process.env.REACT_APP_BOOK}`} className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("shop")}
 										type="button"
@@ -104,7 +109,7 @@ function HomePage() {
 										isgradBG={true}
 									/>
 								</Link>
-								<Link to="/hairposey/booking" className="tw-mx-5">
+								<Link to={`${process.env.REACT_APP_SHOP}`} className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("book")}
 										type="button"

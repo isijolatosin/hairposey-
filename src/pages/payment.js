@@ -1,166 +1,168 @@
-import React, { useContext } from 'react'
-import { Helmet } from 'react-helmet'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { FaHandPointRight } from 'react-icons/fa'
-import Layout from '../components/shared/Layout'
-import CartItemsCheckout from '../components/CartItemsCheckout'
+import React, { useContext } from "react";
+import { Helmet } from "react-helmet";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { FaHandPointRight } from "react-icons/fa";
+import Layout from "../components/shared/Layout";
+import CartItemsCheckout from "../components/CartItemsCheckout";
 import {
 	selectCartItems,
 	selectItemCount,
 	selectTotal,
-} from '../slices/appSlices'
-import StripeCheckout from '../components/checkout/stripe-checkout'
-import Button from '../components/shared/Button'
-import { UserContext } from '../context/user-context'
-import { MdKeyboardArrowRight } from 'react-icons/md'
-import { BsFillQuestionCircleFill } from 'react-icons/bs'
-import { fetchSalesPercentage } from '../utils/salesPercentageNumber'
-import { BsCreditCard } from 'react-icons/bs'
-import Heading from '../components/Heading'
-import { RiVisaLine } from 'react-icons/ri'
-import { BASE_CURRENCY_CONVERTER_URL } from '../constant'
-import { FiSend } from 'react-icons/fi'
+} from "../slices/appSlices";
+import StripeCheckout from "../components/checkout/stripe-checkout";
+import Button from "../components/shared/Button";
+import { UserContext } from "../context/user-context";
+import { MdKeyboardArrowRight } from "react-icons/md";
+import { BsFillQuestionCircleFill } from "react-icons/bs";
+import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
+import { BsCreditCard } from "react-icons/bs";
+import Heading from "../components/Heading";
+import { RiVisaLine } from "react-icons/ri";
+import { FiSend } from "react-icons/fi";
 
-const logo = require('../assets/logo.png')
-const paypal = require('../assets/paypal.png')
-const mastercard = require('../assets/mastercard.png')
-const mastercard2 = require('../assets/mastercard2.png')
-const americanExpress = require('../assets/american-express.png')
+const logo = require("../assets/logo.png");
+const paypal = require("../assets/paypal.png");
+const mastercard = require("../assets/mastercard.png");
+const mastercard2 = require("../assets/mastercard2.png");
+const americanExpress = require("../assets/american-express.png");
 
 const Cart = () => {
-	const { user } = useContext(UserContext)
-	const itemCount = useSelector(selectItemCount)
-	const total = useSelector(selectTotal)
-	const cartItems = useSelector(selectCartItems)
-	const navigate = useNavigate()
-	const [sales, setSales] = React.useState(false)
-	const [referral, setReferral] = React.useState('')
-	const [error, setError] = React.useState(false)
-	const [redirect, setRedirect] = React.useState(false)
-	const [pageCancel, setPageCancel] = React.useState(false)
-	const discountPrice = Number(localStorage.getItem('discountPrice'))
-	const userName = localStorage.getItem('username')
-	const phone = localStorage.getItem('phone')
-	const country = localStorage.getItem('country')
-	const orderNo = localStorage.getItem('order no')
-	const shippingObj = JSON.parse(localStorage.getItem('shippingCost'))
-	const shipMethod = localStorage.getItem('ship')
-	const userPostalAddress = localStorage.getItem('address')
-	const [showLoad, setShowLoad] = React.useState(false)
-	const [showInfo, setShowInfo] = React.useState(false)
-	const [selectShippingOption, setSelectShippingOption] = React.useState(false)
-	const [showPaypalPayment, setShowPaypalPayment] = React.useState(false)
-	const [showCardPayment, setShowCardPayment] = React.useState(false)
-	const [warn, setWarn] = React.useState(false)
+	const { user } = useContext(UserContext);
+	const itemCount = useSelector(selectItemCount);
+	const total = useSelector(selectTotal);
+	const cartItems = useSelector(selectCartItems);
+	const navigate = useNavigate();
+	const [sales, setSales] = React.useState(false);
+	const [referral, setReferral] = React.useState("");
+	const [error, setError] = React.useState(false);
+	const [redirect, setRedirect] = React.useState(false);
+	const [pageCancel, setPageCancel] = React.useState(false);
+	const discountPrice = Number(localStorage.getItem("discountPrice"));
+	const userName = localStorage.getItem("username");
+	const phone = localStorage.getItem("phone");
+	const country = localStorage.getItem("country");
+	const orderNo = localStorage.getItem("order no");
+	const shippingObj = JSON.parse(localStorage.getItem("shippingCost"));
+	const shipMethod = localStorage.getItem("ship");
+	const userPostalAddress = localStorage.getItem("address");
+	const [showLoad, setShowLoad] = React.useState(false);
+	const [showInfo, setShowInfo] = React.useState(false);
+	const [selectShippingOption, setSelectShippingOption] = React.useState(false);
+	const [showPaypalPayment, setShowPaypalPayment] = React.useState(false);
+	const [showCardPayment, setShowCardPayment] = React.useState(false);
+	const [warn, setWarn] = React.useState(false);
 	const [estimatedTotalPriceNaira, setestimatedTotalPriceNaira] =
-		React.useState('')
-	const [exchangeRate, setExchangeRate] = React.useState('')
+		React.useState("");
+	const [exchangeRate, setExchangeRate] = React.useState("");
 	const shipPrice =
-		shipMethod === 'ship' ? `USD $${shippingObj.cost}:00` : 'PICK UP'
+		shipMethod === "ship" ? `USD $${shippingObj.cost}:00` : "PICK UP";
 	const taxPrice = discountPrice
 		? Number(
 				(discountPrice * Number(process.env.REACT_APP_TAX_PERCENT)).toFixed(2)
 		  )
-		: Number((total * Number(process.env.REACT_APP_TAX_PERCENT)).toFixed(2))
+		: Number((total * Number(process.env.REACT_APP_TAX_PERCENT)).toFixed(2));
 
-	let estimatedTotalPrice
-	if (shipMethod === 'ship') {
+	let estimatedTotalPrice;
+	if (shipMethod === "ship") {
 		if (discountPrice) {
-			estimatedTotalPrice = discountPrice + shippingObj.cost + taxPrice
+			estimatedTotalPrice = discountPrice + shippingObj.cost + taxPrice;
 		} else {
-			estimatedTotalPrice = total + shippingObj.cost + taxPrice
+			estimatedTotalPrice = total + shippingObj.cost + taxPrice;
 		}
 	} else {
 		if (discountPrice) {
-			estimatedTotalPrice = discountPrice + taxPrice
+			estimatedTotalPrice = discountPrice + taxPrice;
 		} else {
-			estimatedTotalPrice = total + taxPrice
+			estimatedTotalPrice = total + taxPrice;
 		}
 	}
 	React.useEffect(() => {
-		setSales(fetchSalesPercentage())
+		setSales(fetchSalesPercentage());
 
-		const myHeaders = new Headers()
-		myHeaders.append('apikey', process.env.REACT_APP_EXCHANGE_RATE_DATA_API_KEY)
+		const myHeaders = new Headers();
+		myHeaders.append(
+			"apikey",
+			process.env.REACT_APP_EXCHANGE_RATE_DATA_API_KEY
+		);
 
 		const requestOptions = {
-			method: 'GET',
-			redirect: 'follow',
+			method: "GET",
+			redirect: "follow",
 			headers: myHeaders,
-		}
+		};
 
-		country === 'nigeria' &&
+		country === "nigeria" &&
 			fetch(
-				`${BASE_CURRENCY_CONVERTER_URL}to=ngn&from=usd&amount=${estimatedTotalPrice}`,
+				`${process.envREACT_APP_BASE_CURRENCY_CONVERTER_URL}to=ngn&from=usd&amount=${estimatedTotalPrice}`,
 				requestOptions
 			)
 				.then((response) => response.json())
 				.then((result) => {
-					setestimatedTotalPriceNaira(result.result.toFixed(2))
-					setExchangeRate(result.info.rate.toFixed(2))
+					setestimatedTotalPriceNaira(result.result.toFixed(2));
+					setExchangeRate(result.info.rate.toFixed(2));
 				})
-				.catch((error) => console.log('error', error))
+				.catch((error) => console.log("error", error));
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, []);
 
 	if (redirect) {
 		setTimeout(function () {
-			setRedirect(false)
+			setRedirect(false);
 
-			navigate('/success')
-		}, 5000)
+			navigate("/success");
+		}, 5000);
 	}
 	if (pageCancel) {
 		setTimeout(function () {
-			setPageCancel(false)
+			setPageCancel(false);
 
-			navigate('/canceled')
-		}, 5000)
+			navigate("/canceled");
+		}, 5000);
 	}
 	if (showLoad) {
 		setTimeout(function () {
-			setShowLoad(false)
-		}, 5000)
+			setShowLoad(false);
+		}, 5000);
 	}
 
 	const handlePayMethod = (method, event) => {
 		if (event) {
-			setWarn(false)
-			setSelectShippingOption(method)
+			setWarn(false);
+			setSelectShippingOption(method);
 		}
-		if (!localStorage.getItem('referral') && country === 'nigeria') {
-			setError(true)
+		if (!localStorage.getItem("referral") && country === "nigeria") {
+			setError(true);
 		}
-	}
+	};
 
 	const placeOrder = function () {
 		if (error) {
-			setError(false)
+			setError(false);
 		}
 		if (selectShippingOption) {
-			if (selectShippingOption === 'paypal') {
-				setWarn(false)
-				setShowPaypalPayment(true)
-				setShowCardPayment(false)
-			} else if (selectShippingOption === 'card') {
-				setWarn(false)
-				setShowCardPayment(true)
-				setShowPaypalPayment(false)
+			if (selectShippingOption === "paypal") {
+				setWarn(false);
+				setShowPaypalPayment(true);
+				setShowCardPayment(false);
+			} else if (selectShippingOption === "card") {
+				setWarn(false);
+				setShowCardPayment(true);
+				setShowPaypalPayment(false);
 			}
-			localStorage.setItem('payMethod', selectShippingOption)
+			localStorage.setItem("payMethod", selectShippingOption);
 		} else {
-			setWarn(true)
+			setWarn(true);
 		}
-		setSelectShippingOption('')
-	}
+		setSelectShippingOption("");
+	};
 
 	const handleReferral = () => {
-		setReferral('')
-		localStorage.setItem('referral', referral)
-		setError(false)
-	}
+		setReferral("");
+		localStorage.setItem("referral", referral);
+		setError(false);
+	};
 
 	return (
 		<>
@@ -171,8 +173,8 @@ const Cart = () => {
 				<div
 					className={
 						sales
-							? 'tw-pt-[125px] tw-bg-neutral-200 md:tw-pt-[105px] tw-pb-[30px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative'
-							: 'tw-bg-neutral-200 tw-pt-[50px] md:tw-pt-[60px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative'
+							? "tw-pt-[125px] tw-bg-neutral-200 md:tw-pt-[105px] tw-pb-[30px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative"
+							: "tw-bg-neutral-200 tw-pt-[50px] md:tw-pt-[60px] tw-w-full tw-flex tw-flex-col tw-items-center tw-justify-center home tw-relative"
 					}>
 					{cartItems.length === 0 ? (
 						<div className="tw-flex tw-items-center">
@@ -180,7 +182,7 @@ const Cart = () => {
 								Your Cart is Empty
 							</div>
 							<FaHandPointRight className="tw-text-white tw-mr-5 tw-text-2xl" />
-							<Button handleFunc={() => navigate('/')}>Shop now</Button>
+							<Button handleFunc={() => navigate("/")}>Shop now</Button>
 						</div>
 					) : (
 						<div className="tw-w-full tw-h-[100%] md:tw-px-10 bg-blur3">
@@ -200,9 +202,9 @@ const Cart = () => {
 										className="tw-flex tw-items-center tw-mr-2">
 										<span
 											className={`${
-												window.location.pathname.includes('checkout')
-													? 'tw-text-white tw-font-bold'
-													: 'tw-text-neutral-400'
+												window.location.pathname.includes("checkout")
+													? "tw-text-white tw-font-bold"
+													: "tw-text-neutral-400"
 											} tw-mr-2`}>
 											Information
 										</span>
@@ -211,9 +213,9 @@ const Cart = () => {
 									<Link to={`/payment/${user?.displayName}`}>
 										<span
 											className={`${
-												window.location.pathname.includes('payment')
-													? 'tw-text-white tw-font-bold'
-													: 'tw-text-neutral-400'
+												window.location.pathname.includes("payment")
+													? "tw-text-white tw-font-bold"
+													: "tw-text-neutral-400"
 											}`}>
 											Payment
 										</span>
@@ -273,7 +275,7 @@ const Cart = () => {
 													<p>Discount:</p>
 													<p>
 														USD $
-														{discountPrice ? total - discountPrice : '0.00'}
+														{discountPrice ? total - discountPrice : "0.00"}
 													</p>
 												</div>
 											</div>
@@ -295,7 +297,7 @@ const Cart = () => {
 												</div>
 											</div>
 										</div>
-										{country === 'nigeria' && (
+										{country === "nigeria" && (
 											<div className="tw-border-y-[1px] tw-border-[#b59248] tw-p-3  tw-w-full">
 												<div className="tw-flex-[0'5] tw-mb-5">
 													<Heading
@@ -310,7 +312,7 @@ const Cart = () => {
 													</div>
 													<div className="tw-flex tw-items-center tw-text-neutral-600 tw-font-thin tw-mt-[-5px]">
 														<span className="tw-text-[10px] tw-mr-2">
-															NAIRA:{' '}
+															NAIRA:{" "}
 														</span>
 														{showLoad ? (
 															<div className="circular-loader-small"></div>
@@ -331,9 +333,9 @@ const Cart = () => {
 															onChange={(e) => setReferral(e.target.value)}
 															placeholder="referral code"
 															className={`${
-																error && referral === ''
-																	? 'tw-border-red-700 tw-border-[1px]'
-																	: 'tw-border-[1px] tw-border-[#bba371]'
+																error && referral === ""
+																	? "tw-border-red-700 tw-border-[1px]"
+																	: "tw-border-[1px] tw-border-[#bba371]"
 															} tw-text-sm tw-font-light tw-bg-transparent tw-py-1 placeholder:tw-text-xs focus:tw-ring-0`}
 														/>
 														<button
@@ -375,7 +377,7 @@ const Cart = () => {
 														<label className="radio-container tw-mr-2 tw-mt-[-10px]">
 															<input
 																onClick={(e) =>
-																	handlePayMethod('paypal', e.target.checked)
+																	handlePayMethod("paypal", e.target.checked)
 																}
 																type="radio"
 																name="radio"
@@ -383,13 +385,13 @@ const Cart = () => {
 															/>
 															<span
 																className={`checkmark-radio ${
-																	warn && 'tw-border-red-500 tw-border-[1px]'
+																	warn && "tw-border-red-500 tw-border-[1px]"
 																}`}></span>
 														</label>
 
 														<div
 															className={`tw-flex tw-items-center ${
-																warn ? 'tw-text-red-500' : 'tw-text-black'
+																warn ? "tw-text-red-500" : "tw-text-black"
 															}`}>
 															<img
 																src={paypal}
@@ -405,19 +407,19 @@ const Cart = () => {
 														<label className="radio-container tw-mr-2 tw-mt-[10px]">
 															<input
 																onClick={(e) =>
-																	handlePayMethod('card', e.target.checked)
+																	handlePayMethod("card", e.target.checked)
 																}
 																type="radio"
 																name="radio"
 															/>
 															<span
 																className={`checkmark-radio ${
-																	warn && 'tw-border-red-500 tw-border-[1px]'
+																	warn && "tw-border-red-500 tw-border-[1px]"
 																}`}></span>
 														</label>
 														<div
 															className={`tw-flex tw-items-start ${
-																warn ? 'tw-text-red-500' : 'tw-text-black'
+																warn ? "tw-text-red-500" : "tw-text-black"
 															} tw-flex tw-flex-col`}>
 															<div className="tw-flex tw-items-center">
 																<BsCreditCard size={35} color="black" />
@@ -497,8 +499,8 @@ const Cart = () => {
 					<div
 						className={`${
 							redirect || pageCancel
-								? 'tw-opacity-1 tw-inline tw-ease-in tw-duration-300'
-								: 'tw-opacity-0 tw-hidden tw-ease-in tw-duration-300'
+								? "tw-opacity-1 tw-inline tw-ease-in tw-duration-300"
+								: "tw-opacity-0 tw-hidden tw-ease-in tw-duration-300"
 						} tw-bg-[rgba(0,0,0,0.9)] tw-flex tw-flex-col tw-items-center tw-justify-center tw-fixed tw-top-[35%] tw-z-50 tw-ease-in tw-duration-300 tw-w-[70%] tw-h-[40%] md:tw-w-[20%] md:tw-h-[20%]`}>
 						<div className="circular-loader"></div>
 						<div>
@@ -518,7 +520,7 @@ const Cart = () => {
 										</span>
 									</div>
 								) : (
-									''
+									""
 								)}
 							</span>
 						</div>
@@ -526,7 +528,7 @@ const Cart = () => {
 				</div>
 			</Layout>
 		</>
-	)
-}
+	);
+};
 
-export default Cart
+export default Cart;

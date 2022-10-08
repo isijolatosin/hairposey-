@@ -1,34 +1,33 @@
-import React, { useContext, useState } from 'react'
-import emailjs from 'emailjs-com'
-import { UserContext } from '../context/user-context'
-import Heading from './Heading'
-import { db } from '../firebase'
-import { MdOutlineKeyboardArrowUp } from 'react-icons/md'
-import { GiCheckMark } from 'react-icons/gi'
-import { MdClose } from 'react-icons/md'
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
-import Button from './shared/Button'
-import { AUTHORIZED_ID } from '../constant'
+import React, { useContext, useState } from "react";
+import emailjs from "emailjs-com";
+import { UserContext } from "../context/user-context";
+import Heading from "./Heading";
+import { db } from "../firebase";
+import { MdOutlineKeyboardArrowUp } from "react-icons/md";
+import { GiCheckMark } from "react-icons/gi";
+import { MdClose } from "react-icons/md";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import Button from "./shared/Button";
 
 function Shippment() {
-	const { user } = useContext(UserContext)
-	const [readMore, setReadMore] = React.useState(false)
-	const [trackingInput, setShowTrackingInput] = React.useState(false)
-	const [modal, setModal] = React.useState(false)
-	const [_id, setId] = React.useState('')
-	const [matchIdx, setMatchIdx] = React.useState('')
-	const [custmr, setCustmr] = React.useState('')
-	const [isLoading, setIsLoading] = React.useState(true)
+	const { user } = useContext(UserContext);
+	const [readMore, setReadMore] = React.useState(false);
+	const [trackingInput, setShowTrackingInput] = React.useState(false);
+	const [modal, setModal] = React.useState(false);
+	const [_id, setId] = React.useState("");
+	const [matchIdx, setMatchIdx] = React.useState("");
+	const [custmr, setCustmr] = React.useState("");
+	const [isLoading, setIsLoading] = React.useState(true);
 	const [shippingInfo, setShippingInfo] = React.useState({
 		shippingHeader: [],
 		shippingData: [],
-	})
+	});
 	const [trackingNum, setTrackingNum] = useState({
-		number: '',
-		courier: '',
-	})
+		number: "",
+		courier: "",
+	});
 
-	const itemObj = []
+	const itemObj = [];
 	// eslint-disable-next-line array-callback-return
 	shippingInfo?.shippingData?.filter((item) => {
 		const obj = {
@@ -36,47 +35,47 @@ function Shippment() {
 			quantity: item.quantity,
 			description: item.description,
 			id: item.id,
-		}
+		};
 		if (item.id === _id) {
-			itemObj.push(obj)
+			itemObj.push(obj);
 		}
-	})
+	});
 
 	const messageParams = {
 		name: user.displayName,
 		message: `Thank you for your patronage. Your order of ${itemObj?.[0]?.quantity} ${itemObj?.[0]?.name}, is being processed and your tracking information is: Tracking No - ${trackingNum.number}, Courier - ${trackingNum.courier}.`,
 		client: user?.email,
-	}
+	};
 
 	const handleChangeAuthUser = (e) => {
-		setTrackingNum({ ...trackingNum, [e.target.name]: e.target.value })
-	}
+		setTrackingNum({ ...trackingNum, [e.target.name]: e.target.value });
+	};
 
 	const getObjectHeader = (object) => {
-		let objectKeys = []
+		let objectKeys = [];
 		if (object) {
 			for (let i = 0; i < object.length; i++) {
-				objectKeys.push(Object?.keys(object?.[i]?.data || []))
+				objectKeys.push(Object?.keys(object?.[i]?.data || []));
 			}
 		}
-		objectKeys.map((item) => item.sort())
-		return objectKeys
-	}
+		objectKeys.map((item) => item.sort());
+		return objectKeys;
+	};
 
 	React.useEffect(() => {
 		// getting address and details for shipping
 		user &&
 			db
-				.collection('admin')
-				.doc(`${AUTHORIZED_ID.id_one}/`)
-				.collection('all-purchased')
-				.orderBy('title', 'asc')
+				.collection("admin")
+				.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+				.collection("all-purchased")
+				.orderBy("title", "asc")
 				.onSnapshot((snapshot) => {
 					const results = snapshot.docs.map((doc) => ({
 						data: doc.data(),
-					}))
+					}));
 					if (results) {
-						let data = []
+						let data = [];
 						for (const result of results) {
 							data.push({
 								address: result?.data.address,
@@ -88,80 +87,81 @@ function Shippment() {
 								price: `$${result?.data.price}`,
 								quantity: result?.data.quantity,
 								title: result?.data.title,
-							})
+							});
 						}
 
 						setTimeout(() => {
 							setShippingInfo({
 								shippingHeader: getObjectHeader(results),
 								shippingData: data,
-							})
-						}, 5000)
+							});
+						}, 5000);
 					}
-				})
-	}, [user])
+				});
+	}, [user]);
 
 	if (isLoading) {
 		setTimeout(() => {
-			setIsLoading(false)
-		}, 5000)
+			setIsLoading(false);
+		}, 5000);
 	}
 	const toggleRead = (idx) => {
-		setMatchIdx(idx)
-		setReadMore(!readMore)
-	}
+		setMatchIdx(idx);
+		setReadMore(!readMore);
+	};
 	const toggleModal = (idx, customer) => {
-		setCustmr(customer)
-		setMatchIdx(idx)
-		setModal(true)
-	}
+		setCustmr(customer);
+		setMatchIdx(idx);
+		setModal(true);
+	};
 
 	const hideShipped = (id) => {
-		db.collection('admin')
-			.doc(`${AUTHORIZED_ID.id_one}/`)
-			.collection('all-purchased')
+		db.collection("admin")
+			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.collection("all-purchased")
 			.onSnapshot((snapshot) => {
 				snapshot.docs.map(
 					(doc) =>
 						doc.data().id === id &&
 						db
-							.collection('admin')
-							.doc(`${AUTHORIZED_ID.id_one}/`)
-							.collection('all-purchased')
+							.collection("admin")
+							.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+							.collection("all-purchased")
 							.doc(doc.id)
 							.delete()
-				)
-			})
+				);
+			});
 
 		// generate automated email to client
 		const SendClientSuccessfulPurchaseEmail = () => {
 			emailjs
 				.send(
-					'service_2yc5daa',
-					'template_kxtdmr3',
+					"service_2yc5daa",
+					"template_kxtdmr3",
 					messageParams,
-					'user_VORMh20QoM0GcnDrVoVnj'
+					"user_VORMh20QoM0GcnDrVoVnj"
 				)
 				.then((res) => {})
-				.catch((err) => console.log(err))
-		}
+				.catch((err) => console.log(err));
+		};
 
 		setTimeout(() => {
-			SendClientSuccessfulPurchaseEmail()
-		}, 1000)
+			SendClientSuccessfulPurchaseEmail();
+		}, 1000);
 
-		setShowTrackingInput(false)
-		setModal(false)
-	}
+		setShowTrackingInput(false);
+		setModal(false);
+	};
 
 	const scrollToTop = function scrollToTop() {
-		window.scrollTo(0, 0)
-	}
+		window.scrollTo(0, 0);
+	};
 
 	return (
 		<div className="tw-flex tw-flex-col tw-items-center tw-my-5">
 			<Heading>Shipment</Heading>
-			{user?.email === AUTHORIZED_ID.id_one || AUTHORIZED_ID.id_two ? (
+			{user?.email === process.env.REACT_APP_AUTHORIZED_ID_ONE ||
+			process.env.REACT_APP_AUTHORIZED_ID_TWO ? (
 				<div>
 					{trackingInput && (
 						<div className="tw-mt-10 tw-w-full">
@@ -185,13 +185,13 @@ function Shippment() {
 							/>
 							<div
 								className={
-									trackingNum.number === '' || trackingNum.courier === ''
-										? 'tw-flex tw-flex-col tw-justify-center tw-text-sm tw-text-gray-200'
-										: 'tw-flex tw-flex-col tw-justify-center tw-text-sm tw-text-green-700 hover:tw-text-gray-400'
+									trackingNum.number === "" || trackingNum.courier === ""
+										? "tw-flex tw-flex-col tw-justify-center tw-text-sm tw-text-gray-200"
+										: "tw-flex tw-flex-col tw-justify-center tw-text-sm tw-text-green-700 hover:tw-text-gray-400"
 								}>
 								<button
 									disabled={
-										trackingNum.number === '' || trackingNum.courier === ''
+										trackingNum.number === "" || trackingNum.courier === ""
 									}
 									onClick={() => hideShipped(_id)}>
 									Submit Tracking
@@ -219,10 +219,10 @@ function Shippment() {
 											<tr className="table-head-row">
 												{shippingInfo?.shippingHeader?.[0]?.map((head, idx) => (
 													<th key={idx} className="table-head-item">
-														{head}{' '}
-														{head === 'appointment' || head === 'reservation'
-															? ' - date'
-															: ''}
+														{head}{" "}
+														{head === "appointment" || head === "reservation"
+															? " - date"
+															: ""}
 													</th>
 												))}
 											</tr>
@@ -234,14 +234,14 @@ function Shippment() {
 														<td
 															className={
 																itm?.length >= 200
-																	? 'table-items align-left'
-																	: 'table-items'
+																	? "table-items align-left"
+																	: "table-items"
 															}
 															key={index}
 															onClick={() =>
 																toggleModal(item?.id, item?.customer)
 															}>
-															{typeof itm === 'string'
+															{typeof itm === "string"
 																? itm?.length >= 200
 																	? readMore && matchIdx === item?.id
 																		? itm
@@ -253,12 +253,12 @@ function Shippment() {
 																	<span onClick={() => toggleRead(item?.id)}>
 																		{readMore && matchIdx === item?.id ? (
 																			<>
-																				<span>Read Less</span>{' '}
+																				<span>Read Less</span>{" "}
 																				<MdOutlineKeyboardArrowUp />
 																			</>
 																		) : (
 																			<>
-																				<span>Read More</span>{' '}
+																				<span>Read More</span>{" "}
 																				<MdOutlineKeyboardArrowDown />
 																			</>
 																		)}
@@ -281,9 +281,9 @@ function Shippment() {
 																	<button
 																		className="tw-mx-2 tw-flex tw-flex-row tw-text-sm tw-items-center hover:tw-text-green-700"
 																		onClick={() => {
-																			setId(item.id)
-																			setShowTrackingInput(true)
-																			scrollToTop()
+																			setId(item.id);
+																			setShowTrackingInput(true);
+																			scrollToTop();
 																		}}>
 																		<GiCheckMark className="tw-mr-1" />
 																		Yes
@@ -291,8 +291,8 @@ function Shippment() {
 																	<button
 																		className="tw-mx-2 tw-flex tw-flex-row tw-text-sm tw-items-center hover:tw-text-red-800"
 																		onClick={() => {
-																			setShowTrackingInput(false)
-																			setModal(false)
+																			setShowTrackingInput(false);
+																			setModal(false);
 																		}}>
 																		<MdClose size={20} className="tw-mr-1" />
 																		No
@@ -318,6 +318,6 @@ function Shippment() {
 				</div>
 			)}
 		</div>
-	)
+	);
 }
-export default Shippment
+export default Shippment;
