@@ -95,7 +95,7 @@ function HomePage() {
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
-								<Link to="/shopping" className="tw-mx-5">
+								<Link to="/hairposey/shopping" className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("shop")}
 										type="button"
@@ -104,7 +104,7 @@ function HomePage() {
 										isgradBG={true}
 									/>
 								</Link>
-								<Link to="/booking" className="tw-mx-5">
+								<Link to="/hairposey/booking" className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("book")}
 										type="button"

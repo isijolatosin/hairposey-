@@ -14,6 +14,7 @@ import JetBlackHair from "./pages/jet-black-hairs";
 import Cart from "./pages/cart";
 import Account from "./pages/account";
 import Calendar from "./pages/calendar";
+import SingleBookPage from "./pages/singleBookPage";
 
 function App() {
 	return (
@@ -28,8 +29,9 @@ function App() {
 			<Route exact path="/user-cart/:userId" element={<Cart />} />
 			<Route exact path="/checkout/:userId" element={<Checkout />} />
 			<Route exact path="/payment" element={<Payment />} />
-			<Route exact path="/:pathname" element={<HomePage />} />
+			<Route exact path="/hairposey/:pathname" element={<HomePage />} />
 			<Route exact path="/calendar" element={<Calendar />} />
+			<Route exact path="/customer/:bookId" element={<SingleBookPage />} />
 
 			{/* Hair route path */}
 			<Route exact path="/bundles/:brand" element={<HairBundles />} />
