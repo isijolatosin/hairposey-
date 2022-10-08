@@ -12,12 +12,16 @@ export const CURRENCY = "cad";
 export const REACT_APP_BOOK = "/hairposey/booking";
 export const REACT_APP_SHOP = "/hairposey/shopping";
 export const CLIENT_URL = "http://localhost:3001";
+export const REACT_APP_ISBOOKING = "booking";
+export const REACT_APP_ISSHOPPING = "shopping";
+export const REACT_APP_STATUS = "pending";
+export const REACT_APP_CANCELED = "canceled";
 // dev
-// export const REACT_APP_SITE_URL = "http://localhost:8888/customer";
+// export const REACT_APP_SITE_URL = "http://localhost:8888/customer/";
 // dev
 // export const REACT_APP_HTTPS_LINK = "http://localhost:5000";
 // Prod
-export const REACT_APP_SITE_URL = "https://www.hairposey.com/customer";
+export const REACT_APP_SITE_URL = "https://www.hairposey.com/customer/";
 // prod
 export const REACT_APP_HTTPS_LINK = "https://www.hairposey.com";
 export const REACT_APP_AUTHORIZED_ID_ONE = "hairposey@gmail.com";

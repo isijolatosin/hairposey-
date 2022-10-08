@@ -7,6 +7,7 @@ import {
 	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_AUTHORIZED_ID_TWO,
+	REACT_APP_SITE_URL,
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
@@ -127,7 +128,7 @@ const CalendarPage = () => {
 		total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
-		link: `${process.env.REACT_APP_SITE_URL}${orderNo}`,
+		link: `${REACT_APP_SITE_URL}${orderNo}`,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
@@ -439,11 +440,22 @@ const CalendarPage = () => {
 												Status:{" "}
 												<span
 													className={`${
-														list.data.status === process.env.REACT_APP_STATUS
-															? "tw-text-green-700"
-															: "tw-text-neutral-400 tw-line-through tw-italic"
-													}  `}>
-													{list.data.status}
+														new Date().getDate() <
+															new Date(list.data.date).getDate() &&
+														list.data.status !==
+															process.env.REACT_APP_CANCELED &&
+														"tw-text-green-700"
+													} ${
+														(new Date().getDate() >
+															new Date(list.data.date).getDate() ||
+															list.data.status ===
+																process.env.REACT_APP_CANCELED) &&
+														"tw-text-neutral-400 tw-italic tw-line-through"
+													} `}>
+													{new Date().getDate() >
+													new Date(list.data.date).getDate()
+														? "Past Appointment Date"
+														: list.data.status}
 												</span>
 											</li>
 										</ul>
