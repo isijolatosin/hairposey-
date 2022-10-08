@@ -13,7 +13,11 @@ import { MdLocationPin } from "react-icons/md";
 import { GoAlert } from "react-icons/go";
 import axios from "axios";
 import { db } from "../firebase";
-import { information } from "../constant";
+import {
+	information,
+	REACT_APP_AUTHORIZED_ID_ONE,
+	REACT_APP_SITE_URL,
+} from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
@@ -259,7 +263,7 @@ function Book({ logo }) {
 		total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
-		link: `${process.env.REACT_APP_SITE_URL}/${orderNo}`,
+		link: `${REACT_APP_SITE_URL}/${orderNo}`,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
@@ -282,7 +286,7 @@ function Book({ logo }) {
 		}, Services: ${bookingData.service}, add-On-Services: ${
 			bookingData.addOnServices
 		}. Customer's Email: ${user?.email || userEmail}`,
-		client: process.env.REACT_APP_AUTHORIZED_ID_ONE,
+		client: REACT_APP_AUTHORIZED_ID_ONE,
 		sender: "Hairposey Bookings",
 	};
 	const SendMerchantSuccessfulPurchaseEmail = () => {

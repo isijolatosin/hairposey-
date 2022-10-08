@@ -3,7 +3,12 @@ import React, { useContext } from "react";
 import { Calendar } from "react-date-range";
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
-import { information } from "../constant";
+import {
+	information,
+	REACT_APP_AUTHORIZED_ID_ONE,
+	REACT_APP_AUTHORIZED_ID_TWO,
+	REACT_APP_SITE_URL,
+} from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
 import { RiHome5Fill } from "react-icons/ri";
@@ -123,7 +128,7 @@ const CalendarPage = () => {
 		total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
-		link: `${process.env.REACT_APP_SITE_URL}/${orderNo}`,
+		link: `${REACT_APP_SITE_URL}/${orderNo}`,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
@@ -140,7 +145,7 @@ const CalendarPage = () => {
 	const ManagementMessage = {
 		name: "Hairposey",
 		message: `Hello. Hair appointment for ${userEmail} has been booked for ${selectDate}. Here are the details of booking: Category: ${bookingData.category}, Services: ${bookingData.service}, add-On-Services: ${bookingData.addOnServices}. Customer's Email: ${userEmail}`,
-		client: process.env.REACT_APP_AUTHORIZED_ID_ONE,
+		client: REACT_APP_AUTHORIZED_ID_ONE,
 		sender: "Hairposey Bookings",
 	};
 	const SendMerchantSuccessfulPurchaseEmail = () => {
@@ -197,8 +202,8 @@ const CalendarPage = () => {
 			</Helmet>
 			<div className="tw-bg-neutral-300 tw-pt-[60px] tw-pb-[80px]">
 				<div className="tw-relative tw-w-full tw-px-10 md:tw-px-0 md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[60%] tw-mx-auto">
-					{user?.email === process.env.REACT_APP_AUTHORIZED_ID_ONE ||
-					user?.email === process.env.REACT_APP_AUTHORIZED_ID_TWO ? (
+					{user?.email === REACT_APP_AUTHORIZED_ID_ONE ||
+					user?.email === REACT_APP_AUTHORIZED_ID_TWO ? (
 						<div>
 							<Link to="/">
 								<RiHome5Fill className="tw-bg-white tw-absolute -tw-top-8 tw-left-10 md:tw-left-0 tw-shadow-lg tw-w-[40px] tw-h-[40px] tw-text-pink-900 tw-rounded-full tw-p-2 md:hover:tw-bg-pink-900 md:hover:tw-text-white hover:tw-w-[35px] hover:tw-p-4 hover:tw-h-[35px] tw-ease-in tw-duration-300" />

@@ -8,6 +8,10 @@ import { GiCheckMark } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import Button from "./shared/Button";
+import {
+	REACT_APP_AUTHORIZED_ID_ONE,
+	REACT_APP_AUTHORIZED_ID_TWO,
+} from "../constant";
 
 function Shippment() {
 	const { user } = useContext(UserContext);
@@ -67,7 +71,7 @@ function Shippment() {
 		user &&
 			db
 				.collection("admin")
-				.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+				.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 				.collection("all-purchased")
 				.orderBy("title", "asc")
 				.onSnapshot((snapshot) => {
@@ -117,7 +121,7 @@ function Shippment() {
 
 	const hideShipped = (id) => {
 		db.collection("admin")
-			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 			.collection("all-purchased")
 			.onSnapshot((snapshot) => {
 				snapshot.docs.map(
@@ -125,7 +129,7 @@ function Shippment() {
 						doc.data().id === id &&
 						db
 							.collection("admin")
-							.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+							.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 							.collection("all-purchased")
 							.doc(doc.id)
 							.delete()
@@ -160,8 +164,8 @@ function Shippment() {
 	return (
 		<div className="tw-flex tw-flex-col tw-items-center tw-my-5">
 			<Heading>Shipment</Heading>
-			{user?.email === process.env.REACT_APP_AUTHORIZED_ID_ONE ||
-			process.env.REACT_APP_AUTHORIZED_ID_TWO ? (
+			{user?.email === REACT_APP_AUTHORIZED_ID_ONE ||
+			REACT_APP_AUTHORIZED_ID_TWO ? (
 				<div>
 					{trackingInput && (
 						<div className="tw-mt-10 tw-w-full">

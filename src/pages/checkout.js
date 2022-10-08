@@ -16,6 +16,7 @@ import Heading from "../components/Heading";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { db } from "../firebase";
 import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
+import { REACT_APP_AUTHORIZED_ID_ONE } from "../constant";
 
 const logo = require("../assets/logo.png");
 
@@ -43,7 +44,7 @@ const Cart = () => {
 		const genCode = `ModelEst${Math.random().toString(18).slice(2)}`;
 		setCode(genCode);
 		db.collection("admin")
-			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 			.collection("discount-code")
 			.add({
 				code: genCode,
@@ -73,7 +74,7 @@ const Cart = () => {
 		setSales(fetchSalesPercentage());
 
 		db.collection("admin")
-			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 			.collection("discount-code")
 			.onSnapshot((snapshot) => {
 				const results = snapshot.docs.map((doc) => ({
@@ -140,7 +141,7 @@ const Cart = () => {
 			}
 
 			db.collection("admin")
-				.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+				.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 				.collection("discount-code")
 				.onSnapshot((snapshot) => {
 					snapshot.docs.map(
@@ -148,7 +149,7 @@ const Cart = () => {
 						(doc) => {
 							if (doc.data().code === discount) {
 								db.collection("admin")
-									.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+									.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 									.collection("discount-code")
 									.doc(doc.id)
 									.delete();

@@ -11,6 +11,7 @@ import AllInventories from "../components/AllInventories";
 import { UserContext } from "../context/user-context";
 import { db } from "../firebase";
 import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
+import { REACT_APP_AUTHORIZED_ID_ONE } from "../constant";
 
 function Management() {
 	const database = getDatabase();
@@ -56,7 +57,7 @@ function Management() {
 	const handleSubmitLoc = (e) => {
 		e.preventDefault();
 		db.collection("location")
-			.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 			.set({ location: location }, { merge: true });
 		setLocation("");
 	};

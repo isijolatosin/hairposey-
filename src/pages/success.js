@@ -16,6 +16,7 @@ import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import Heading from "../components/Heading";
 import OrderSum from "../components/shared/OrderSum";
+import { REACT_APP_AUTHORIZED_ID_ONE } from "../constant";
 
 const logo = require("../assets/logo.png");
 
@@ -163,7 +164,7 @@ const Success = () => {
 
 				// admin path
 				db.collection("admin")
-					.doc(`${process.env.REACT_APP_AUTHORIZED_ID_ONE}/`)
+					.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 					.collection("all-purchased")
 					.add({
 						id: item.id + orderNo,
