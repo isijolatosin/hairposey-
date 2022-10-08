@@ -26,7 +26,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 	if (isDecline) {
 		setTimeout(() => {
 			setIsDecline(false);
-			handBack();
+			// handBack();
 		}, 3000);
 	}
 
@@ -107,7 +107,8 @@ const BookingPage = ({ isBooking, handBack }) => {
 						</Wrapper>
 					</div>
 					<div className="tw-relative tw-bg-white tw-my-20 tw-w-[90%] tw-mx-auto tw-py-10 md:tw-p-10 tw-rounded-lg">
-						<div className="tw-bg-red-200 tw-px-5 tw-py-10 md:tw-rounded-lg">
+						<div
+							className={`tw-bg-red-200 tw-px-5 tw-pt-10  md:tw-rounded-lg tw-ease-in tw-duration-300`}>
 							<div className="tw-border-b-[1px] tw-border-red-300 tw-mb-5 tw-pb-2 tw-flex tw-items-center tw-justify-between">
 								<Heading
 									size={sizes.medium}
@@ -144,19 +145,35 @@ const BookingPage = ({ isBooking, handBack }) => {
 									Decline
 								</span>
 							</div>
-							{isDecline && (
-								<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-mt-2">
-									<p>Routing back to home page...</p>
-								</div>
-							)}
-							{isAccept && info && (
-								<div className="tw-text-pink-900 tw-text-[11px] tw-italic tw-mt-2">
-									<p>
-										Continue your experience. Click the down button at the
-										top...
-									</p>
-								</div>
-							)}
+							<div
+								className={`tw-text-pink-900 tw-text-[11px] tw-italic tw-ease-in tw-duration-300  ${
+									isDecline
+										? "tw-opacity-1 tw-mt-3 tw-pb-3"
+										: "tw-opacity-0 tw-mt-6"
+								}`}>
+								<span>Routing back to home page...</span>
+							</div>
+							<div
+								className={`tw-text-pink-900 tw-text-[11px] tw-italic tw-ease-in tw-duration-300 tw-flex tw-items-center  ${
+									isAccept && info
+										? "tw-opacity-1 -tw-mt-7 tw-pb-3"
+										: "tw-opacity-0 -tw-mt-4"
+								}`}>
+								<span>
+									Continue your experience. Click the down button at the top or{" "}
+								</span>
+								<button
+									onClick={() => {
+										if (isAccept) {
+											setToggleBookBtn(true);
+											scrollToTop();
+											setInfo(false);
+										}
+									}}
+									className="tw-text-white tw-font-bold tw-ml-1 tw-bg-red-300 tw-px-2 tw-rounded-full">
+									click...
+								</button>
+							</div>
 						</div>
 						<div className="tw-grid lg:tw-grid-cols-2 tw-gap-2 lg:tw-gap-5 tw-border-t-[1px] tw-pt-5 tw-mt-5 tw-text-sm">
 							{information.map((inform) => (
