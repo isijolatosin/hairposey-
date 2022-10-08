@@ -8,7 +8,9 @@ import {
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_AUTHORIZED_ID_TWO,
 	REACT_APP_BOOKLIMIT,
+	REACT_APP_CANCELED,
 	REACT_APP_SITE_URL,
+	REACT_APP_STATUS,
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
@@ -382,8 +384,9 @@ const CalendarPage = () => {
 															? `${list.data.hour}hrs`
 															: `${list.data.hour}hr`}
 													</li>
-													{list.data.status !==
-														process.env.REACT_APP_STATUS && (
+													{(new Date().getDate() >
+														new Date(list.data.date).getDate() ||
+														list.data.status !== REACT_APP_STATUS) && (
 														<>
 															{confirmDel && picked === list.id ? (
 																<button
@@ -443,14 +446,12 @@ const CalendarPage = () => {
 													className={`${
 														new Date().getDate() <
 															new Date(list.data.date).getDate() &&
-														list.data.status !==
-															process.env.REACT_APP_CANCELED &&
+														list.data.status !== REACT_APP_CANCELED &&
 														"tw-text-green-700"
 													} ${
 														(new Date().getDate() >
 															new Date(list.data.date).getDate() ||
-															list.data.status ===
-																process.env.REACT_APP_CANCELED) &&
+															list.data.status === REACT_APP_CANCELED) &&
 														"tw-text-neutral-400 tw-italic tw-line-through"
 													} `}>
 													{new Date().getDate() >
