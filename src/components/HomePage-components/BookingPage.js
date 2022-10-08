@@ -43,6 +43,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 									handBack();
 									setIsAccept(false);
 									setToggleBookBtn(false);
+									setInfo(true);
 								}}
 							/>
 						</Link>
@@ -127,21 +128,33 @@ const BookingPage = ({ isBooking, handBack }) => {
 									</p>
 								))}
 							</div>
-							<div className="tw-text-blue-600 tw-font-light tw-text-sm tw-border-t-[1px] tw-border-red-300 tw-mt-5 tw-pt-5">
+							<div className="tw-font-light tw-text-sm tw-border-t-[1px] tw-border-red-300 tw-mt-5 tw-pt-5">
 								<span
 									onClick={() => {
-										setIsAccept(true);
-										setIsDecline(false);
+										if (!isAccept) {
+											setIsAccept(true);
+											setIsDecline(false);
+										}
 									}}
-									className="tw-cursor-pointer tw-border-r-[1px] tw-pr-3 tw-border-blue-600 tw-font-[400]">
+									className={`${
+										isAccept
+											? "tw-cursor-not-allowed tw-text-neutral-400 tw-font-thin"
+											: "tw-cursor-pointer tw-text-blue-600 tw-font-[400]"
+									} tw-border-r-[1px] tw-pr-3 tw-border-blue-600`}>
 									Accept
 								</span>
 								<span
 									onClick={() => {
-										setIsDecline(true);
-										setIsAccept(false);
+										if (!isDecline) {
+											setIsDecline(true);
+											setIsAccept(false);
+										}
 									}}
-									className="tw-cursor-pointer tw-pl-3 tw-border-blue-600 tw-font-[400]">
+									className={`${
+										isDecline
+											? "tw-cursor-not-allowed tw-text-neutral-400 tw-font-thin"
+											: "tw-cursor-pointer tw-text-blue-600 tw-font-[400]"
+									}  tw-pl-3 tw-border-blue-600`}>
 									Decline
 								</span>
 							</div>
@@ -154,7 +167,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 								<span>Routing back to home page...</span>
 							</div>
 							<div
-								className={`tw-text-pink-900 tw-text-[11px] tw-italic tw-ease-in tw-duration-300 tw-flex tw-items-center  ${
+								className={`tw-text-pink-900 tw-text-[11px] tw-italic tw-ease-in tw-duration-300 tw-flex tw-items-center tw-flex-col md:tw-flex-row  ${
 									isAccept && info
 										? "tw-opacity-1 -tw-mt-7 tw-pb-3"
 										: "tw-opacity-0 -tw-mt-4"
@@ -168,9 +181,10 @@ const BookingPage = ({ isBooking, handBack }) => {
 											setToggleBookBtn(true);
 											scrollToTop();
 											setInfo(false);
+											console.log("first");
 										}
 									}}
-									className="tw-text-white tw-font-bold tw-ml-1 tw-bg-red-300 tw-px-2 tw-rounded-full">
+									className="tw-text-white tw-font-bold tw-ml-1 tw-mt-2 md:tw-mt-0 tw-bg-red-300 tw-px-2 tw-rounded-full">
 									click...
 								</button>
 							</div>

@@ -14,11 +14,12 @@ import {
 	REACT_APP_SHOP,
 	sizes,
 } from "../constant";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const logo = require("../assets/logo.png");
 
 function HomePage() {
+	const navigate = useNavigate();
 	const [allProducts, setAllproducts] = React.useState([]);
 	const [sales, setSales] = React.useState(null);
 	const [selected, setSelected] = React.useState(false);
@@ -72,6 +73,7 @@ function HomePage() {
 
 	const handBack = () => {
 		setSelected(false);
+		navigate("/");
 	};
 
 	return (
