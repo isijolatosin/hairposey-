@@ -16,6 +16,7 @@ import { db } from "../firebase";
 import {
 	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
+	REACT_APP_BOOKLIMIT,
 	REACT_APP_SITE_URL,
 } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
@@ -94,6 +95,7 @@ function Book({ logo }) {
 			if (selectDate) {
 				setSelectDate(null);
 			}
+
 			if (date > dateToday) {
 				db.collection("bookings").onSnapshot((snapshot) => {
 					const results = snapshot.docs.map((doc) => ({
@@ -104,7 +106,7 @@ function Book({ logo }) {
 					);
 
 					if (filterBydate.length > 0) {
-						if (filterBydate.length < 1) {
+						if (filterBydate.length < Number(REACT_APP_BOOKLIMIT)) {
 							setSelectDate(date.toDateString());
 						} else {
 							setBookLimit(true);

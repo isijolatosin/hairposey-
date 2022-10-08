@@ -7,6 +7,7 @@ import {
 	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_AUTHORIZED_ID_TWO,
+	REACT_APP_BOOKLIMIT,
 	REACT_APP_SITE_URL,
 } from "../constant";
 import { db } from "../firebase";
@@ -84,7 +85,7 @@ const CalendarPage = () => {
 				);
 
 				if (filterBydate.length > 0) {
-					if (filterBydate.length < 1) {
+					if (filterBydate.length < Number(REACT_APP_BOOKLIMIT)) {
 						setSelectDate(date.toDateString());
 					} else {
 						setBookLimit(true);
