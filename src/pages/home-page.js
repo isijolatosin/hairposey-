@@ -78,7 +78,7 @@ function HomePage() {
 	};
 
 	return (
-		<div className="tw-bg-neutral-200 relative">
+		<div className="tw-bg-neutral-200 tw-relative">
 			<Helmet>
 				<title>Home</title>
 			</Helmet>

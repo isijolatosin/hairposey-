@@ -59,11 +59,7 @@ function ImageComponent({ setIsNav, isNav }) {
 			</div>
 			{showOpt && (
 				<div
-					className={`${
-						window?.location?.pathname === "/"
-							? "tw-top-[100px]"
-							: "tw-top-[65px]"
-					} tw-flex tw-flex-col tw-absolute tw-z-40 tw-left-[25px]`}>
+					className={`tw-top-[100px] tw-flex tw-flex-col tw-absolute tw-z-40 tw-left-[25px]`}>
 					{window?.location?.pathname !== "/" && (
 						<Link
 							to="/"

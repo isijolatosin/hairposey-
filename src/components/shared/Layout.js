@@ -1,5 +1,5 @@
-import Footer from '../Footer'
-import Nav from '../Navigation/Nav'
+import Footer from "../Footer";
+import Nav from "../Navigation/Nav";
 
 function Layout({ children, sales }) {
 	return (
@@ -12,7 +12,7 @@ function Layout({ children, sales }) {
 				<Footer />
 			</div>
 		</div>
-	)
+	);
 }
 
-export default Layout
+export default Layout;
