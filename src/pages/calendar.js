@@ -50,7 +50,7 @@ const CalendarPage = () => {
 	const [showProgress, setShowProgress] = React.useState(false);
 	const [confirmDel, setConfirmDel] = React.useState(false);
 	const [picked, setPicked] = React.useState("");
-	const status = process.env.REACT_APP_STATUS;
+	const status = REACT_APP_STATUS;
 
 	React.useEffect(() => {
 		db.collection("all-bookings").onSnapshot((snapshot) => {
