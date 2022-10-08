@@ -9,6 +9,8 @@ export const CANADA = "canada";
 export const USERS = "users";
 export const BOOKINGS = "bookings";
 export const CURRENCY = "cad";
+export const REACT_APP_BOOK = "/hairposey/booking";
+export const REACT_APP_SHOP = "/hairposey/shopping";
 
 export const sizes = {
 	small: "xs",

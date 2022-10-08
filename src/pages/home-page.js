@@ -7,7 +7,7 @@ import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 import BookingPage from "../components/HomePage-components/BookingPage";
 import ShopPage from "../components/HomePage-components/ShopPage";
 import Button from "../components/shared/Button";
-import { sizes } from "../constant";
+import { REACT_APP_BOOK, REACT_APP_SHOP, sizes } from "../constant";
 import { Link } from "react-router-dom";
 
 const logo = require("../assets/logo.png");
@@ -100,7 +100,7 @@ function HomePage() {
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
-								<Link to={`${process.env.REACT_APP_BOOK}`} className="tw-mx-5">
+								<Link to={`${REACT_APP_SHOP}`} className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("shop")}
 										type="button"
@@ -109,7 +109,7 @@ function HomePage() {
 										isgradBG={true}
 									/>
 								</Link>
-								<Link to={`${process.env.REACT_APP_SHOP}`} className="tw-mx-5">
+								<Link to={`${REACT_APP_BOOK}`} className="tw-mx-5">
 									<Button
 										handleFunc={() => handlePath("book")}
 										type="button"

@@ -7,6 +7,7 @@ import Button from "../components/shared/Button";
 import { db } from "../firebase";
 import Progressbar from "../components/shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
+import { REACT_APP_BOOK } from "../constant";
 
 const logo = require("../assets/logo.png");
 
@@ -164,7 +165,7 @@ const SingleBookPage = () => {
 						</p>
 					</div>
 					<div className="tw-flex tw-items-center tw-mt-10 tw-mb-5">
-						<Link to={`${process.env.REACT_APP_BOOK}`} className="tw-mx-2">
+						<Link to={`${REACT_APP_BOOK}`} className="tw-mx-2">
 							<Button
 								children="New Booking ?"
 								isTrans={true}
