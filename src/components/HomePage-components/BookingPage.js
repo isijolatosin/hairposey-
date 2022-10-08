@@ -26,7 +26,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 	if (isDecline) {
 		setTimeout(() => {
 			setIsDecline(false);
-			// handBack();
+			handBack();
 		}, 3000);
 	}
 
