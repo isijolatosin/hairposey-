@@ -19,13 +19,13 @@ const UserContextProvider = ({ children }) => {
 					});
 					setTimeout(() => {
 						setLoading(false);
-					}, 5000);
+					}, 4000);
 				});
 			} else {
 				setTimeout(() => {
 					setLoading(false);
 					setUser(userAuth);
-				}, 5000);
+				}, 4000);
 			}
 		});
 		return () => unsubscribeFromAuth();
@@ -34,7 +34,7 @@ const UserContextProvider = ({ children }) => {
 	if (!user) {
 		setTimeout(() => {
 			setChangeInfo(true);
-		}, 3000);
+		}, 2000);
 	}
 
 	const userContext = { user, loading };

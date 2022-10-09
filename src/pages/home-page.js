@@ -88,8 +88,8 @@ function HomePage() {
 					} `}>
 					{!selected && (
 						<div
-							className={`tw-relative tw-h-[700px] lg:tw-h-[900px] tw-bg-gradient-to-r tw-from-pink-800 tw-to-slate-900 tw-flex tw-flex-col tw-items-center tw-pt-[55%] md:tw-pt-[35%] lg:tw-pt-[22%] 2xl:tw-pt-[18%]`}>
-							<div className="tw-absolute tw-opacity-[0.15] tw-mt-10">
+							className={`tw-relative tw-h-[700px] lg:tw-h-[900px] tw-bg-gradient-to-r tw-from-pink-300  tw-to-pink-100 tw-flex tw-flex-col tw-items-center tw-pt-[55%] md:tw-pt-[35%] lg:tw-pt-[22%] 2xl:tw-pt-[18%]`}>
+							<div className="tw-absolute tw-mt-10 tw-shadow-md tw-w-full tw-flex tw-justify-center">
 								<img src={logo} alt="" />
 							</div>
 							<span className="tw-hidden md:tw-inline-block md:tw-text-[80px] lg:tw-text-[100px] xl:tw-text-[150px] 2xl:tw-text-[170px] tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[0.4] font_cursive tw-absolute md:tw-top-40 lg:tw-top-[90px] 2xl:tw-top-20">
@@ -106,6 +106,7 @@ function HomePage() {
 										children="Shop"
 										size={sizes.medium}
 										isgradBG={true}
+										isTrans={true}
 									/>
 								</Link>
 								<Link to={`${REACT_APP_BOOK}`} className="tw-mx-5">
@@ -115,6 +116,7 @@ function HomePage() {
 										children="Booking"
 										size={sizes.medium}
 										isgradBG={true}
+										isTrans={true}
 									/>
 								</Link>
 							</div>

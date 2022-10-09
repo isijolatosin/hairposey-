@@ -189,7 +189,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 								</button>
 							</div>
 						</div>
-						<div className="tw-grid lg:tw-grid-cols-2 tw-gap-2 lg:tw-gap-5 tw-border-t-[1px] tw-pt-5 tw-mt-5 tw-text-sm">
+						<div className="tw-grid lg:tw-grid-cols-2 xl:tw-grid-cols-3 tw-gap-2 lg:tw-gap-5 tw-border-t-[1px] tw-pt-5 tw-mt-5 tw-text-sm">
 							{information.map((inform) => (
 								<div
 									key={inform.id}
