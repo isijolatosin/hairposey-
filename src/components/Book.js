@@ -485,7 +485,9 @@ function Book({ logo }) {
 										Missing Condential: Date...
 									</span>
 								)}
-								{!blackList?.includes(user?.email || userEmail) ? (
+								{!blackList?.includes(
+									user?.email.toLowerCase() || userEmail.toLowerCase()
+								) ? (
 									<div className="tw-text-center tw-mt-[30px]">
 										{bookingData.service &&
 											bookingData.category &&
