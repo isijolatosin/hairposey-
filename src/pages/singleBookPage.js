@@ -90,13 +90,13 @@ const SingleBookPage = () => {
 			<Helmet>
 				<title>my-calendar</title>
 			</Helmet>
-			<div className="md:tw-h-[100%] tw-bg-gradient-to-r tw-from-neutral-100 tw-to-pink-200 md:tw-w-[50%] lg:tw-w-[35%] 2xl:tw-w-[25%] tw-mx-auto tw-pt-[100px] tw-flex tw-flex-col">
+			<div className="md:tw-h-[100%] tw-bg-gradient-to-r tw-from-neutral-100 tw-to-pink-200 md:tw-w-[50%] lg:tw-w-[35%] 2xl:tw-w-[25%] tw-mx-auto tw-pt-[40px] tw-flex tw-flex-col">
 				<div className="">
 					<div className="tw-relative">
 						<div className="tw-px-5 tw-border-b-[1px] tw-border-pink-700">
 							<span className="font_cursive tw-text-5xl">Hairposey</span>
 						</div>
-						<div className="tw-absolute -tw-top-16 tw-right-0 tw-bg-green-600 tw-px-8 tw-capitalize tw-py-2 tw-rounded-l-full tw-text-white">
+						<div className="tw-absolute -tw-top-6 tw-right-0 tw-bg-green-600 tw-px-8 tw-capitalize tw-py-2 tw-rounded-l-full tw-text-white">
 							{singleBookingData?.length ? (
 								<p>{singleBookingData[0]?.data?.status}</p>
 							) : (
