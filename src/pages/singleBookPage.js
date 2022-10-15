@@ -90,7 +90,7 @@ const SingleBookPage = () => {
 			<Helmet>
 				<title>my-calendar</title>
 			</Helmet>
-			<div className="tw-h-[100%] tw-bg-gradient-to-r tw-from-neutral-100 tw-to-pink-200 md:tw-w-[50%] lg:tw-w-[35%] 2xl:tw-w-[25%] tw-mx-auto tw-pt-[100px] tw-flex tw-flex-col">
+			<div className="md:tw-h-[100%] tw-bg-gradient-to-r tw-from-neutral-100 tw-to-pink-200 md:tw-w-[50%] lg:tw-w-[35%] 2xl:tw-w-[25%] tw-mx-auto tw-pt-[100px] tw-flex tw-flex-col">
 				<div className="">
 					<div className="tw-relative">
 						<div className="tw-px-5 tw-border-b-[1px] tw-border-pink-700">
