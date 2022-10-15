@@ -60,6 +60,7 @@ function Book({ logo }) {
 	const [userEmail, setUserEmail] = React.useState("");
 	const [timeleft, setTimeleft] = React.useState(0);
 	const [count, setCount] = React.useState(10);
+	const [blackList, setBlackList] = React.useState([]);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const isReload = true;
 	const status = REACT_APP_STATUS;
@@ -79,6 +80,16 @@ function Book({ logo }) {
 				}
 			});
 		}
+
+		// Blacklist
+		const arr = [];
+		db.collection("blacklist").onSnapshot((snapshot) => {
+			const results = snapshot.docs.map((doc) => ({
+				data: doc.data(),
+			}));
+			arr.push(results[0].data.email);
+		});
+		setBlackList(arr);
 	}, []);
 
 	if (succeeded && permission) {
@@ -473,15 +484,24 @@ function Book({ logo }) {
 										Missing Condential: Date...
 									</span>
 								)}
-								<div className="tw-text-center tw-mt-[30px]">
-									{bookingData.service &&
-										bookingData.category &&
-										bookingData.addOnServices &&
-										selectDate &&
-										(userEmail || user?.email) && (
-											<Button type="submit">Submit Booking</Button>
-										)}
-								</div>
+								{!blackList?.includes(user?.email || userEmail) ? (
+									<div className="tw-text-center tw-mt-[30px]">
+										{bookingData.service &&
+											bookingData.category &&
+											bookingData.addOnServices &&
+											selectDate &&
+											(userEmail || user?.email) && (
+												<Button type="submit">Submit Booking</Button>
+											)}
+									</div>
+								) : (
+									<div>
+										<p className="tw-text-xs tw-font-thin tw-uppercase tw-mt-2 tw-text-red-600">
+											This user is not authorize to make booking at this time.
+											Please contact Hairposey admin.
+										</p>
+									</div>
+								)}
 							</div>
 						</form>
 						<form
@@ -492,63 +512,65 @@ function Book({ logo }) {
 							}
 							id="payment-form"
 							onSubmit={handleSubmit}>
-							<div className="tw-bg-neutral-50 tw-pb-5 tw-rounded-lg">
-								<div className="tw-flex tw-items-center tw-justify-between tw-ml-4">
-									<div>
-										<span className="tw-text-[10px]">
-											Amount due to payment:{" "}
-											<span className="tw-text-green-700 tw-text-[14px]">
-												CAD$30.00
-											</span>
-										</span>
-									</div>
-
-									<div className="tw-flex tw-max-w-[95%] tw-mb-1 tw-items-center tw-mx-auto tw-justify-end tw-mr-4 md:tw-mr-6 lg:tw-mr-5 xl:tw-mr-6">
-										<SiMastercard
-											size={20}
-											className="tw-text-yellow-500 tw-mr-3"
-										/>
-										<RiVisaLine
-											size={30}
-											className="tw-mr-3 tw-text-blue-900"
-										/>
-										<div className="tw-relative tw-flex tw-items-center tw-mr-5">
-											<RiVisaLine size={30} className="tw-text-blue-800" />
-											<span className="tw-absolute tw-bottom-[0px] tw-right-[1px] tw-text-[7px] tw-italic">
-												DEBIT
+							{ValidateEmail(user?.email || userEmail) && (
+								<div className="tw-bg-neutral-50 tw-pb-5 tw-rounded-lg">
+									<div className="tw-flex tw-items-center tw-justify-between tw-ml-4">
+										<div>
+											<span className="tw-text-[10px]">
+												Amount due to payment:{" "}
+												<span className="tw-text-green-700 tw-text-[14px]">
+													CAD$30.00
+												</span>
 											</span>
 										</div>
-										<SiAmericanexpress
-											size={20}
-											className="tw-text-blue-600 tw-mt-2"
-										/>
-									</div>
-								</div>
 
-								<CardElement
-									id="card-element"
-									options={cardStyle}
-									onChange={handleChange}
-									className="tw-w-[95%] tw-mx-auto tw-border-[1px] tw-border-b-0 tw-p-3 tw-rounded-t-[4px] "
-								/>
-								<button
-									className="tw-bg-neutral-900 tw-w-[95%] tw-flex tw-mx-auto tw-justify-center tw-py-2 tw-rounded-b-md"
-									disabled={processing || disabled || succeeded}
-									id="submit">
-									<span
-										className={
-											processing || disabled || succeeded
-												? "tw-text-neutral-50 tw-font-light"
-												: "tw-text-orange-500 tw-font-light"
-										}>
-										{processing ? (
-											<div className="spinner" id="spinner"></div>
-										) : (
-											"Pay now"
-										)}
-									</span>
-								</button>
-							</div>
+										<div className="tw-flex tw-max-w-[95%] tw-mb-1 tw-items-center tw-mx-auto tw-justify-end tw-mr-4 md:tw-mr-6 lg:tw-mr-5 xl:tw-mr-6">
+											<SiMastercard
+												size={20}
+												className="tw-text-yellow-500 tw-mr-3"
+											/>
+											<RiVisaLine
+												size={30}
+												className="tw-mr-3 tw-text-blue-900"
+											/>
+											<div className="tw-relative tw-flex tw-items-center tw-mr-5">
+												<RiVisaLine size={30} className="tw-text-blue-800" />
+												<span className="tw-absolute tw-bottom-[0px] tw-right-[1px] tw-text-[7px] tw-italic">
+													DEBIT
+												</span>
+											</div>
+											<SiAmericanexpress
+												size={20}
+												className="tw-text-blue-600 tw-mt-2"
+											/>
+										</div>
+									</div>
+
+									<CardElement
+										id="card-element"
+										options={cardStyle}
+										onChange={handleChange}
+										className="tw-w-[95%] tw-mx-auto tw-border-[1px] tw-border-b-0 tw-p-3 tw-rounded-t-[4px] "
+									/>
+									<button
+										className="tw-bg-neutral-900 tw-w-[95%] tw-flex tw-mx-auto tw-justify-center tw-py-2 tw-rounded-b-md"
+										disabled={processing || disabled || succeeded}
+										id="submit">
+										<span
+											className={
+												processing || disabled || succeeded
+													? "tw-text-neutral-50 tw-font-light"
+													: "tw-text-orange-500 tw-font-light"
+											}>
+											{processing ? (
+												<div className="spinner" id="spinner"></div>
+											) : (
+												"Pay now"
+											)}
+										</span>
+									</button>
+								</div>
+							)}
 							{_error && (
 								<div
 									className="card-error tw-flex tw-items-center tw-justify-center tw-text-xs tw-text-red-700 "

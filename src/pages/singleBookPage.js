@@ -76,6 +76,15 @@ const SingleBookPage = () => {
 				.catch((error) => {
 					console.error("Error writing document: ", error);
 				});
+
+			db.collection("blacklist")
+				.add({
+					email: singleBookingData[0].data?.email,
+				})
+				.then(() => {})
+				.catch((error) =>
+					console.log("Email could not be added to blacklist!")
+				);
 		}, 10000);
 	};
 
