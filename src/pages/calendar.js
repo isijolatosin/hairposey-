@@ -188,6 +188,7 @@ const CalendarPage = () => {
 			.catch((error) => console.log("Error" + error.message));
 
 		setUserEmail("");
+		setSelectDate(false);
 		setBookLimit(false);
 		setSelectDate("");
 		setBookingData({ addOnServices: "", category: "", service: "" });
@@ -204,7 +205,7 @@ const CalendarPage = () => {
 				<title>my-calendar</title>
 			</Helmet>
 			<div className="tw-bg-neutral-300 tw-pt-[60px] tw-pb-[80px]">
-				<div className="tw-relative tw-w-full tw-px-10 md:tw-px-0 md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[60%] tw-mx-auto">
+				<div className="tw-relative tw-w-full md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[60%] tw-mx-auto">
 					{user?.email === REACT_APP_AUTHORIZED_ID_ONE ||
 					user?.email === REACT_APP_AUTHORIZED_ID_TWO ? (
 						<div>
@@ -249,19 +250,21 @@ const CalendarPage = () => {
 											</div>
 										</div>
 									)}
-									<label className="bookLabel tw-w-full">
-										<input
-											type="text"
-											autoComplete="off"
-											placeholder=" "
-											name="email"
-											id="email"
-											value={userEmail}
-											onChange={(e) => setUserEmail(e.target.value)}
-											className={`tw-outline-0 focus:tw-outline-none focus:tw-ring-0 tw-w-full tw-border-[0px] tw-text-sm`}
-										/>
-										<p className="tw-top-[0px]">Customer email address...</p>
-									</label>
+									<div className="tw-w-[85%] md:tw-w-full tw-mx-auto">
+										<label className="bookLabel">
+											<input
+												type="text"
+												autoComplete="off"
+												placeholder=" "
+												name="email"
+												id="email"
+												value={userEmail}
+												onChange={(e) => setUserEmail(e.target.value)}
+												className={`tw-outline-0 focus:tw-outline-none focus:tw-ring-0 tw-w-full tw-border-[0px] tw-text-sm`}
+											/>
+											<p className="tw-top-[0px]">Customer email address...</p>
+										</label>
+									</div>
 								</div>
 								<form
 									onSubmit={(e) => {
@@ -278,7 +281,7 @@ const CalendarPage = () => {
 											handleSubmit();
 										}
 									}}
-									className="tw-w-full lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]">
+									className="tw-w-[85%] md:tw-w-full tw-mx-auto lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]">
 									<div className="tw-mb-[10px]">
 										<div className="tw-text-neutral-900 tw-font-light tw-text-[10px] tw-pl-3 tw-bg-neutral-200 tw-py-[2px]">
 											<label>Category</label>
@@ -386,8 +389,8 @@ const CalendarPage = () => {
 																	? `${list.data.hour}hrs`
 																	: `${list.data.hour}hr`}
 															</li>
-															{(new Date().getDate() >
-																new Date(list.data.date).getDate() ||
+															{(new Date().getTime() >
+																new Date(list.data.date).getTime() ||
 																list.data.status !== REACT_APP_STATUS) && (
 																<>
 																	{confirmDel && picked === list.id ? (
@@ -452,18 +455,18 @@ const CalendarPage = () => {
 														Status:{" "}
 														<span
 															className={`${
-																new Date().getDate() <
-																	new Date(list.data.date).getDate() &&
+																new Date().getTime() <
+																	new Date(list.data.date).getTime() &&
 																list.data.status !== REACT_APP_CANCELED &&
 																"tw-text-green-700"
 															} ${
-																(new Date().getDate() >
-																	new Date(list.data.date).getDate() ||
+																(new Date().getTime() >
+																	new Date(list.data.date).getTime() ||
 																	list.data.status === REACT_APP_CANCELED) &&
 																"tw-text-neutral-400 tw-italic tw-line-through"
 															} `}>
-															{new Date().getDate() >
-															new Date(list.data.date).getDate()
+															{new Date().getTime() >
+															new Date(list.data.date).getTime()
 																? "Past Appointment Date"
 																: list.data.status}
 														</span>

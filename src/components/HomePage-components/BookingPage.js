@@ -43,7 +43,6 @@ const BookingPage = ({ isBooking, handBack }) => {
 									handBack();
 									setIsAccept(false);
 									setToggleBookBtn(false);
-									setInfo(true);
 								}}
 							/>
 						</Link>
@@ -134,6 +133,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 										if (!isAccept) {
 											setIsAccept(true);
 											setIsDecline(false);
+											setInfo(true);
 										}
 									}}
 									className={`${
@@ -146,8 +146,10 @@ const BookingPage = ({ isBooking, handBack }) => {
 								<span
 									onClick={() => {
 										if (!isDecline) {
+											setInfo(false);
 											setIsDecline(true);
 											setIsAccept(false);
+											setToggleBookBtn(false);
 										}
 									}}
 									className={`${
