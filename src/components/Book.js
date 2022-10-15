@@ -87,11 +87,12 @@ function Book({ logo }) {
 			const results = snapshot.docs.map((doc) => ({
 				data: doc.data(),
 			}));
-			arr.push(results[0].data.email);
+			results.map((d) => {
+				arr.push(d.data.email);
+			});
 		});
 		setBlackList(arr);
 	}, []);
-
 	if (succeeded && permission) {
 		new Notification("Payment Notification", {
 			body: "Your Payment Was Successful!",
