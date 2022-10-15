@@ -203,7 +203,9 @@ const SingleBookPage = () => {
 								isBlackTxt={true}
 								isSmallTxt={true}
 								isCancel={
-									singleBookingData[0]?.data?.status === REACT_APP_CANCELED &&
+									(singleBookingData.length === 0 ||
+										singleBookingData[0]?.data?.status ===
+											REACT_APP_CANCELED) &&
 									true
 								}
 							/>
