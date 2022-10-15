@@ -7,7 +7,7 @@ import Button from "../components/shared/Button";
 import { db } from "../firebase";
 import Progressbar from "../components/shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
-import { REACT_APP_BOOK } from "../constant";
+import { REACT_APP_BOOK, REACT_APP_CANCELED } from "../constant";
 
 const logo = require("../assets/logo.png");
 
@@ -52,20 +52,20 @@ const SingleBookPage = () => {
 			db.collection("all-bookings")
 				.doc(id)
 				.set({
-					date: singleBookingData.data?.date,
-					customer: singleBookingData.data?.customer,
-					email: singleBookingData.data?.email,
-					category: singleBookingData.data?.category,
-					service: singleBookingData.data?.service,
-					addOnServices: singleBookingData.data?.addOnServices,
-					orderNo: singleBookingData.data?.orderNo,
-					quantity: singleBookingData.data?.quantity,
-					transactionDate: singleBookingData.data?.transactionDate,
-					payMethod: singleBookingData.data?.payMethod,
-					product: singleBookingData.data?.product,
-					sender: singleBookingData.data?.sender,
-					total: singleBookingData.data?.total,
-					hour: singleBookingData.data?.hour,
+					date: singleBookingData[0].data?.date,
+					customer: singleBookingData[0].data?.customer,
+					email: singleBookingData[0].data?.email,
+					category: singleBookingData[0].data?.category,
+					service: singleBookingData[0].data?.service,
+					addOnServices: singleBookingData[0].data?.addOnServices,
+					orderNo: singleBookingData[0].data?.orderNo,
+					quantity: singleBookingData[0].data?.quantity,
+					transactionDate: singleBookingData[0].data?.transactionDate,
+					payMethod: singleBookingData[0].data?.payMethod,
+					product: singleBookingData[0].data?.product,
+					sender: singleBookingData[0].data?.sender,
+					total: singleBookingData[0].data?.total,
+					hour: singleBookingData[0].data?.hour,
 					status: "canceled",
 				})
 				.then(() => {
@@ -185,13 +185,16 @@ const SingleBookPage = () => {
 								isTrans={true}
 								isBlackTxt={true}
 								isSmallTxt={true}
+								isCancel={
+									singleBookingData[0]?.data?.status === REACT_APP_CANCELED &&
+									true
+								}
 							/>
 						</Link>
 						<div
 							onClick={() =>
-								singleBookingData?.data?.status !==
-									process.env.REACT_APP_CANCELED &&
-								handleCancel(singleBookingData?.id)
+								singleBookingData[0]?.data?.status !== REACT_APP_CANCELED &&
+								handleCancel(singleBookingData[0]?.id)
 							}
 							className="tw-mx-2">
 							<Button
@@ -200,8 +203,8 @@ const SingleBookPage = () => {
 								isBlackTxt={true}
 								isSmallTxt={true}
 								isCancel={
-									singleBookingData?.data?.status ===
-										process.env.REACT_APP_CANCELED && true
+									singleBookingData[0]?.data?.status === REACT_APP_CANCELED &&
+									true
 								}
 							/>
 						</div>

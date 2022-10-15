@@ -183,7 +183,6 @@ const BookingPage = ({ isBooking, handBack }) => {
 											setToggleBookBtn(true);
 											scrollToTop();
 											setInfo(false);
-											console.log("first");
 										}
 									}}
 									className="tw-text-white tw-font-bold tw-ml-1 tw-mt-2 md:tw-mt-0 tw-bg-red-300 tw-px-2 tw-rounded-full">

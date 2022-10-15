@@ -18,6 +18,7 @@ import {
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_BOOKLIMIT,
 	REACT_APP_SITE_URL,
+	REACT_APP_STATUS,
 } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
@@ -61,7 +62,7 @@ function Book({ logo }) {
 	const [count, setCount] = React.useState(10);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const isReload = true;
-	const status = process.env.REACT_APP_STATUS;
+	const status = REACT_APP_STATUS;
 
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
@@ -202,7 +203,6 @@ function Book({ logo }) {
 					card: elements.getElement(CardElement),
 				},
 			});
-
 			if (payload.error) {
 				set_Error(`Payment failed ${payload.error.message}`);
 				setProcessing(false);
