@@ -53,7 +53,7 @@ function Book({ logo }) {
 	const [clientSecret, setClientSecret] = React.useState("");
 	const [location, setLocation] = React.useState(null);
 	const [allowproceed, setAllowProceed] = React.useState(false); //CHANGE BACK TO FALSE
-	const [permission, setPermission] = React.useState(false);
+	// const [permission, setPermission] = React.useState(false);
 	const [authDate, setAuthDate] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [bookingData, setBookingData] = React.useState({});
@@ -73,13 +73,13 @@ function Book({ logo }) {
 			setLocation(results[0].data.location);
 		});
 
-		if (Notification.permission !== "granted") {
-			Notification.requestPermission().then((perm) => {
-				if (perm === "granted") {
-					setPermission(perm);
-				}
-			});
-		}
+		// if (Notification.permission !== "granted") {
+		// 	Notification.requestPermission().then((perm) => {
+		// 		if (perm === "granted") {
+		// 			setPermission(perm);
+		// 		}
+		// 	});
+		// }
 
 		// Blacklist
 		const arr = [];
@@ -93,15 +93,15 @@ function Book({ logo }) {
 		});
 		setBlackList(arr);
 	}, []);
-	if (succeeded && permission) {
-		new Notification("Payment Notification", {
-			body: "Your Payment Was Successful!",
-			icon: logo,
-			tag: "payment notification",
-			requireInteraction: true,
-			lang: "en-US",
-		});
-	}
+	// if (succeeded && permission) {
+	// 	new Notification("Payment Notification", {
+	// 		body: "Your Payment Was Successful!",
+	// 		icon: logo,
+	// 		tag: "payment notification",
+	// 		requireInteraction: true,
+	// 		lang: "en-US",
+	// 	});
+	// }
 
 	const handleSelect = (date) => {
 		if (date.getDate() >= dateToday.getDate() + 7) {
