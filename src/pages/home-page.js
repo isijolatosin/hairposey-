@@ -95,7 +95,7 @@ function HomePage() {
 							<span className="tw-hidden md:tw-inline-block md:tw-text-[80px] lg:tw-text-[100px] xl:tw-text-[150px] 2xl:tw-text-[170px] tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[0.4] font_cursive tw-absolute md:tw-top-40 lg:tw-top-[90px] 2xl:tw-top-20">
 								Welcome to Hairposey
 							</span>
-							<span className="md:tw-hidden tw-text-4xl tw-inline-block tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] font_cursive tw-absolute tw-top-[20%]">
+							<span className="md:tw-hidden tw-w-full tw-text-center tw-text-4xl tw-inline-block tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] font_cursive tw-absolute tw-top-[20%]">
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
