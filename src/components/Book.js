@@ -64,6 +64,7 @@ function Book({ logo }) {
 	const [dailyMax, setDailyMax] = React.useState(0);
 	const [count, setCount] = React.useState(10);
 	const [_timeSlot, setTimeSlot] = React.useState("");
+	const [isPicked, setIsPicked] = React.useState("");
 	const [blackList, setBlackList] = React.useState([]);
 	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
@@ -187,6 +188,7 @@ function Book({ logo }) {
 
 	const handleSelectTimeSlot = (t) => {
 		setTimeSlot(t);
+		setIsPicked(t);
 	};
 
 	const handleOnChange = (e) => {
@@ -601,7 +603,7 @@ function Book({ logo }) {
 											}
 											key={idx}
 											className={`${
-												timeSlotArray?.includes(slot)
+												timeSlotArray?.includes(slot) || isPicked === slot
 													? "tw-border-[0.5px] tw-border-neutral-800 tw-cursor-not-allowed tw-text-neutral-600"
 													: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
 											}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
