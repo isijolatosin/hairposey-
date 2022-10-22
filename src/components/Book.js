@@ -241,7 +241,7 @@ function Book({ logo }) {
 			: +process.env.REACT_APP_BOOKING_PRICE - totalBookingPrice;
 
 	const createPaymentIntent = async () => {
-		const price = totalDue;
+		const price = totalDue * 100;
 
 		if (user) {
 			try {
