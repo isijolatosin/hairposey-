@@ -11,6 +11,7 @@ import {
 	REACT_APP_CANCELED,
 	REACT_APP_SITE_URL,
 	REACT_APP_STATUS,
+	timeSlot,
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
@@ -49,6 +50,9 @@ const CalendarPage = () => {
 	const [calendarList, setCalendarList] = React.useState([]);
 	const [showProgress, setShowProgress] = React.useState(false);
 	const [confirmDel, setConfirmDel] = React.useState(false);
+	const [dailyMax, setDailyMax] = React.useState(0);
+	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
+	const [_timeSlot, setTimeSlot] = React.useState("");
 	const [picked, setPicked] = React.useState("");
 	const status = REACT_APP_STATUS;
 
@@ -68,6 +72,10 @@ const CalendarPage = () => {
 		}
 	}, [showProgress]);
 
+	const handleSelectTimeSlot = (t) => {
+		setTimeSlot(t);
+	};
+
 	const handleSelect = (date) => {
 		if (selectDate) {
 			setSelectDate(null);
@@ -86,15 +94,22 @@ const CalendarPage = () => {
 					(booking) => booking?.data.date === date.toDateString()
 				);
 
-				if (filterBydate.length > 0) {
-					if (filterBydate.length < Number(REACT_APP_BOOKLIMIT)) {
-						setSelectDate(date.toDateString());
-					} else {
-						setBookLimit(true);
-					}
-				} else {
-					setBookLimit(false);
+				const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
+				setTimeSlotArray(timeSlotArr);
+
+				let maxDailyBookingHour = 0;
+				for (let i = 0; i < filterBydate.length; i++) {
+					maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
+				}
+				if (
+					maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
+					REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1 &&
+					timeSlotArray?.length < timeSlot?.length
+				) {
 					setSelectDate(date.toDateString());
+					setDailyMax(maxDailyBookingHour);
+				} else {
+					setBookLimit(true);
 				}
 			});
 		}
@@ -120,18 +135,44 @@ const CalendarPage = () => {
 		setBookingData({ ...bookingData, [e.target.name]: e.target.value });
 	};
 
+	// stripe percent logic
+	const stripeDeduction = +(
+		+process.env.REACT_APP_BOOKING_PRICE * +process.env.REACT_APP_STRIPE_PERCENT
+	).toFixed(2);
+	let totalBookingPrice = 0;
+	let serviceDuration = 0;
+	services.filter((item) => {
+		if (item?.desc === bookingData?.service) {
+			totalBookingPrice += item?.price;
+			serviceDuration += item?.duration;
+		}
+	});
+	addOnServices.filter((item) => {
+		if (item?.desc === bookingData?.addOnServices)
+			totalBookingPrice += item?.price;
+	});
+	const totalDue = +process.env.REACT_APP_BOOKING_PRICE + stripeDeduction;
+	const bookingBalance =
+		totalBookingPrice > totalDue
+			? totalBookingPrice - +process.env.REACT_APP_BOOKING_PRICE
+			: +process.env.REACT_APP_BOOKING_PRICE - totalBookingPrice;
+
 	const messageParams = {
 		name: userEmail,
-		message: `Hi ${userEmail}. Your hair appointment has been booked for ${selectDate}. Your details are as follow - Category: ${bookingData.category}, Services: ${bookingData.service}, Add-On-Service: ${bookingData.addOnServices}. Please ensure to come early. Thank you for your patronage!`,
+		message: `Hi ${userEmail}. Your hair appointment has been booked for ${selectDate}, ${_timeSlot}. Your details are as follow - Category: ${bookingData.category}, Services: ${bookingData.service}, Add-On-Service: ${bookingData.addOnServices}. Please ensure to come early. Thank you for your patronage!`,
 		client: userEmail,
 		sender: "Hairposey",
 		quantity: 1,
 		product: "Hair Appointment",
 		payMethod: "Card",
 		total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
+		balance: `$${bookingBalance}`,
 		orderNo: orderNo,
 		date: dateToday.toDateString(),
 		link: `${REACT_APP_SITE_URL}${orderNo}`,
+		serviceCharge: `$${stripeDeduction}`,
+		serviceDuration: `${serviceDuration} hours`,
+		timeSlot: _timeSlot,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
@@ -147,7 +188,7 @@ const CalendarPage = () => {
 
 	const ManagementMessage = {
 		name: "Hairposey",
-		message: `Hello. Hair appointment for ${userEmail} has been booked for ${selectDate}. Here are the details of booking: Category: ${bookingData.category}, Services: ${bookingData.service}, add-On-Services: ${bookingData.addOnServices}. Customer's Email: ${userEmail}`,
+		message: `Hello. Hair appointment for ${userEmail} has been booked for ${selectDate}, ${_timeSlot}. Here are the details of booking: Category: ${bookingData.category}, Services: ${bookingData.service}, add-On-Services: ${bookingData.addOnServices}. Customer's Email: ${userEmail}`,
 		client: REACT_APP_AUTHORIZED_ID_ONE,
 		sender: "Hairposey Bookings",
 	};
@@ -179,8 +220,10 @@ const CalendarPage = () => {
 				product: "Hair Appointment",
 				sender: "Hairposey",
 				total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
-				hour: 3,
+				balance: bookingBalance,
+				hour: serviceDuration,
 				status: status,
+				timeSlot: _timeSlot,
 			})
 			.then(() => {
 				console.log(`SUCCESSFULL`);
@@ -198,6 +241,16 @@ const CalendarPage = () => {
 			SendMerchantSuccessfulPurchaseEmail();
 		}, 1000);
 	};
+
+	//  filter services option
+	const filteredServices = services.filter((service) => {
+		if (REACT_APP_BOOKLIMIT - dailyMax >= 2) {
+			return service;
+		}
+		if (REACT_APP_BOOKLIMIT - dailyMax < 2) {
+			return service?.duration === 1.5;
+		}
+	});
 
 	return (
 		<div className="tw-bg-neutral-200 relative">
@@ -231,7 +284,8 @@ const CalendarPage = () => {
 											<div
 												className={
 													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}>
+												}
+											>
 												<span>
 													{selectDate
 														? `Date selected ${selectDate}`
@@ -245,7 +299,8 @@ const CalendarPage = () => {
 											<div
 												className={
 													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}>
+												}
+											>
 												<span>We are booked for this date</span>
 											</div>
 										</div>
@@ -281,7 +336,8 @@ const CalendarPage = () => {
 											handleSubmit();
 										}
 									}}
-									className="tw-w-[85%] md:tw-w-full tw-mx-auto lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]">
+									className="tw-w-[85%] md:tw-w-full tw-mx-auto lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]"
+								>
 									<div className="tw-mb-[10px]">
 										<div className="tw-text-neutral-900 tw-font-light tw-text-[10px] tw-pl-3 tw-bg-neutral-200 tw-py-[2px]">
 											<label>Category</label>
@@ -291,7 +347,8 @@ const CalendarPage = () => {
 											onChange={handleOnChange}
 											id="category"
 											value={bookingData.category}
-											name="category">
+											name="category"
+										>
 											<option value="" disabled selected>
 												Select category
 											</option>
@@ -309,11 +366,12 @@ const CalendarPage = () => {
 											onChange={handleOnChange}
 											id="Service"
 											value={bookingData.service}
-											name="service">
+											name="service"
+										>
 											<option value="" disabled selected>
 												Select service
 											</option>
-											{services?.map((service) => (
+											{filteredServices?.map((service) => (
 												<option key={service.id}>{service.desc}</option>
 											))}
 										</select>
@@ -327,7 +385,8 @@ const CalendarPage = () => {
 											onChange={handleOnChange}
 											id="addOnServices"
 											value={bookingData.addOnServices}
-											name="addOnServices">
+											name="addOnServices"
+										>
 											<option value="" disabled selected>
 												Select add-on
 											</option>
@@ -335,22 +394,57 @@ const CalendarPage = () => {
 												<option key={ad.id}>{ad.desc}</option>
 											))}
 										</select>
-										{error && (
-											<span className="tw-text-rose-600 tw-text-[14px] tw-w-[100%] tw-mx-auto tw-mb-10">
-												Missing Condential: Date...
-											</span>
-										)}
-										<div className="tw-text-center tw-mt-[30px]">
-											{bookingData.service &&
-												bookingData.category &&
-												bookingData.addOnServices &&
-												selectDate &&
-												userEmail && (
-													<Button type="submit" isTrans={true}>
-														Submit Booking
-													</Button>
-												)}
+									</div>
+									<div className="tw-mb-[20px]">
+										<div className="tw-text-neutral-500 tw-font-light tw-text-xs tw-mb-1">
+											<span>Time slot</span>
 										</div>
+										<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
+											{timeSlot.map((slot, idx) => (
+												<span
+													onClick={() =>
+														!timeSlotArray?.includes(slot) &&
+														handleSelectTimeSlot(slot)
+													}
+													key={idx}
+													className={`${
+														timeSlotArray?.includes(slot)
+															? "tw-border-[0.5px] tw-border-neutral-200 tw-cursor-not-allowed tw-text-neutral-200"
+															: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
+													}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
+												>
+													{slot}
+												</span>
+											))}
+										</div>
+									</div>
+									{REACT_APP_BOOKLIMIT - dailyMax < 2 && (
+										<div className="tw-text-red-300 tw-font-thin tw-text-[11px] tw-bg-neutral-800 tw-p-2 tw-rounded-lg">
+											<span>
+												<span className="tw-text-sm">
+													We are almost booked up!
+												</span>{" "}
+												<br />
+												We can only accommodate services of one hour 30 minutes
+												or less.
+											</span>
+										</div>
+									)}
+									{error && (
+										<span className="tw-text-rose-600 tw-text-[14px] tw-w-[100%] tw-mx-auto tw-mb-10">
+											Missing Condential: Date...
+										</span>
+									)}
+									<div className="tw-text-center tw-mt-[30px]">
+										{bookingData.service &&
+											bookingData.category &&
+											bookingData.addOnServices &&
+											selectDate &&
+											userEmail && (
+												<Button type="submit" isTrans={true}>
+													Submit Booking
+												</Button>
+											)}
 									</div>
 								</form>
 							</div>
@@ -365,12 +459,14 @@ const CalendarPage = () => {
 														showProgress && confirmDel && picked === list.id
 															? "tw-opacity-[1]"
 															: "tw-opacity-[0]"
-													} tw-ease-in tw-duration-300`}>
+													} tw-ease-in tw-duration-300`}
+												>
 													<Progressbar value={timeleft} max={100} />
 												</div>
 												<ul
 													key={list.id}
-													className="tw-bg-white tw-p-2 tw-rounded-b-md">
+													className="tw-bg-white tw-p-2 tw-rounded-b-md"
+												>
 													<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
 														{list.data.customer === list.data.email ? (
 															<li className="tw-text-xs tw-text-neutral-600">
@@ -397,7 +493,8 @@ const CalendarPage = () => {
 																		<button
 																			disabled={showProgress}
 																			onClick={() => handleDelete(list.id)}
-																			className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
+																			className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1"
+																		>
 																			<MdDeleteForever
 																				size={25}
 																				color={
@@ -412,7 +509,8 @@ const CalendarPage = () => {
 																				setPicked(list.id);
 																				setConfirmDel(true);
 																			}}
-																			className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
+																			className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative"
+																		>
 																			<FaTrash
 																				size={19}
 																				color={
@@ -431,7 +529,8 @@ const CalendarPage = () => {
 																	confirmDel && picked === list.id
 																		? "tw-opacity-1"
 																		: "tw-opacity-0"
-																} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}>
+																} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}
+															>
 																<p className="tw- tw-text-[10px]">
 																	Are you sure ?
 																</p>
@@ -464,7 +563,8 @@ const CalendarPage = () => {
 																	new Date(list.data.date).getTime() ||
 																	list.data.status === REACT_APP_CANCELED) &&
 																"tw-text-neutral-400 tw-italic tw-line-through"
-															} `}>
+															} `}
+														>
 															{new Date().getTime() >
 															new Date(list.data.date).getTime()
 																? "Past Appointment Date"

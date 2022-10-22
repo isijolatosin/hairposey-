@@ -56,6 +56,7 @@ function Book({ logo }) {
 	const [allowproceed, setAllowProceed] = React.useState(false); //CHANGE BACK TO FALSE
 	// const [permission, setPermission] = React.useState(false);
 	const [authDate, setAuthDate] = React.useState(false);
+	const [noSunMon, setNoSunMon] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [bookingData, setBookingData] = React.useState({});
 	const [userEmail, setUserEmail] = React.useState("");
@@ -124,47 +125,66 @@ function Book({ logo }) {
 	// }
 
 	const handleSelect = (date) => {
-		if (date.getDate() >= dateToday.getDate() + 7) {
-			if (selectDate) {
-				setSelectDate(null);
-			}
-
-			if (date > dateToday) {
-				db.collection("all-bookings").onSnapshot((snapshot) => {
-					const results = snapshot.docs.map((doc) => ({
-						data: doc.data(),
-					}));
-
-					const filterBydate = results?.filter(
-						(booking) => booking?.data.date === date.toDateString()
-					);
-
-					const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
-					setTimeSlotArray(timeSlotArr);
-
-					let maxDailyBookingHour = 0;
-					for (let i = 0; i < filterBydate.length; i++) {
-						maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
-					}
-					if (
-						maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
-						REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1 &&
-						timeSlotArray?.length < timeSlot?.length
-					) {
-						setSelectDate(date.toDateString());
-						setDailyMax(maxDailyBookingHour);
-					} else {
-						setBookLimit(true);
-					}
-				});
-			}
-			setAuthDate(false);
-		} else {
-			setAuthDate(true);
+		if (
+			date.toString().toLowerCase().includes("sun") ||
+			date.toString().toLowerCase().includes("mon")
+		) {
 			setSelectDate(false);
+			setNoSunMon(true);
+		} else {
+			if (date.getDate() >= dateToday.getDate() + 2) {
+				if (selectDate) {
+					setSelectDate(null);
+				}
+				if (bookLimit) {
+					setBookLimit(false);
+				}
+
+				if (date > dateToday) {
+					db.collection("all-bookings").onSnapshot((snapshot) => {
+						const results = snapshot.docs.map((doc) => ({
+							data: doc.data(),
+						}));
+
+						const filterBydate = results?.filter(
+							(booking) => booking?.data.date === date.toDateString()
+						);
+
+						const timeSlotArr = filterBydate?.map(
+							(time) => time?.data?.timeSlot
+						);
+						setTimeSlotArray(timeSlotArr);
+
+						let maxDailyBookingHour = 0;
+						if (filterBydate?.length > 0) {
+							for (let i = 0; i < filterBydate.length; i++) {
+								maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
+							}
+							if (
+								maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
+								REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1
+							) {
+								setSelectDate(date.toDateString());
+								setDailyMax(maxDailyBookingHour);
+								setNoSunMon(false);
+							} else {
+								setBookLimit(true);
+							}
+						} else {
+							setSelectDate(date.toDateString());
+							setDailyMax(maxDailyBookingHour);
+							setNoSunMon(false);
+						}
+					});
+				}
+				setAuthDate(false);
+			} else {
+				setAuthDate(true);
+				setSelectDate(false);
+			}
 		}
 	};
-	// console.log(timeSlotArray);
+
 	const handleSelectTimeSlot = (t) => {
 		setTimeSlot(t);
 	};
@@ -294,7 +314,7 @@ function Book({ logo }) {
 							sender: "Hairposey",
 							total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 							balance: bookingBalance,
-							hour: serviceDuration,
+							duration: serviceDuration,
 							status: status,
 							timeSlot: _timeSlot,
 						})
@@ -395,7 +415,7 @@ function Book({ logo }) {
 	});
 
 	return (
-		<div className="bg-blur3 tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-p-5 lg:tw-pl-0 tw-mx-auto">
+		<div className="bg-blur3 tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-p-5 lg:tw-pl-0 tw-mx-auto tw-mt-10">
 			<div className="tw-flex tw-flex-col tw-items-center lg:tw-mx-auto lg:tw-pl-[10px] lg:tw-flex-1 lg-tw-w-full">
 				<div className="tw-text-neutral-300 tw-text-center tw-text-2xl tw-mt-[20px] tw-mb-[70px] tw-px-[10px] tw-py-1">
 					<a
@@ -418,6 +438,11 @@ function Book({ logo }) {
 				<div className=" tw-p-2 lg:tw-p-5 xl:tw-pr-[20px] tw-flex tw-flex-col lg:tw-flex-row  xl:tw-flex-row">
 					<div className="tw-flex tw-flex-col tw-items-center tw-mx-auto tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
 						<div className="tw-h-[350px]">
+							{noSunMon && (
+								<div className="tw-w-full tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-px-[10px] tw-py-[5px] -tw-mb-5 tw-opacity-1 tw-ease-in tw-duration-300">
+									<span>OUR SERVICES ARE CLOSED FOR THIS DAY</span>
+								</div>
+							)}
 							<div className="xl:tw-ml-0">
 								<Calendar
 									color="rgb(157 23 77)"
@@ -427,6 +452,7 @@ function Book({ logo }) {
 									showSelectionPreview={true}
 								/>
 							</div>
+
 							<div className="tw-w-[332px]">
 								{authDate ? (
 									<div
@@ -436,7 +462,7 @@ function Book({ logo }) {
 												: "tw-opacity-0"
 										}
 									>
-										<span>BOOKINGS ARE ALLOWED 7 DAYS FROM TODAY</span>
+										<span>BOOKINGS ARE ALLOWED FOR THIS DAY</span>
 									</div>
 								) : (
 									<>
@@ -505,7 +531,7 @@ function Book({ logo }) {
 							}}
 							className="tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] tw-mt-[-25px]"
 						>
-							<div className="tw-mb-[20px]">
+							<div className="tw-mb-[20px] tw-mt-[40px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
 									<label>Category</label>
 								</div>
