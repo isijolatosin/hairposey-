@@ -24,9 +24,9 @@ export const triggerProgress = (setTimeleft, setCount, isReload) => {
 		}
 	}, 1000);
 
-	if (isReload) {
-		window.setTimeout(function () {
-			window.location.reload();
-		}, 10000);
-	}
+	// if (isReload) {
+	// 	window.setTimeout(function () {
+	// 		window.location.reload();
+	// 	}, 10000);
+	// }
 };
