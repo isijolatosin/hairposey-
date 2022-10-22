@@ -289,7 +289,7 @@ function Book({ logo }) {
 
 					setTimeout(() => {
 						SendClientSuccessfulPurchaseEmail();
-						// SendMerchantSuccessfulPurchaseEmail();
+						SendMerchantSuccessfulPurchaseEmail();
 					}, 1000);
 				}
 			}
