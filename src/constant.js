@@ -13,7 +13,7 @@ export const REACT_APP_BOOK = "/hairposey/booking";
 export const REACT_APP_SHOP = "/hairposey/shopping";
 export const CLIENT_URL = "http://localhost:3001";
 export const REACT_APP_ISBOOKING = "booking";
-export const REACT_APP_BOOKLIMIT = 5;
+export const REACT_APP_BOOKLIMIT = 7;
 export const REACT_APP_ISSHOPPING = "shopping";
 export const REACT_APP_STATUS = "pending";
 export const REACT_APP_CANCELED = "canceled";
@@ -63,6 +63,15 @@ export const Policy = [
 	},
 ];
 
+export const timeSlot = [
+	"11:00am",
+	"12:30pm",
+	"2:00pm",
+	"3:30pm",
+	"5:00pm",
+	"6:00pm",
+];
+
 export const information = [
 	{
 		id: 1,
@@ -79,50 +88,63 @@ export const information = [
 		id: 2,
 		title: "Services",
 		info: [
-			{ id: "1", desc: "Quick Weave $140", price: 140 },
-			{ id: "2", desc: "Frontal Sew In $205", price: 205 },
-			{ id: "3", desc: "Clousure Sew In $195", price: 195 },
-			{ id: "4", desc: "Frontal Wig Install $140", price: 140 },
+			{ id: "1", desc: "Quick Weave $140", price: 140, duration: 1.5 },
+			{ id: "2", desc: "Frontal Sew In $205", price: 205, duration: 3 },
+			{ id: "3", desc: "Clousure Sew In $195", price: 195, duration: 3 },
+			{ id: "4", desc: "Frontal Wig Install $140", price: 140, duration: 2 },
 			{
 				id: "5",
 				desc: "Cut & Style $70",
 				price: 70,
+				duration: 2,
 			},
 			{
 				id: "6",
 				desc: "Frontal Ponytail $130",
 				price: 130,
+				duration: 2,
 			},
 			{
 				id: "7",
 				desc: "Pixie Cut starting at $80",
 				price: 80,
+				duration: 2,
 			},
 			{
 				id: "8",
 				desc: "Relaxer retouch starting at $85",
 				price: 85,
+				duration: 1.5,
 			},
 			{
 				id: "9",
 				desc: "Half up and half down Ponytail $140",
 				price: 140,
+				duration: 2,
 			},
-			{ id: "10", desc: "Traditional sew In w/ Leave out $185", price: 185 },
+			{
+				id: "10",
+				desc: "Traditional sew In w/ Leave out $185",
+				price: 185,
+				duration: 3,
+			},
 			{
 				id: "11",
 				desc: "New Relaxer starting at $135 (Includes a Treatment)",
 				price: 135,
+				duration: 2,
 			},
 			{
 				id: "12",
 				desc: "Sleek Ponytails starting at $90 *Add w/ Shampoo $30",
 				price: 30,
+				duration: 2,
 			},
 			{
 				id: "13",
 				desc: "Shampoo + Treatment + Silk Press $110  *Please Note: All Silk Press come w/ Treatment.",
 				price: 110,
+				duration: 2,
 			},
 		],
 	},

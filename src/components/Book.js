@@ -19,6 +19,7 @@ import {
 	REACT_APP_BOOKLIMIT,
 	REACT_APP_SITE_URL,
 	REACT_APP_STATUS,
+	timeSlot,
 } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
@@ -59,8 +60,11 @@ function Book({ logo }) {
 	const [bookingData, setBookingData] = React.useState({});
 	const [userEmail, setUserEmail] = React.useState("");
 	const [timeleft, setTimeleft] = React.useState(0);
+	const [dailyMax, setDailyMax] = React.useState(0);
 	const [count, setCount] = React.useState(10);
+	const [_timeSlot, setTimeSlot] = React.useState("");
 	const [blackList, setBlackList] = React.useState([]);
+	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const isReload = true;
 	const status = REACT_APP_STATUS;
@@ -109,7 +113,6 @@ function Book({ logo }) {
 			setBlackList(arr);
 		});
 	}, []);
-
 	// if (succeeded && permission) {
 	// 	new Notification("Payment Notification", {
 	// 		body: "Your Payment Was Successful!",
@@ -127,23 +130,31 @@ function Book({ logo }) {
 			}
 
 			if (date > dateToday) {
-				db.collection("bookings").onSnapshot((snapshot) => {
+				db.collection("all-bookings").onSnapshot((snapshot) => {
 					const results = snapshot.docs.map((doc) => ({
 						data: doc.data(),
 					}));
+
 					const filterBydate = results?.filter(
 						(booking) => booking?.data.date === date.toDateString()
 					);
 
-					if (filterBydate.length > 0) {
-						if (filterBydate.length < Number(REACT_APP_BOOKLIMIT)) {
-							setSelectDate(date.toDateString());
-						} else {
-							setBookLimit(true);
-						}
-					} else {
-						setBookLimit(false);
+					const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
+					setTimeSlotArray(timeSlotArr);
+
+					let maxDailyBookingHour = 0;
+					for (let i = 0; i < filterBydate.length; i++) {
+						maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
+					}
+					if (
+						maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
+						REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1 &&
+						timeSlotArray?.length < timeSlot?.length
+					) {
 						setSelectDate(date.toDateString());
+						setDailyMax(maxDailyBookingHour);
+					} else {
+						setBookLimit(true);
 					}
 				});
 			}
@@ -152,6 +163,10 @@ function Book({ logo }) {
 			setAuthDate(true);
 			setSelectDate(false);
 		}
+	};
+	// console.log(timeSlotArray);
+	const handleSelectTimeSlot = (t) => {
+		setTimeSlot(t);
 	};
 
 	const handleOnChange = (e) => {
@@ -186,8 +201,12 @@ function Book({ logo }) {
 		+process.env.REACT_APP_BOOKING_PRICE * +process.env.REACT_APP_STRIPE_PERCENT
 	).toFixed(2);
 	let totalBookingPrice = 0;
+	let serviceDuration = 0;
 	services.filter((item) => {
-		if (item?.desc === bookingData?.service) totalBookingPrice += item?.price;
+		if (item?.desc === bookingData?.service) {
+			totalBookingPrice += item?.price;
+			serviceDuration += item?.duration;
+		}
 	});
 	addOnServices.filter((item) => {
 		if (item?.desc === bookingData?.addOnServices)
@@ -275,8 +294,9 @@ function Book({ logo }) {
 							sender: "Hairposey",
 							total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
 							balance: bookingBalance,
-							hour: 3,
+							hour: serviceDuration,
 							status: status,
+							timeSlot: _timeSlot,
 						})
 						.then(() => {
 							console.log(`SUCCESSFULL`);
@@ -289,7 +309,7 @@ function Book({ logo }) {
 
 					setTimeout(() => {
 						SendClientSuccessfulPurchaseEmail();
-						SendMerchantSuccessfulPurchaseEmail();
+						// SendMerchantSuccessfulPurchaseEmail();
 					}, 1000);
 				}
 			}
@@ -300,7 +320,7 @@ function Book({ logo }) {
 		name: user?.displayName || userEmail,
 		message: `Hi ${
 			user?.displayName || userEmail
-		}. Your hair appointment has been booked for ${selectDate}. Your details are as follow - Category: ${
+		}. Your hair appointment has been booked for ${selectDate}, ${_timeSlot}. Your details are as follow - Category: ${
 			bookingData.category
 		}, Services: ${bookingData.service}, Add-On-Service: ${
 			bookingData.addOnServices
@@ -316,38 +336,41 @@ function Book({ logo }) {
 		date: dateToday.toDateString(),
 		link: `${REACT_APP_SITE_URL}${orderNo}`,
 		serviceCharge: `$${stripeDeduction}`,
+		serviceDuration: `${serviceDuration} hours`,
+		timeSlot: _timeSlot,
 	};
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
 			.send(
-				"service_vvie6xo",
-				"template_d72ypjk",
+				process.env.REACT_APP_EMAILJS_SERVICE,
+				process.env.REACT_APP_EMAILJS_CUSTOMER_TEMPLATE,
 				messageParams,
-				"gIT1RsNcapyNz6JR2"
+				process.env.REACT_APP_EMAILJS_API
 			)
 			.then((res) => {})
 			.catch((err) => console.log(err));
 	};
 
 	const ManagementMessage = {
-		name: "Hairposey",
+		name: "Management",
 		message: `Hello. Hair appointment for ${
 			user?.displayName || userEmail
-		} has been booked for ${selectDate}. Here are the details of booking: Category: ${
+		} has been booked for ${selectDate}, ${_timeSlot}. Here are the details of booking: Category: ${
 			bookingData.category
 		}, Services: ${bookingData.service}, add-On-Services: ${
 			bookingData.addOnServices
 		}. Customer's Email: ${user?.email || userEmail}`,
 		client: REACT_APP_AUTHORIZED_ID_ONE,
 		sender: "Hairposey Bookings",
+		customer: user?.displayName || user?.email || userEmail,
 	};
 	const SendMerchantSuccessfulPurchaseEmail = () => {
 		emailjs
 			.send(
-				"service_vvie6xo",
-				"template_d72ypjk",
+				process.env.REACT_APP_EMAILJS_SERVICE,
+				process.env.REACT_APP_EMAILJS_MERCHANT_TEMPLATE,
 				ManagementMessage,
-				"gIT1RsNcapyNz6JR2"
+				process.env.REACT_APP_EMAILJS_API
 			)
 			.then((res) => {})
 			.catch((err) => console.log(err));
@@ -360,6 +383,16 @@ function Book({ logo }) {
 	}, [succeeded, isReload]);
 
 	const email = user?.email || userEmail;
+
+	//  filter services option
+	const filteredServices = services.filter((service) => {
+		if (REACT_APP_BOOKLIMIT - dailyMax >= 2) {
+			return service;
+		}
+		if (REACT_APP_BOOKLIMIT - dailyMax < 2) {
+			return service?.duration === 1.5;
+		}
+	});
 
 	return (
 		<div className="bg-blur3 tw-flex tw-flex-col lg:tw-flex-row tw-width-full tw-p-5 lg:tw-pl-0 tw-mx-auto">
@@ -505,7 +538,7 @@ function Book({ logo }) {
 									<option value="" disabled selected>
 										Select service
 									</option>
-									{services?.map((service) => (
+									{filteredServices?.map((service) => (
 										<option key={service.id}>{service.desc}</option>
 									))}
 								</select>
@@ -528,6 +561,41 @@ function Book({ logo }) {
 										<option key={ad.id}>{ad.desc}</option>
 									))}
 								</select>
+							</div>
+							<div className="tw-mb-[20px]">
+								<div className="tw-text-neutral-50 tw-font-light tw-text-xs tw-mb-1">
+									<span>Time slot</span>
+								</div>
+								<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
+									{timeSlot.map((slot, idx) => (
+										<span
+											onClick={() =>
+												!timeSlotArray?.includes(slot) &&
+												handleSelectTimeSlot(slot)
+											}
+											key={idx}
+											className={`${
+												timeSlotArray?.includes(slot)
+													? "tw-border-[0.5px] tw-border-neutral-800 tw-cursor-not-allowed tw-text-neutral-600"
+													: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
+											}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
+										>
+											{slot}
+										</span>
+									))}
+								</div>
+							</div>
+							{REACT_APP_BOOKLIMIT - dailyMax < 2 && (
+								<div className="tw-text-red-300 tw-font-thin tw-text-[11px] tw-bg-neutral-800 tw-p-2 tw-rounded-lg">
+									<span>
+										<span className="tw-text-sm">We are almost booked up!</span>{" "}
+										<br />
+										We can only accommodate services of one hour 30 minutes or
+										less.
+									</span>
+								</div>
+							)}
+							<div>
 								{error && (
 									<span className="tw-text-rose-500 tw-text-[14px] tw-w-[100%] tw-mx-auto tw-mb-10">
 										Missing Condential: Date...
@@ -540,12 +608,13 @@ function Book({ logo }) {
 											bookingData.category &&
 											bookingData.addOnServices &&
 											selectDate &&
+											_timeSlot &&
 											(userEmail || user?.email) && (
 												<Button type="submit">Submit Booking</Button>
 											)}
 									</div>
 								) : (
-									<div className=" tw-font-thin tw-uppercase tw-mt-2 tw-text-[10.5px]">
+									<div className=" tw-font-thin tw-uppercase tw-mt-2 tw-text-[10.5px] tw-bg-neutral-800 tw-p-2 tw-rounded-lg">
 										<p className="tw-text-red-400 tw-border-b-[0.5px] tw-border-neutral-700 tw-mb-2 tw-pb-2">
 											The user is not authorize for booking at this time.
 											Contact Hairposey admin for any support.
