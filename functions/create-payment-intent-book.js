@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { StatusCodes } = require("http-status-codes");
 
 const stripe = require("stripe")(process.env.REACT_APP_STRIPE_PRIVATE_KEY);
 
@@ -14,13 +15,13 @@ exports.handler = async function (event, context) {
 			});
 
 			return {
-				statusCode: 200,
+				statusCode: StatusCodes.OK,
 				body: JSON.stringify({ clientSecret: paymentIntent.client_secret }),
 			};
 		} catch (error) {
 			return {
 				statusCodes: 500,
-				body: JSON.stringify({ msg: error.message }),
+				body: JSON.stringify({ msg: `ERROR - ${error.message}` }),
 			};
 		}
 	}
