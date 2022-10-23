@@ -4,7 +4,7 @@ export function ValidateEmail(inputText) {
 		// console.log('Valid email address!')
 		return true;
 	} else {
-		console.log("You have entered an invalid email address!");
+		// console.log("You have entered an invalid email address!");
 		return false;
 	}
 }
