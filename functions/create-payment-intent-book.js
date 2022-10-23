@@ -5,12 +5,12 @@ const stripe = require("stripe")(process.env.REACT_APP_STRIPE_PRIVATE_KEY);
 
 // domain/.netlify/functions/create-payment-intent
 exports.handler = async function (event, context) {
-	// const { price } = JSON.parse(event.body);
+	const data = JSON.parse(event.body);
 
 	if (event.body) {
 		try {
 			const paymentIntent = await stripe.paymentIntents.create({
-				amount: 30 * 100,
+				amount: data?.price * 100,
 				currency: "cad",
 			});
 

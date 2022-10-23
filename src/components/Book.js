@@ -220,7 +220,8 @@ function Book({ logo }) {
 
 	// stripe percent logic
 	const stripeDeduction = +(
-		+process.env.REACT_APP_BOOKING_PRICE * +process.env.REACT_APP_STRIPE_PERCENT
+		Number(process.env.REACT_APP_BOOKING_PRICE) *
+		Number(process.env.REACT_APP_STRIPE_PERCENT)
 	).toFixed(2);
 	let totalBookingPrice = 0;
 	let serviceDuration = 0;
@@ -234,11 +235,12 @@ function Book({ logo }) {
 		if (item?.desc === bookingData?.addOnServices)
 			totalBookingPrice += item?.price;
 	});
-	const totalDue = +process.env.REACT_APP_BOOKING_PRICE + stripeDeduction;
+	const totalDue =
+		Number(process.env.REACT_APP_BOOKING_PRICE) + stripeDeduction;
 	const bookingBalance =
 		totalBookingPrice > totalDue
-			? totalBookingPrice - +process.env.REACT_APP_BOOKING_PRICE
-			: +process.env.REACT_APP_BOOKING_PRICE - totalBookingPrice;
+			? totalBookingPrice - Number(process.env.REACT_APP_BOOKING_PRICE)
+			: Number(process.env.REACT_APP_BOOKING_PRICE) - totalBookingPrice;
 
 	const createPaymentIntent = async () => {
 		const price = totalDue;
