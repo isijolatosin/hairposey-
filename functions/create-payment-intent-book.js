@@ -12,7 +12,7 @@ exports.handler = async function (event, context) {
 				amount: price * 100,
 				currency: "cad",
 			});
-			console.log(paymentIntent);
+			console.log(paymentIntent.client_secret);
 			return {
 				statusCode: 200,
 				body: JSON.stringify({ clientSecret: paymentIntent.client_secret }),
