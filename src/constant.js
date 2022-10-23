@@ -142,7 +142,7 @@ export const information = [
 			},
 			{
 				id: "13",
-				desc: "Shampoo + Treatment + Silk Press $110  *Please Note: All Silk Press come w/ Treatment.",
+				desc: "Shampoo + Treatment + Silk Press $110 *Please Note: All Silk Press come w/ Treatment",
 				price: 110,
 				duration: 2,
 			},
