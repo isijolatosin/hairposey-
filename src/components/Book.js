@@ -460,7 +460,10 @@ function Book({ logo }) {
 								/> */}
 								<DatePicker
 									minDate={new Date()}
-									// filterDate={(date) => date.getDay !== 1}
+									filterDate={(date) =>
+										date.getDay() !== 1 && date.getDay() !== 0
+									}
+									// filterTime={(time) => time.getHours() !== 24}
 									isClearable
 									clearButtonTitle="clear"
 									renderCustomHeader={({
@@ -502,7 +505,7 @@ function Book({ logo }) {
 													"react-datepicker__navigation react-datepicker__navigation--next"
 												}
 												style={
-													customHeaderCount === 0
+													customHeaderCount === 1
 														? { visibility: "hidden" }
 														: null
 												}
@@ -520,8 +523,9 @@ function Book({ logo }) {
 									)}
 									selected={new Date()}
 									onChange={handleSelect}
-									monthsShown={2}
-									className={`tw-bg-neutral-800 tw-font-thin tw-w-full ${
+									monthsShown={1}
+									calendarClassName="tw-bg-neutral-200 tw-w-[100%]"
+									className={`tw-bg-neutral-800 tw-font-thin ${
 										selectDate ? "tw-text-neutral-700" : "tw-text-white"
 									}`}
 								/>
