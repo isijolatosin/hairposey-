@@ -2,9 +2,11 @@
 import React, { useContext } from "react";
 import emailjs from "emailjs-com";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
-import { Calendar } from "react-date-range";
+// import "react-date-range/dist/styles.css"; // main style file
+// import "react-date-range/dist/theme/default.css"; // theme css file
+// import { Calendar } from "react-date-range";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Button from "./shared/Button";
 import { UserContext } from "../context/user-context";
 import { SiAmericanexpress, SiMastercard } from "react-icons/si";
@@ -40,7 +42,7 @@ information.map((data) => {
 });
 
 function Book({ logo }) {
-	const dateToday = new Date();
+	const dateNow = new Date();
 	const elements = useElements();
 	const stripe = useStripe();
 	const { user } = useContext(UserContext);
@@ -70,7 +72,6 @@ function Book({ logo }) {
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const isReload = true;
 	const status = REACT_APP_STATUS;
-
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
@@ -124,65 +125,67 @@ function Book({ logo }) {
 	// 		lang: "en-US",
 	// 	});
 	// }
-
 	const handleSelect = (date) => {
 		if (
 			date.toString().toLowerCase().includes("sun") ||
 			date.toString().toLowerCase().includes("mon")
 		) {
 			setSelectDate(false);
+			setAuthDate(false);
 			setNoSunMon(true);
 		} else {
-			if (date.getDate() >= dateToday.getDate() + 2) {
-				if (selectDate) {
-					setSelectDate(null);
-				}
-				if (bookLimit) {
-					setBookLimit(false);
-				}
+			// if (date?.getTime() >= dateNow?.getTime() + 2 * 24 * 60 * 60) {
+			if (selectDate) {
+				setSelectDate(null);
+			}
+			if (bookLimit) {
+				setBookLimit(false);
+			}
+			if (noSunMon) {
+				setNoSunMon(false);
+			}
 
-				if (date > dateToday) {
-					db.collection("all-bookings").onSnapshot((snapshot) => {
-						const results = snapshot.docs.map((doc) => ({
-							data: doc.data(),
-						}));
+			if (date > dateNow) {
+				db.collection("all-bookings").onSnapshot((snapshot) => {
+					const results = snapshot.docs.map((doc) => ({
+						data: doc.data(),
+					}));
 
-						const filterBydate = results?.filter(
-							(booking) => booking?.data.date === date.toDateString()
-						);
+					const filterBydate = results?.filter(
+						(booking) => booking?.data.date === date.toDateString()
+					);
 
-						const timeSlotArr = filterBydate?.map(
-							(time) => time?.data?.timeSlot
-						);
-						setTimeSlotArray(timeSlotArr);
+					const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
+					setTimeSlotArray(timeSlotArr);
 
-						let maxDailyBookingHour = 0;
-						if (filterBydate?.length > 0) {
-							for (let i = 0; i < filterBydate.length; i++) {
-								maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
-							}
-							if (
-								maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
-								REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1
-							) {
-								setSelectDate(date.toDateString());
-								setDailyMax(maxDailyBookingHour);
-								setNoSunMon(false);
-							} else {
-								setBookLimit(true);
-							}
-						} else {
+					let maxDailyBookingHour = 0;
+					if (filterBydate?.length > 0) {
+						for (let i = 0; i < filterBydate.length; i++) {
+							maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
+						}
+						if (
+							maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
+							REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1
+						) {
 							setSelectDate(date.toDateString());
 							setDailyMax(maxDailyBookingHour);
 							setNoSunMon(false);
+						} else {
+							setBookLimit(true);
 						}
-					});
-				}
-				setAuthDate(false);
-			} else {
-				setAuthDate(true);
-				setSelectDate(false);
+					} else {
+						setSelectDate(date.toDateString());
+						setDailyMax(maxDailyBookingHour);
+						setNoSunMon(false);
+					}
+				});
 			}
+			setAuthDate(false);
+			// } else {
+			// 	setAuthDate(true);
+			// 	setNoSunMon(false);
+			// 	setSelectDate(false);
+			// }
 		}
 	};
 
@@ -312,7 +315,7 @@ function Book({ logo }) {
 							addOnServices: bookingData.addOnServices,
 							orderNo: orderNo,
 							quantity: 1,
-							transactionDate: dateToday.toDateString(),
+							transactionDate: dateNow.toDateString(),
 							payMethod: "Card",
 							product: "Hair Appointment",
 							sender: "Hairposey",
@@ -357,7 +360,7 @@ function Book({ logo }) {
 		total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
 		balance: `$${bookingBalance}`,
 		orderNo: orderNo,
-		date: dateToday.toDateString(),
+		date: dateNow.toDateString(),
 		link: `${REACT_APP_SITE_URL}${orderNo}`,
 		serviceCharge: `$${stripeDeduction}`,
 		serviceDuration: `${serviceDuration} hours`,
@@ -443,17 +446,85 @@ function Book({ logo }) {
 					<div className="tw-flex tw-flex-col tw-items-center tw-mx-auto tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
 						<div className="tw-h-[350px]">
 							{noSunMon && (
-								<div className="tw-w-full tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-px-[10px] tw-py-[5px] -tw-mb-5 tw-opacity-1 tw-ease-in tw-duration-300">
+								<div className="tw-w-full tw-h-[43px] tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-px-[10px] tw-py-[5px] -tw-mb-5 tw-opacity-1 tw-ease-in tw-duration-300">
 									<span>OUR SERVICES ARE CLOSED FOR THIS DAY</span>
 								</div>
 							)}
 							<div className="xl:tw-ml-0">
-								<Calendar
+								{/* <Calendar
 									color="rgb(157 23 77)"
 									date={new Date()}
 									onChange={handleSelect}
 									dateDisplayFormat="yyyy-MM-dd"
 									showSelectionPreview={true}
+								/> */}
+								<DatePicker
+									placeholderText="Click to select a date"
+									minDate={new Date()}
+									// filterDate={(date) => {
+									// 	return date.getHours() >;
+									// }}
+									renderCustomHeader={({
+										monthDate,
+										customHeaderCount,
+										decreaseMonth,
+										increaseMonth,
+									}) => (
+										<div>
+											<button
+												aria-label="Previous Month"
+												className={
+													"react-datepicker__navigation react-datepicker__navigation--previous"
+												}
+												style={
+													customHeaderCount === 1
+														? { visibility: "hidden" }
+														: null
+												}
+												onClick={decreaseMonth}
+											>
+												<span
+													className={
+														"react-datepicker__navigation-icon react-datepicker__navigation-icon--previous"
+													}
+												>
+													{"<"}
+												</span>
+											</button>
+											<span className="react-datepicker__current-month">
+												{monthDate.toLocaleString("en-US", {
+													month: "long",
+													year: "numeric",
+												})}
+											</span>
+											<button
+												aria-label="Next Month"
+												className={
+													"react-datepicker__navigation react-datepicker__navigation--next"
+												}
+												style={
+													customHeaderCount === 0
+														? { visibility: "hidden" }
+														: null
+												}
+												onClick={increaseMonth}
+											>
+												<span
+													className={
+														"react-datepicker__navigation-icon react-datepicker__navigation-icon--next"
+													}
+												>
+													{">"}
+												</span>
+											</button>
+										</div>
+									)}
+									selected={new Date()}
+									onChange={handleSelect}
+									monthsShown={2}
+									className={`tw-bg-neutral-800 tw-font-thin tw-w-full ${
+										selectDate ? "tw-text-neutral-700" : "tw-text-white"
+									}`}
 								/>
 							</div>
 
@@ -462,19 +533,19 @@ function Book({ logo }) {
 									<div
 										className={
 											authDate
-												? "tw-w-full tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+												? "tw-w-full tw-mt-[-12px] tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-pb-[5px] tw-pt-[12px] tw-opacity-1 tw-ease-in tw-duration-300"
 												: "tw-opacity-0"
 										}
 									>
 										<span>BOOKINGS ARE ALLOWED FOR THIS DAY</span>
 									</div>
 								) : (
-									<>
+									<div className="tw-mt-[-12px]">
 										{selectDate && (
 											<div className="tw-w-[332px] tw-mx-auto">
 												<div
 													className={
-														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-b-[2px] tw-border-pink-700 tw-mb-0 tw-pb-[5px] tw-pt-[10px] tw-opacity-1 tw-ease-in tw-duration-300"
 													}
 												>
 													<span>Date selected {selectDate}</span>
@@ -492,12 +563,12 @@ function Book({ logo }) {
 												</div>
 											</div>
 										)}
-									</>
+									</div>
 								)}
 							</div>
 						</div>
 						{!user && (
-							<div className="tw-flex tw-justify-center tw-mt-10">
+							<div className="tw-flex tw-justify-center tw-mt-[-270px]">
 								<label className="bookLabel">
 									<input
 										type="text"
@@ -535,7 +606,7 @@ function Book({ logo }) {
 							}}
 							className="tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] tw-mt-[-25px]"
 						>
-							<div className="tw-mb-[20px] tw-mt-[40px]">
+							<div className="tw-mb-[20px] lg:tw-mt-[-12px] tw-mt-[40px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
 									<label>Category</label>
 								</div>
