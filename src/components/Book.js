@@ -126,61 +126,61 @@ function Book({ logo }) {
 	// 	});
 	// }
 	const handleSelect = (date) => {
-		if (
-			date.toString().toLowerCase().includes("sun") ||
-			date.toString().toLowerCase().includes("mon")
-		) {
-			setSelectDate(false);
-			setAuthDate(false);
-			setNoSunMon(true);
-		} else {
-			// if (date?.getTime() >= dateNow?.getTime() + 2 * 24 * 60 * 60) {
-			if (selectDate) {
-				setSelectDate(null);
-			}
-			if (bookLimit) {
-				setBookLimit(false);
-			}
-			if (noSunMon) {
-				setNoSunMon(false);
-			}
+		// if (
+		// 	date.toString().toLowerCase().includes("sun") ||
+		// 	date.toString().toLowerCase().includes("mon")
+		// ) {
+		// 	setSelectDate(false);
+		// 	setAuthDate(false);
+		// 	setNoSunMon(true);
+		// } else {
+		// if (date?.getTime() >= dateNow?.getTime() + 2 * 24 * 60 * 60) {
+		if (selectDate) {
+			setSelectDate(null);
+		}
+		if (bookLimit) {
+			setBookLimit(false);
+		}
+		if (noSunMon) {
+			setNoSunMon(false);
+		}
 
-			if (date > dateNow) {
-				db.collection("all-bookings").onSnapshot((snapshot) => {
-					const results = snapshot.docs.map((doc) => ({
-						data: doc.data(),
-					}));
+		if (date > dateNow) {
+			db.collection("all-bookings").onSnapshot((snapshot) => {
+				const results = snapshot.docs.map((doc) => ({
+					data: doc.data(),
+				}));
 
-					const filterBydate = results?.filter(
-						(booking) => booking?.data.date === date.toDateString()
-					);
+				const filterBydate = results?.filter(
+					(booking) => booking?.data.date === date.toDateString()
+				);
 
-					const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
-					setTimeSlotArray(timeSlotArr);
+				const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
+				setTimeSlotArray(timeSlotArr);
 
-					let maxDailyBookingHour = 0;
-					if (filterBydate?.length > 0) {
-						for (let i = 0; i < filterBydate.length; i++) {
-							maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
-						}
-						if (
-							maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
-							REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1
-						) {
-							setSelectDate(date.toDateString());
-							setDailyMax(maxDailyBookingHour);
-							setNoSunMon(false);
-						} else {
-							setBookLimit(true);
-						}
-					} else {
+				let maxDailyBookingHour = 0;
+				if (filterBydate?.length > 0) {
+					for (let i = 0; i < filterBydate.length; i++) {
+						maxDailyBookingHour += filterBydate?.[i]?.data?.duration;
+					}
+					if (
+						maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
+						REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1
+					) {
 						setSelectDate(date.toDateString());
 						setDailyMax(maxDailyBookingHour);
 						setNoSunMon(false);
+					} else {
+						setBookLimit(true);
 					}
-				});
-			}
-			setAuthDate(false);
+				} else {
+					setSelectDate(date.toDateString());
+					setDailyMax(maxDailyBookingHour);
+					setNoSunMon(false);
+				}
+			});
+			// }
+			// setAuthDate(false);
 			// } else {
 			// 	setAuthDate(true);
 			// 	setNoSunMon(false);
