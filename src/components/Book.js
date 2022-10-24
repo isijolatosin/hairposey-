@@ -459,11 +459,10 @@ function Book({ logo }) {
 									showSelectionPreview={true}
 								/> */}
 								<DatePicker
-									placeholderText="Click to select a date"
 									minDate={new Date()}
-									// filterDate={(date) => {
-									// 	return date.getHours() >;
-									// }}
+									// filterDate={(date) => date.getDay !== 1}
+									isClearable
+									clearButtonTitle="clear"
 									renderCustomHeader={({
 										monthDate,
 										customHeaderCount,
@@ -604,7 +603,9 @@ function Book({ logo }) {
 									createPaymentIntent();
 								}
 							}}
-							className="tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] tw-mt-[-25px]"
+							className={`tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] ${
+								user ? "tw-mt-[-300px] lg:tw-mt-[-25px]" : "tw-mt-[-25px]"
+							} `}
 						>
 							<div className="tw-mb-[20px] lg:tw-mt-[-12px] tw-mt-[40px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">

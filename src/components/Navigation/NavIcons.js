@@ -35,7 +35,8 @@ function NavIcons() {
 				// }
 				className={`${
 					itemCount > 0 ? "tw-mt-5 tw-mr-5" : "tw-mt-0"
-				} tw-w-30 tw-h-30 tw-text-neutral-50 tw-text-xl tw-mb-3 hover:tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-neutral-800 hover:tw-p-2 hover:tw-rounded-full hover:tw--mb-[2px] tw-ease-in tw-duration-300 tw-relative`}>
+				} tw-w-30 tw-h-30 tw-text-neutral-50 tw-text-xl tw-mb-3 hover:tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-neutral-800 hover:tw-p-2 hover:tw-rounded-full hover:tw--mb-[2px] tw-ease-in tw-duration-300 tw-relative`}
+			>
 				{itemCount > 0 ? <BsHandbagFill size={25} /> : <BsHandbag size={25} />}
 				{itemCount > 0 && (
 					<span className="tw-absolute tw--top-[20px] tw-right-[-20px] tw-border-[2px] tw-border-neutral-50 tw-font-bold tw-text-sm bg-blur3 tw-bg-clip-text tw-text-white tw-rounded-full tw-p-4 tw-h-2 tw-w-2 tw-flex tw-mx-auto tw-justify-center tw-items-center">
@@ -74,7 +75,7 @@ function NavIcons() {
 				</div>
 			)}
 			{signOut && (
-				<div className="tw-absolute tw-right-0 tw-bottom-[-20px]">
+				<div className="tw-absolute tw-right-0 tw-bottom-[-5px]">
 					<span className="tw-text-white tw-text-[10px]">Signing out...</span>
 				</div>
 			)}
