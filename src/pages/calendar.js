@@ -267,12 +267,12 @@ const CalendarPage = () => {
 							<Link to="/">
 								<RiHome5Fill className="tw-bg-white tw-absolute -tw-top-8 tw-left-10 md:tw-left-0 tw-shadow-lg tw-w-[40px] tw-h-[40px] tw-text-pink-900 tw-rounded-full tw-p-2 md:hover:tw-bg-pink-900 md:hover:tw-text-white hover:tw-w-[35px] hover:tw-p-4 hover:tw-h-[35px] tw-ease-in tw-duration-300" />
 							</Link>
-							<div className="tw-w-full tw-text-center tw-mb-5">
+							<div className="tw-w-full tw-text-center">
 								<p className="font_cursive tw-text-4xl">My Calendar</p>
 							</div>
-							<div className="tw-h-[400px] tw-my-40 lg:tw-mt-0 lg:tw-mb-20 tw-w-full tw-flex tw-flex-col lg:tw-flex-row tw-justify-center">
+							<div className="tw-my-10 lg:tw-mt-0 lg:tw-mb-20 tw-w-full tw-flex tw-flex-col lg:tw-flex-row tw-justify-center">
 								<div>
-									<div className="tw-w-full tw-flex tw-justify-center tw-mt-[100px]">
+									<div className="tw-w-full tw-flex tw-justify-center">
 										<Calendar
 											color="rgb(157 23 77)"
 											date={new Date()}
@@ -397,7 +397,7 @@ const CalendarPage = () => {
 											))}
 										</select>
 									</div>
-									<div className="tw-mb-[150px]">
+									<div>
 										<div className="tw-text-neutral-500 tw-font-light tw-text-xs tw-mb-1">
 											<span>Time slot</span>
 										</div>
@@ -540,26 +540,26 @@ const CalendarPage = () => {
 														</div>
 													</div>
 
-													<div className="tw-grid tw-grid-cols-2 tw-text-[11px] tw-gap-x-2">
+													<div className="tw-grid tw-grid-cols-2 tw-text-[11px] tw-gap-x-2 tw-text-neutral-800">
 														<li className="tw-text-pink-800 tw-border-b-[0.5px]">
 															Appointment Date: {list.data.date}
 														</li>
-														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px] tw-leading-3">
+														<li className="tw-font-thin tw-border-b-[0.5px] tw-leading-3">
 															Service: {list.data.service}
 														</li>
-														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+														<li className="tw-font-thin tw-border-b-[0.5px]">
 															Category: {list.data.category}
 														</li>
-														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+														<li className="tw-font-thin tw-border-b-[0.5px]">
 															Add-on Service: {list.data.addOnServices}
 														</li>
-														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+														<li className="tw-font-thin tw-border-b-[0.5px]">
 															Time Slot: {list.data.timeSlot}
 														</li>
-														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+														<li className="tw-font-thin tw-border-b-[0.5px]">
 															Balance: ${list.data.balance}
 														</li>
-														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+														<li className="tw-font-thin tw-border-b-[0.5px]">
 															Status:{" "}
 															<span
 																className={`${
