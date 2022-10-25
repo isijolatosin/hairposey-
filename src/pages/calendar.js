@@ -566,7 +566,7 @@ const CalendarPage = () => {
 																	new Date().getTime() <
 																		new Date(list.data.date).getTime() &&
 																	list.data.status !== REACT_APP_CANCELED &&
-																	"tw-text-green-700"
+																	"tw-text-green-700 tw-font-semibold"
 																} ${
 																	(new Date().getTime() >
 																		new Date(list.data.date).getTime() ||
