@@ -1,6 +1,8 @@
 /* eslint-disable array-callback-return */
 import React, { useContext } from "react";
 import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
 import {
@@ -270,7 +272,7 @@ const CalendarPage = () => {
 							</div>
 							<div className="tw-h-[400px] tw-my-40 lg:tw-mt-0 lg:tw-mb-20 tw-w-full tw-flex tw-flex-col lg:tw-flex-row tw-justify-center">
 								<div>
-									<div className="tw-w-full tw-flex tw-justify-center">
+									<div className="tw-w-full tw-flex tw-justify-center tw-mt-[100px]">
 										<Calendar
 											color="rgb(157 23 77)"
 											date={new Date()}
@@ -395,7 +397,7 @@ const CalendarPage = () => {
 											))}
 										</select>
 									</div>
-									<div className="tw-mb-[20px]">
+									<div className="tw-mb-[150px]">
 										<div className="tw-text-neutral-500 tw-font-light tw-text-xs tw-mb-1">
 											<span>Time slot</span>
 										</div>
@@ -481,9 +483,9 @@ const CalendarPage = () => {
 														<div className="tw-flex tw-items-center tw-justify-center tw-relative">
 															<li className="tw-text-xs tw-bg-pink-600 tw-py-1 tw-px-3 tw-rounded-full tw-text-white">
 																Duration:{" "}
-																{list.data.hour > 1
-																	? `${list.data.hour}hrs`
-																	: `${list.data.hour}hr`}
+																{list.data.duration > 1
+																	? `${list.data.duration} hrs`
+																	: `${list.data.duration} hr`}
 															</li>
 															{(new Date().getTime() >
 																new Date(list.data.date).getTime() ||
@@ -538,39 +540,47 @@ const CalendarPage = () => {
 														</div>
 													</div>
 
-													<li className="tw-text-xs tw-text-pink-800">
-														Appointment Date: {list.data.date}
-													</li>
-													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-														Service: {list.data.service}
-													</li>
-													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-														Category: {list.data.category}
-													</li>
-													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-														Add-on Service: {list.data.addOnServices}
-													</li>
-													<li className="tw-text-xs tw-font-thin tw-text-neutral-600">
-														Status:{" "}
-														<span
-															className={`${
-																new Date().getTime() <
-																	new Date(list.data.date).getTime() &&
-																list.data.status !== REACT_APP_CANCELED &&
-																"tw-text-green-700"
-															} ${
-																(new Date().getTime() >
-																	new Date(list.data.date).getTime() ||
-																	list.data.status === REACT_APP_CANCELED) &&
-																"tw-text-neutral-400 tw-italic tw-line-through"
-															} `}
-														>
-															{new Date().getTime() >
-															new Date(list.data.date).getTime()
-																? "Past Appointment Date"
-																: list.data.status}
-														</span>
-													</li>
+													<div className="tw-grid tw-grid-cols-2 tw-text-[11px] tw-gap-x-2">
+														<li className="tw-text-pink-800 tw-border-b-[0.5px]">
+															Appointment Date: {list.data.date}
+														</li>
+														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px] tw-leading-3">
+															Service: {list.data.service}
+														</li>
+														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+															Category: {list.data.category}
+														</li>
+														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+															Add-on Service: {list.data.addOnServices}
+														</li>
+														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+															Time Slot: {list.data.timeSlot}
+														</li>
+														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+															Balance: ${list.data.balance}
+														</li>
+														<li className="tw-font-thin tw-text-neutral-600 tw-border-b-[0.5px]">
+															Status:{" "}
+															<span
+																className={`${
+																	new Date().getTime() <
+																		new Date(list.data.date).getTime() &&
+																	list.data.status !== REACT_APP_CANCELED &&
+																	"tw-text-green-700"
+																} ${
+																	(new Date().getTime() >
+																		new Date(list.data.date).getTime() ||
+																		list.data.status === REACT_APP_CANCELED) &&
+																	"tw-text-neutral-400 tw-italic tw-line-through"
+																} `}
+															>
+																{new Date().getTime() >
+																new Date(list.data.date).getTime()
+																	? "Past Appointment Date"
+																	: list.data.status}
+															</span>
+														</li>
+													</div>
 												</ul>
 											</div>
 										))}

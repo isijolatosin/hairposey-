@@ -57,8 +57,7 @@ function Book({ logo }) {
 	const [location, setLocation] = React.useState(null);
 	const [allowproceed, setAllowProceed] = React.useState(false); //CHANGE BACK TO FALSE
 	// const [permission, setPermission] = React.useState(false);
-	// const [authDate, setAuthDate] = React.useState(false);
-	// const [noSunMon, setNoSunMon] = React.useState(false);
+	const [authDate, setAuthDate] = React.useState(false);
 	const [error, setError] = React.useState(false);
 	const [bookingData, setBookingData] = React.useState({});
 	const [userEmail, setUserEmail] = React.useState("");
@@ -126,24 +125,18 @@ function Book({ logo }) {
 	// 	});
 	// }
 	const handleSelect = (date) => {
-		// if (
-		// 	date.toString().toLowerCase().includes("sun") ||
-		// 	date.toString().toLowerCase().includes("mon")
-		// ) {
-		// 	setSelectDate(false);
-		// 	setAuthDate(false);
-		// 	setNoSunMon(true);
+		// if (new Date().getHours() + 24) {
+		// 	setAuthDate(true);
 		// } else {
-		// if (date?.getTime() >= dateNow?.getTime() + 2 * 24 * 60 * 60) {
+		if (authDate) {
+			setAuthDate();
+		}
 		if (selectDate) {
 			setSelectDate(null);
 		}
 		if (bookLimit) {
 			setBookLimit(false);
 		}
-		// if (noSunMon) {
-		// 	setNoSunMon(false);
-		// }
 
 		if (date > dateNow) {
 			db.collection("all-bookings").onSnapshot((snapshot) => {
@@ -179,14 +172,8 @@ function Book({ logo }) {
 					// setNoSunMon(false);
 				}
 			});
-			// }
-			// setAuthDate(false);
-			// } else {
-			// 	setAuthDate(true);
-			// 	setNoSunMon(false);
-			// 	setSelectDate(false);
-			// }
 		}
+		// }
 	};
 
 	const handleSelectTimeSlot = (t) => {
@@ -445,11 +432,6 @@ function Book({ logo }) {
 				<div className=" tw-p-2 lg:tw-p-5 xl:tw-pr-[20px] tw-flex tw-flex-col lg:tw-flex-row  xl:tw-flex-row">
 					<div className="tw-flex tw-flex-col tw-items-center tw-mx-auto tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
 						<div className="tw-h-[350px]">
-							{/* {noSunMon && (
-								<div className="tw-w-full tw-h-[43px] tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-px-[10px] tw-py-[5px] -tw-mb-5 tw-opacity-1 tw-ease-in tw-duration-300">
-									<span>OUR SERVICES ARE CLOSED FOR THIS DAY</span>
-								</div>
-							)} */}
 							<div className="xl:tw-ml-0">
 								{/* <Calendar
 									color="rgb(157 23 77)"
@@ -463,7 +445,6 @@ function Book({ logo }) {
 									filterDate={(date) =>
 										date.getDay() !== 1 && date.getDay() !== 0
 									}
-									// filterTime={(time) => time.getHours() !== 24}
 									isClearable
 									clearButtonTitle="clear"
 									renderCustomHeader={({
@@ -532,7 +513,7 @@ function Book({ logo }) {
 							</div>
 
 							<div className="tw-w-[332px]">
-								{/* {authDate ? (
+								{authDate ? (
 									<div
 										className={
 											authDate
@@ -542,32 +523,32 @@ function Book({ logo }) {
 									>
 										<span>BOOKINGS ARE ALLOWED FOR THIS DAY</span>
 									</div>
-								) : ( */}
-								<div className="tw-mt-[-12px]">
-									{selectDate && (
-										<div className="tw-w-[332px] tw-mx-auto">
-											<div
-												className={
-													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-b-[2px] tw-border-pink-700 tw-mb-0 tw-pb-[5px] tw-pt-[10px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}
-											>
-												<span>Date selected {selectDate}</span>
+								) : (
+									<div className="tw-mt-[-12px]">
+										{selectDate && (
+											<div className="tw-w-[332px] tw-mx-auto">
+												<div
+													className={
+														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-b-[2px] tw-border-pink-700 tw-mb-0 tw-pb-[5px] tw-pt-[10px] tw-opacity-1 tw-ease-in tw-duration-300"
+													}
+												>
+													<span>Date selected {selectDate}</span>
+												</div>
 											</div>
-										</div>
-									)}
-									{bookLimit && (
-										<div className="tw-w-[332px] tw-mx-auto">
-											<div
-												className={
-													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}
-											>
-												<span>We are booked for this date</span>
+										)}
+										{bookLimit && (
+											<div className="tw-w-[332px] tw-mx-auto">
+												<div
+													className={
+														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
+													}
+												>
+													<span>We are booked for this date</span>
+												</div>
 											</div>
-										</div>
-									)}
-								</div>
-								{/* )} */}
+										)}
+									</div>
+								)}
 							</div>
 						</div>
 						{!user && (
