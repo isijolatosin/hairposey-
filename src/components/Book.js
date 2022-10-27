@@ -135,11 +135,11 @@ function Book({ logo }) {
 	// 	});
 	// }
 	const handleSelect = (date) => {
-		// if (new Date().getHours() + 24) {
-		// 	setAuthDate(true);
-		// } else {
+		if (date <= new Date().setDate(new Date().getDate() + 1)) {
+			setAuthDate(true);
+		}
 		if (authDate) {
-			setAuthDate();
+			setAuthDate(false);
 		}
 		if (selectDate) {
 			setSelectDate(null);
@@ -172,18 +172,15 @@ function Book({ logo }) {
 					) {
 						setSelectDate(date.toDateString());
 						setDailyMax(maxDailyBookingHour);
-						// setNoSunMon(false);
 					} else {
 						setBookLimit(true);
 					}
 				} else {
 					setSelectDate(date.toDateString());
 					setDailyMax(maxDailyBookingHour);
-					// setNoSunMon(false);
 				}
 			});
 		}
-		// }
 	};
 
 	const handleSelectTimeSlot = (t) => {
@@ -583,7 +580,7 @@ function Book({ logo }) {
 							</div>
 						)}
 					</div>
-					<div className="tw-flex tw-flex-col md:tw-mt-10 lg:tw-mt-0 tw-mt-5">
+					<div className="tw-flex tw-flex-col md:tw-mt-[-22px] tw-mt-5">
 						<form
 							onSubmit={(e) => {
 								e.preventDefault();
@@ -602,7 +599,7 @@ function Book({ logo }) {
 								user ? "tw-mt-[-300px] lg:tw-mt-[-25px]" : "tw-mt-[-25px]"
 							} `}
 						>
-							<div className="tw-mb-[20px] lg:tw-mt-[-12px] tw-mt-[40px]">
+							<div className="tw-mb-[20px] lg:tw-mt-[-12px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
 									<label>Category</label>
 								</div>

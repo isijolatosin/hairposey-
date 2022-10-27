@@ -107,9 +107,6 @@
 .general-scrollbar-hide::-webkit-scrollbar {
 	display: none;
 }
-.general-scrollbar-hide::-webkit-scrollbar {
-	display: none;
-}
 
 .Oswald {
 	font-family: var(--Oswald);

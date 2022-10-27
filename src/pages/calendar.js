@@ -539,7 +539,7 @@ const CalendarPage = () => {
 												>
 													<Progressbar value={timeleft} max={100} />
 												</div>
-												<ul className="tw-bg-white tw-p-2 tw-rounded-b-md">
+												<ul className="tw-bg-white tw-h-[100px] tw-overflow-auto tw-p-2 tw-rounded-b-md general-scrollbar-hide">
 													<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
 														{list.data.customer === list.data.email ? (
 															<li className="tw-text-xs tw-text-neutral-600">
@@ -639,15 +639,17 @@ const CalendarPage = () => {
 																	list.data.status !== REACT_APP_CANCELED &&
 																	"tw-text-green-700 tw-font-semibold"
 																} ${
-																	(new Date().getTime() >
-																		new Date(list.data.date).getTime() ||
-																		list.data.status === REACT_APP_CANCELED) &&
+																	list.data.status === REACT_APP_CANCELED &&
 																	"tw-text-neutral-400 tw-italic tw-line-through"
-																} `}
+																} ${
+																	new Date().getTime() >
+																		new Date(list.data.date).getTime() &&
+																	"tw-text-blue-800 tw-font-semibold"
+																}`}
 															>
 																{new Date().getTime() >
 																new Date(list.data.date).getTime()
-																	? "Past Appointment Date"
+																	? "Appointment is due"
 																	: list.data.status}
 															</span>
 														</li>
