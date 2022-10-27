@@ -21,7 +21,6 @@ import {
 	REACT_APP_BOOKLIMIT,
 	REACT_APP_SITE_URL,
 	REACT_APP_STATUS,
-	timeSlot,
 } from "../constant";
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
@@ -69,6 +68,7 @@ function Book({ logo }) {
 	const [blackList, setBlackList] = React.useState([]);
 	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
+	const [timeSlotDB, setTimeSlotsDB] = React.useState([]);
 	const isReload = true;
 	const status = REACT_APP_STATUS;
 	React.useEffect(() => {
@@ -77,6 +77,16 @@ function Book({ logo }) {
 				data: doc.data(),
 			}));
 			setLocation(results[0].data.location);
+		});
+
+		db.collection("timeSlot").onSnapshot((snapshot) => {
+			const arr = [];
+			snapshot.docs.map((doc) => {
+				const day = doc.data().day;
+				const time = doc.data().time;
+				arr.push({ id: doc.id, day: day, time: time });
+			});
+			setTimeSlotsDB(arr);
 		});
 
 		// if (Notification.permission !== "granted") {
@@ -649,28 +659,50 @@ function Book({ logo }) {
 									))}
 								</select>
 							</div>
-							<div className="tw-mb-[20px]">
+							<div className="tw-mb-[20px] tw-relative">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs tw-mb-1">
 									<span>Time slot</span>
 								</div>
-								<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
-									{timeSlot.map((slot, idx) => (
-										<span
-											onClick={() =>
-												!timeSlotArray?.includes(slot) &&
-												handleSelectTimeSlot(slot)
-											}
-											key={idx}
-											className={`${
-												timeSlotArray?.includes(slot) || isPicked === slot
-													? "tw-border-[0.5px] tw-border-neutral-800 tw-cursor-not-allowed tw-text-neutral-600"
-													: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
-											}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
-										>
-											{slot}
-										</span>
-									))}
-								</div>
+								{selectDate ? (
+									<div>
+										{timeSlotDB.map(
+											(item) =>
+												selectDate
+													.toLowerCase()
+													?.includes(item?.day.toLowerCase()) && (
+													<div key={item.id}>
+														<p className="tw-text-xs tw-absolute tw-top-0 tw-left-16 tw-text-white">
+															{item?.day}
+														</p>
+														<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
+															{item?.time.map((slot, idx) => (
+																<span
+																	onClick={() =>
+																		!timeSlotArray?.includes(slot) &&
+																		handleSelectTimeSlot(slot)
+																	}
+																	key={idx}
+																	className={`${
+																		timeSlotArray?.includes(slot) ||
+																		isPicked === slot ||
+																		slot.includes("-block")
+																			? "tw-cursor-not-allowed tw-text-neutral-600"
+																			: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
+																	}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
+																>
+																	{slot.split("-")[0]}
+																</span>
+															))}
+														</div>
+													</div>
+												)
+										)}
+									</div>
+								) : (
+									<span className="tw-text-[10px] tw-font-thin tw-text-neutral-500">
+										Select date to display daily time slot...
+									</span>
+								)}
 							</div>
 							{REACT_APP_BOOKLIMIT - dailyMax < 2 && (
 								<div className="tw-text-red-300 tw-font-thin tw-text-[11px] tw-bg-neutral-800 tw-p-2 tw-rounded-lg">

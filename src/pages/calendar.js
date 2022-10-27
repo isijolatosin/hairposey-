@@ -13,7 +13,6 @@ import {
 	REACT_APP_CANCELED,
 	REACT_APP_SITE_URL,
 	REACT_APP_STATUS,
-	timeSlot,
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
@@ -50,11 +49,13 @@ const CalendarPage = () => {
 	const [error, setError] = React.useState(false);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const [calendarList, setCalendarList] = React.useState([]);
+	const [timeSlotDB, setTimeSlotsDB] = React.useState([]);
 	const [showProgress, setShowProgress] = React.useState(false);
 	const [confirmDel, setConfirmDel] = React.useState(false);
 	const [dailyMax, setDailyMax] = React.useState(0);
 	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
 	const [_timeSlot, setTimeSlot] = React.useState("");
+	const [isPicked, setIsPicked] = React.useState("");
 	const [picked, setPicked] = React.useState("");
 	const status = REACT_APP_STATUS;
 
@@ -66,6 +67,20 @@ const CalendarPage = () => {
 			});
 			setCalendarList(arr);
 		});
+
+		db.collection("timeSlot").onSnapshot((snapshot) => {
+			const arr = [];
+			snapshot.docs.map((doc) => {
+				const day = doc.data().day;
+				const time = doc.data().time;
+				const order = doc.data().order;
+				arr.push({ id: doc.id, day: day, time: time, order: order });
+			});
+			arr.sort(function (a, b) {
+				return a.order - b.order;
+			});
+			setTimeSlotsDB(arr);
+		});
 	}, []);
 
 	React.useEffect(() => {
@@ -74,8 +89,44 @@ const CalendarPage = () => {
 		}
 	}, [showProgress]);
 
+	const unBlockSlot = (slot, id, idx) => {
+		db.collection("timeSlot").onSnapshot((snapshot) => {
+			const res = snapshot.docs
+				.map((doc) => {
+					if (doc.id === id) {
+						return {
+							id: doc.id,
+							data: doc.data(),
+						};
+					}
+				})
+				.filter((x) => x);
+			const time = res?.[0]?.data?.time;
+			time[idx] = slot.split("-")[0];
+			db.collection("timeSlot").doc(id).set({ time: time }, { merge: true });
+		});
+	};
+	const blockSlot = (slot, id, idx) => {
+		db.collection("timeSlot").onSnapshot((snapshot) => {
+			const res = snapshot.docs
+				.map((doc) => {
+					if (doc.id === id) {
+						return {
+							id: doc.id,
+							data: doc.data(),
+						};
+					}
+				})
+				.filter((x) => x);
+			const time = res?.[0]?.data?.time;
+			time[idx] = `${slot}-block`;
+			db.collection("timeSlot").doc(id).set({ time: time }, { merge: true });
+		});
+	};
+
 	const handleSelectTimeSlot = (t) => {
 		setTimeSlot(t);
+		setIsPicked(t);
 	};
 
 	const handleSelect = (date) => {
@@ -106,7 +157,7 @@ const CalendarPage = () => {
 				if (
 					maxDailyBookingHour < REACT_APP_BOOKLIMIT &&
 					REACT_APP_BOOKLIMIT - maxDailyBookingHour >= 1 &&
-					timeSlotArray?.length < timeSlot?.length
+					timeSlotArray?.length < timeSlotDB?.length
 				) {
 					setSelectDate(date.toDateString());
 					setDailyMax(maxDailyBookingHour);
@@ -263,7 +314,7 @@ const CalendarPage = () => {
 				<div className="tw-relative tw-w-full md:tw-w-[80%] lg:tw-w-[70%] 2xl:tw-w-[60%] tw-mx-auto">
 					{user?.email === REACT_APP_AUTHORIZED_ID_ONE ||
 					user?.email === REACT_APP_AUTHORIZED_ID_TWO ? (
-						<div>
+						<div className="tw-w-[95%] tw-mx-auto md:tw-w-full">
 							<Link to="/">
 								<RiHome5Fill className="tw-bg-white tw-absolute -tw-top-8 tw-left-10 md:tw-left-0 tw-shadow-lg tw-w-[40px] tw-h-[40px] tw-text-pink-900 tw-rounded-full tw-p-2 md:hover:tw-bg-pink-900 md:hover:tw-text-white hover:tw-w-[35px] hover:tw-p-4 hover:tw-h-[35px] tw-ease-in tw-duration-300" />
 							</Link>
@@ -307,7 +358,7 @@ const CalendarPage = () => {
 											</div>
 										</div>
 									)}
-									<div className="tw-w-[85%] md:tw-w-full tw-mx-auto">
+									<div className="">
 										<label className="bookLabel">
 											<input
 												type="text"
@@ -338,7 +389,7 @@ const CalendarPage = () => {
 											handleSubmit();
 										}
 									}}
-									className="tw-w-[85%] md:tw-w-full tw-mx-auto lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]"
+									className="lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]"
 								>
 									<div className="tw-mb-[10px]">
 										<div className="tw-text-neutral-900 tw-font-light tw-text-[10px] tw-pl-3 tw-bg-neutral-200 tw-py-[2px]">
@@ -397,28 +448,51 @@ const CalendarPage = () => {
 											))}
 										</select>
 									</div>
-									<div>
+									<div className="tw-relative">
 										<div className="tw-text-neutral-500 tw-font-light tw-text-xs tw-mb-1">
-											<span>Time slot</span>
+											<span>Time slot -</span>
 										</div>
-										<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
-											{timeSlot.map((slot, idx) => (
-												<span
-													onClick={() =>
-														!timeSlotArray?.includes(slot) &&
-														handleSelectTimeSlot(slot)
-													}
-													key={idx}
-													className={`${
-														timeSlotArray?.includes(slot)
-															? "tw-border-[0.5px] tw-border-neutral-200 tw-cursor-not-allowed tw-text-neutral-200"
-															: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
-													}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
-												>
-													{slot}
-												</span>
-											))}
-										</div>
+										{selectDate ? (
+											<div>
+												{timeSlotDB.map(
+													(item) =>
+														selectDate
+															.toLowerCase()
+															?.includes(item?.day.toLowerCase()) && (
+															<div key={item.id}>
+																<p className="tw-text-xs tw-absolute tw-top-0 tw-left-16 tw-text-neutral-500">
+																	{item?.day}
+																</p>
+																<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
+																	{item?.time.map((slot, idx) => (
+																		<span
+																			onClick={() =>
+																				!timeSlotArray?.includes(slot) &&
+																				!slot.includes("-block") &&
+																				handleSelectTimeSlot(slot)
+																			}
+																			key={idx}
+																			className={`${
+																				timeSlotArray?.includes(slot) ||
+																				isPicked === slot ||
+																				slot.includes("-block")
+																					? "tw-cursor-not-allowed tw-text-neutral-200"
+																					: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
+																			}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
+																		>
+																			{slot.split("-")[0]}
+																		</span>
+																	))}
+																</div>
+															</div>
+														)
+												)}
+											</div>
+										) : (
+											<span className="tw-text-[10px] tw-font-thin tw-text-neutral-500">
+												Select date to display daily time slot...
+											</span>
+										)}
 									</div>
 									{REACT_APP_BOOKLIMIT - dailyMax < 2 && (
 										<div className="tw-text-red-300 tw-font-thin tw-text-[11px] tw-bg-neutral-800 tw-p-2 tw-rounded-lg">
@@ -451,11 +525,11 @@ const CalendarPage = () => {
 								</form>
 							</div>
 
-							<div className="tw-w-full tw-grid md:tw-grid-cols-2 tw-gap-3 tw-border-t-[1px] tw-pt-5">
+							<div className="tw-grid md:tw-grid-cols-2 tw-gap-3 tw-border-t-[1px] tw-pt-5">
 								{calendarList.length ? (
 									<>
 										{calendarList.map((list) => (
-											<div>
+											<div key={list.id}>
 												<div
 													className={`tw-mb-[-10] tw-w-[100%] tw-mx-auto tw-flex tw-items-center ${
 														showProgress && confirmDel && picked === list.id
@@ -465,17 +539,14 @@ const CalendarPage = () => {
 												>
 													<Progressbar value={timeleft} max={100} />
 												</div>
-												<ul
-													key={list.id}
-													className="tw-bg-white tw-p-2 tw-rounded-b-md"
-												>
+												<ul className="tw-bg-white tw-p-2 tw-rounded-b-md">
 													<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
 														{list.data.customer === list.data.email ? (
 															<li className="tw-text-xs tw-text-neutral-600">
 																Customer: {list.data.customer}
 															</li>
 														) : (
-															<div clasName="tw-flex tw-flex-col">
+															<div className="tw-flex tw-flex-col">
 																<li className="tw-text-xs tw-text-neutral-600">{`Customer: ${list.data.customer}`}</li>
 																<li className="tw-text-xs tw-text-neutral-400">{`Email: ${list.data.email}`}</li>
 															</div>
@@ -592,6 +663,67 @@ const CalendarPage = () => {
 										</span>
 									</div>
 								)}
+							</div>
+							<div className=" tw-mt-10 tw-border-t-[0.5px] tw-pt-5">
+								<div className="tw-mb-2 tw-text-pink-600">
+									<p>Days time slot</p>
+								</div>
+								<div className="tw-grid tw-grid-cols-2 tw-gap-2 tw-items-center">
+									{timeSlotDB ? (
+										timeSlotDB.map((slt) => (
+											<div key={slt.id}>
+												<p className="tw-text-xs tw-bg-neutral-400 tw-text-neutral-50 tw-pl-2">
+													{slt?.day}
+												</p>
+												<div className="tw-grid md:tw-grid-cols-2 tw-text-black tw-text-xs tw-gap-2">
+													{slt?.time.map((slot, idx) => (
+														<div
+															onClick={() =>
+																!timeSlotArray?.includes(slot) &&
+																handleSelectTimeSlot(slot)
+															}
+															key={idx}
+															className={`tw-py-3 tw-pl-2 tw-rounded-b-md tw-flex tw-items-center tw-justify-between tw-h-[40px] ${
+																slot?.includes("block")
+																	? "tw-bg-neutral-300 tw-text-neutral-400 tw-font-thin"
+																	: "tw-bg-neutral-100 "
+															}`}
+														>
+															<span className="tw-flex-[0.7]">
+																{slot.split("-")[0]}
+															</span>
+
+															{slot?.includes("block") ? (
+																<div
+																	onClick={() => unBlockSlot(slot, slt.id, idx)}
+																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer"
+																>
+																	<span
+																		size={20}
+																		className=" tw-text-green-800"
+																	>
+																		unblock
+																	</span>
+																</div>
+															) : (
+																<div
+																	onClick={() => blockSlot(slot, slt.id, idx)}
+																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer"
+																>
+																	<span size={18} className="tw-text-red-800">
+																		block
+																	</span>
+																</div>
+															)}
+														</div>
+													))}
+												</div>
+											</div>
+										))
+									) : (
+										<span>Loading...</span>
+									)}
+								</div>
 							</div>
 						</div>
 					) : (

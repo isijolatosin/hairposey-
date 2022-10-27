@@ -63,15 +63,6 @@ export const Policy = [
 	},
 ];
 
-export const timeSlot = [
-	"11:00am",
-	"12:30pm",
-	"2:00pm",
-	"3:30pm",
-	"5:00pm",
-	"6:00pm",
-];
-
 export const information = [
 	{
 		id: 1,
