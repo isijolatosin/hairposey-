@@ -528,7 +528,7 @@ function Book({ logo }) {
 												: "tw-opacity-0"
 										}
 									>
-										<span>BOOKINGS ARE ALLOWED FOR THIS DAY</span>
+										<span>BOOKINGS ARE NOT ALLOWED FOR THIS DAY</span>
 									</div>
 								) : (
 									<div className="tw-mt-[-12px]">
