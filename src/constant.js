@@ -59,7 +59,7 @@ export const Policy = [
 	},
 	{
 		id: 6,
-		policy: "For Last min Booking there will be a extra charge of $60",
+		policy: "For Last min Booking there will be an extra charge of $60",
 	},
 ];
 
