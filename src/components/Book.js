@@ -157,8 +157,13 @@ function Book({ logo }) {
 				const filterBydate = results?.filter(
 					(booking) => booking?.data.date === date.toDateString()
 				);
-
-				const timeSlotArr = filterBydate?.map((time) => time?.data?.timeSlot);
+				const timeSlotArr = filterBydate?.map((time) => {
+					if (time?.data?.timeSlot.includes("-block")) {
+						return time?.data?.timeSlot.split("-")[0];
+					} else {
+						return time?.data?.timeSlot;
+					}
+				});
 				setTimeSlotArray(timeSlotArr);
 
 				let maxDailyBookingHour = 0;
@@ -423,8 +428,7 @@ function Book({ logo }) {
 						href={`${process.env.REACT_APP_GOOGLESEARCH + location}`}
 						target="_blank"
 						rel="noreferrer"
-						className="tw-flex-col tw-text-neutral-400 tw-text-xs tw-font-light tw-flex tw-items-center tw-justify-center tw-mb-7 hover:tw-text-neutral-600 tw-ease tw-duration-300 "
-					>
+						className="tw-flex-col tw-text-neutral-400 tw-text-xs tw-font-light tw-flex tw-items-center tw-justify-center tw-mb-7 hover:tw-text-neutral-600 tw-ease tw-duration-300 ">
 						<MdLocationPin size={35} className="tw-text-yellow-500 tw-mb-2" />
 						<span className="navStyleChildWhite">
 							<span className="tw-text-green-500">Currently</span>, we are in{" "}
@@ -471,13 +475,11 @@ function Book({ logo }) {
 														? { visibility: "hidden" }
 														: null
 												}
-												onClick={decreaseMonth}
-											>
+												onClick={decreaseMonth}>
 												<span
 													className={
 														"react-datepicker__navigation-icon react-datepicker__navigation-icon--previous"
-													}
-												>
+													}>
 													{"<"}
 												</span>
 											</button>
@@ -497,13 +499,11 @@ function Book({ logo }) {
 														? { visibility: "hidden" }
 														: null
 												}
-												onClick={increaseMonth}
-											>
+												onClick={increaseMonth}>
 												<span
 													className={
 														"react-datepicker__navigation-icon react-datepicker__navigation-icon--next"
-													}
-												>
+													}>
 													{">"}
 												</span>
 											</button>
@@ -526,8 +526,7 @@ function Book({ logo }) {
 											authDate
 												? "tw-w-full tw-mt-[-12px] tw-text-[10px] tw-text-center tw-text-red-700 tw-bg-red-200 tw-mb-0 tw-px-[10px] tw-pb-[5px] tw-pt-[12px] tw-opacity-1 tw-ease-in tw-duration-300"
 												: "tw-opacity-0"
-										}
-									>
+										}>
 										<span>BOOKINGS ARE NOT ALLOWED FOR THIS DAY</span>
 									</div>
 								) : (
@@ -537,8 +536,7 @@ function Book({ logo }) {
 												<div
 													className={
 														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-b-[2px] tw-border-pink-700 tw-mb-0 tw-pb-[5px] tw-pt-[10px] tw-opacity-1 tw-ease-in tw-duration-300"
-													}
-												>
+													}>
 													<span>Date selected {selectDate}</span>
 												</div>
 											</div>
@@ -548,8 +546,7 @@ function Book({ logo }) {
 												<div
 													className={
 														"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-													}
-												>
+													}>
 													<span>We are booked for this date</span>
 												</div>
 											</div>
@@ -597,8 +594,7 @@ function Book({ logo }) {
 							}}
 							className={`tw-w-[90%] tw-mx-auto tw-pt-10 md:tw-pt-0 lg:tw-w-[500px] xl:tw-w-[350px] 2xl:tw-w-[450px] ${
 								user ? "tw-mt-[-300px] lg:tw-mt-[-25px]" : "tw-mt-[-25px]"
-							} `}
-						>
+							} `}>
 							<div className="tw-mb-[20px] lg:tw-mt-[-12px]">
 								<div className="tw-text-neutral-50 tw-font-light tw-text-xs">
 									<label>Category</label>
@@ -608,8 +604,7 @@ function Book({ logo }) {
 									onChange={handleOnChange}
 									id="category"
 									value={bookingData.category}
-									name="category"
-								>
+									name="category">
 									<option value="" disabled selected>
 										Select category
 									</option>
@@ -627,8 +622,7 @@ function Book({ logo }) {
 									onChange={handleOnChange}
 									id="Service"
 									value={bookingData.service}
-									name="service"
-								>
+									name="service">
 									<option value="" disabled selected>
 										Select service
 									</option>
@@ -646,8 +640,7 @@ function Book({ logo }) {
 									onChange={handleOnChange}
 									id="addOnServices"
 									value={bookingData.addOnServices}
-									name="addOnServices"
-								>
+									name="addOnServices">
 									<option value="" disabled selected>
 										Select add-on
 									</option>
@@ -685,8 +678,7 @@ function Book({ logo }) {
 																		slot.includes("-block")
 																			? "tw-cursor-not-allowed tw-text-neutral-600"
 																			: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
-																	}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
-																>
+																	}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}>
 																	{slot.split("-")[0]}
 																</span>
 															))}
@@ -749,8 +741,7 @@ function Book({ logo }) {
 									: "tw-hidden tw-ease-in tw-duration-300"
 							}
 							id="payment-form"
-							onSubmit={handleSubmit}
-						>
+							onSubmit={handleSubmit}>
 							{ValidateEmail(user?.email || userEmail) && (
 								<div className="tw-bg-neutral-50 tw-pb-5 tw-rounded-lg">
 									<div className="tw-flex tw-items-center tw-justify-between tw-ml-4">
@@ -794,15 +785,13 @@ function Book({ logo }) {
 									<button
 										className="tw-bg-neutral-900 tw-w-[95%] tw-flex tw-mx-auto tw-justify-center tw-py-2 tw-rounded-b-md"
 										disabled={processing || disabled || succeeded}
-										id="submit"
-									>
+										id="submit">
 										<span
 											className={
 												processing || disabled || succeeded
 													? "tw-text-neutral-50 tw-font-light"
 													: "tw-text-orange-500 tw-font-light"
-											}
-										>
+											}>
 											{processing ? (
 												<div className="spinner" id="spinner"></div>
 											) : (
@@ -816,8 +805,7 @@ function Book({ logo }) {
 								<div
 									className="card-error tw-flex tw-items-center tw-justify-center tw-text-xs tw-text-red-700 "
 									// className="tw-flex tw-items-center tw-text-red-700 tw-text-xs tw-justify-center tw-mt-5"
-									role="alert"
-								>
+									role="alert">
 									<GoAlert className="tw-mr-2" />
 									{_error}
 								</div>
@@ -834,8 +822,7 @@ function Book({ logo }) {
 													className="tw-text-blue-600"
 													href={`https://dashboard.stripe.com/test/payments`}
 													target="_blank"
-													rel="noreferrer"
-												>
+													rel="noreferrer">
 													{" "}
 													Stripe Dashboard.
 												</a>

@@ -337,8 +337,7 @@ const CalendarPage = () => {
 											<div
 												className={
 													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}
-											>
+												}>
 												<span>
 													{selectDate
 														? `Date selected ${selectDate}`
@@ -352,8 +351,7 @@ const CalendarPage = () => {
 											<div
 												className={
 													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}
-											>
+												}>
 												<span>We are booked for this date</span>
 											</div>
 										</div>
@@ -389,8 +387,7 @@ const CalendarPage = () => {
 											handleSubmit();
 										}
 									}}
-									className="lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]"
-								>
+									className="lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]">
 									<div className="tw-mb-[10px]">
 										<div className="tw-text-neutral-900 tw-font-light tw-text-[10px] tw-pl-3 tw-bg-neutral-200 tw-py-[2px]">
 											<label>Category</label>
@@ -400,8 +397,7 @@ const CalendarPage = () => {
 											onChange={handleOnChange}
 											id="category"
 											value={bookingData.category}
-											name="category"
-										>
+											name="category">
 											<option value="" disabled selected>
 												Select category
 											</option>
@@ -419,8 +415,7 @@ const CalendarPage = () => {
 											onChange={handleOnChange}
 											id="Service"
 											value={bookingData.service}
-											name="service"
-										>
+											name="service">
 											<option value="" disabled selected>
 												Select service
 											</option>
@@ -438,8 +433,7 @@ const CalendarPage = () => {
 											onChange={handleOnChange}
 											id="addOnServices"
 											value={bookingData.addOnServices}
-											name="addOnServices"
-										>
+											name="addOnServices">
 											<option value="" disabled selected>
 												Select add-on
 											</option>
@@ -478,8 +472,7 @@ const CalendarPage = () => {
 																				slot.includes("-block")
 																					? "tw-cursor-not-allowed tw-text-neutral-200"
 																					: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
-																			}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}
-																		>
+																			}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}>
 																			{slot.split("-")[0]}
 																		</span>
 																	))}
@@ -535,8 +528,7 @@ const CalendarPage = () => {
 														showProgress && confirmDel && picked === list.id
 															? "tw-opacity-[1]"
 															: "tw-opacity-[0]"
-													} tw-ease-in tw-duration-300`}
-												>
+													} tw-ease-in tw-duration-300`}>
 													<Progressbar value={timeleft} max={100} />
 												</div>
 												<ul className="tw-bg-white tw-h-[100px] tw-overflow-auto tw-p-2 tw-rounded-b-md general-scrollbar-hide">
@@ -566,8 +558,7 @@ const CalendarPage = () => {
 																		<button
 																			disabled={showProgress}
 																			onClick={() => handleDelete(list.id)}
-																			className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1"
-																		>
+																			className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
 																			<MdDeleteForever
 																				size={25}
 																				color={
@@ -582,8 +573,7 @@ const CalendarPage = () => {
 																				setPicked(list.id);
 																				setConfirmDel(true);
 																			}}
-																			className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative"
-																		>
+																			className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
 																			<FaTrash
 																				size={19}
 																				color={
@@ -602,8 +592,7 @@ const CalendarPage = () => {
 																	confirmDel && picked === list.id
 																		? "tw-opacity-1"
 																		: "tw-opacity-0"
-																} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}
-															>
+																} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}>
 																<p className="tw- tw-text-[10px]">
 																	Are you sure ?
 																</p>
@@ -625,7 +614,7 @@ const CalendarPage = () => {
 															Add-on Service: {list.data.addOnServices}
 														</li>
 														<li className="tw-font-thin tw-border-b-[0.5px]">
-															Time Slot: {list.data.timeSlot}
+															Time Slot: {list.data.timeSlot.split("-")[0]}
 														</li>
 														<li className="tw-font-thin tw-border-b-[0.5px]">
 															Balance: ${list.data.balance}
@@ -645,8 +634,7 @@ const CalendarPage = () => {
 																	new Date().getTime() >
 																		new Date(list.data.date).getTime() &&
 																	"tw-text-blue-800 tw-font-semibold"
-																}`}
-															>
+																}`}>
 																{new Date().getTime() >
 																new Date(list.data.date).getTime()
 																	? "Appointment is due"
@@ -689,8 +677,7 @@ const CalendarPage = () => {
 																slot?.includes("block")
 																	? "tw-bg-neutral-300 tw-text-neutral-400 tw-font-thin"
 																	: "tw-bg-neutral-100 "
-															}`}
-														>
+															}`}>
 															<span className="tw-flex-[0.7]">
 																{slot.split("-")[0]}
 															</span>
@@ -698,20 +685,17 @@ const CalendarPage = () => {
 															{slot?.includes("block") ? (
 																<div
 																	onClick={() => unBlockSlot(slot, slt.id, idx)}
-																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer"
-																>
+																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer">
 																	<span
 																		size={20}
-																		className=" tw-text-green-800"
-																	>
+																		className=" tw-text-green-800">
 																		unblock
 																	</span>
 																</div>
 															) : (
 																<div
 																	onClick={() => blockSlot(slot, slt.id, idx)}
-																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer"
-																>
+																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer">
 																	<span size={18} className="tw-text-red-800">
 																		block
 																	</span>
