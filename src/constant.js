@@ -128,7 +128,7 @@ export const information = [
 			{
 				id: "12",
 				desc: "Sleek Ponytails starting at $90 *Add w/ Shampoo $30",
-				price: 30,
+				price: 90,
 				duration: 2,
 			},
 			{
