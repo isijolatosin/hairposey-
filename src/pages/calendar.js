@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
 import { FaTrash } from "react-icons/fa";
+import { GoAlert } from "react-icons/go";
 import { RiHome5Fill } from "react-icons/ri";
 import { MdDeleteForever, MdKeyboardBackspace } from "react-icons/md";
 import {
@@ -347,7 +348,7 @@ const CalendarPage = () => {
 							<div className="tw-w-full tw-text-center">
 								<p className="font_cursive tw-text-4xl">My Calendar</p>
 							</div>
-							<div className="tw-my-10 lg:tw-mt-0 lg:tw-mb-20 tw-w-full tw-flex tw-flex-col lg:tw-flex-row tw-justify-center">
+							<div className="tw-mt-10 lg:tw-mt-0 lg:tw-mb-10 tw-w-full tw-flex tw-flex-col lg:tw-flex-row tw-justify-center">
 								<div>
 									<div className="tw-w-full tw-flex tw-justify-center">
 										<Calendar
@@ -413,7 +414,7 @@ const CalendarPage = () => {
 											handleSubmit();
 										}
 									}}
-									className="lg:tw-ml-10 tw-pt-10 md:tw-pt-0 tw-mt-[10px]">
+									className="lg:tw-ml-10 tw-pt-2 md:tw-pt-0 tw-mt-[10px]">
 									<div className="tw-mb-[10px]">
 										<div className="tw-text-neutral-900 tw-font-light tw-text-[10px] tw-pl-3 tw-bg-neutral-200 tw-py-[2px]">
 											<label>Category</label>
@@ -561,7 +562,7 @@ const CalendarPage = () => {
 													<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
 														{list.data.customer === list.data.email ? (
 															<li className="tw-text-xs tw-text-neutral-600">
-																Customer: {list.data.customer}
+																Cst: {list.data.customer}
 															</li>
 														) : (
 															<div className="tw-flex tw-flex-col">
@@ -681,7 +682,7 @@ const CalendarPage = () => {
 								)}
 							</div>
 							<div className=" tw-mt-10 tw-border-t-[0.5px] tw-pt-5">
-								<div className="tw-max-w-full md:tw-max-w-[60%] lg:tw-max-w-[50%] tw-mb-5">
+								<div className="tw-max-w-full md:tw-max-w-[60%] lg:tw-max-w-[50%] tw-pb-10 tw-mb-5 tw-border-b-[1px]">
 									<div className="tw-mb-2 tw-text-pink-600">
 										<p>Date Blocker</p>
 									</div>
@@ -695,15 +696,17 @@ const CalendarPage = () => {
 											/>
 										</div>
 										{blockDate && (
-											<div className="tw-w-full tw-mx-auto tw-flex tw-flex-row tw-items-center tw-text-xs tw-text-neutral-900 tw-uppercase tw-mb-0 tw-pb-[5px] tw-pt-[10px]">
-												<div
-													className={"tw-flex-[0.8] tw-w-full tw-text-center"}>
+											<div className="tw-w-full tw-mx-auto tw-flex tw-flex-row tw-items-center tw-text-[10px] tw-text-red-800 tw-uppercase tw-mb-0 tw-pb-[5px] tw-pt-[10px]">
+												<div className="tw-flex-[0.9] tw-w-full tw-text-center tw-flex tw-flex-row tw-items-center">
+													<div className="tw-mr-2 tw-text-red-800">
+														<GoAlert />
+													</div>
 													<span>
 														{blockDate.toDateString()}. You have chosen to block
 														this date
 													</span>
 												</div>
-												<div className="tw-flex-[0.2] tw-text-center">
+												<div className="tw-flex-[0.1] tw-px-2 tw-text-center tw-border-[1px] tw-border-red-800 tw-rounded-sm">
 													<button
 														onClick={submitBlockDate}
 														className="tw-uppercase tw-text-red-800">

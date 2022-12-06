@@ -59,13 +59,13 @@ function DatePickerComp({ handleSelect, date, excludeDates, isLight }) {
 			calendarClassName="tw-bg-neutral-200 tw-w-[100%]"
 			className={`${
 				isLight
-					? `tw-bg-neutral-200 tw-border-[0] focus:tw-ring-0 ${
+					? `tw-bg-neutral-200 tw-border-[0] focus:tw-ring-0 tw-w-[50%] ${
 							date ? "tw-text-white" : "tw-text-neutral-700"
 					  }`
 					: `tw-bg-neutral-800 ${
 							date ? "tw-text-neutral-700" : "tw-text-white"
 					  }`
-			} tw-font-thin`}
+			} tw-font-thin tw-text-sm`}
 		/>
 	);
 }
