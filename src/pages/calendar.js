@@ -3,8 +3,12 @@ import React, { useContext } from "react";
 import { Calendar } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
+import { FaTrash } from "react-icons/fa";
+import { RiHome5Fill } from "react-icons/ri";
+import { MdDeleteForever, MdKeyboardBackspace } from "react-icons/md";
 import {
 	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
@@ -16,13 +20,10 @@ import {
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
-import { RiHome5Fill } from "react-icons/ri";
-import { Link } from "react-router-dom";
 import { UserContext } from "../context/user-context";
-import { MdDeleteForever, MdKeyboardBackspace } from "react-icons/md";
 import Progressbar from "../components/shared/Progressbar";
+import DatePickerComp from "../components/shared/DatePickerComp";
 import { triggerProgress } from "../utils/triggerProgress";
-import { FaTrash } from "react-icons/fa";
 
 const categories = [];
 const services = [];
@@ -41,6 +42,7 @@ information.map((data) => {
 const CalendarPage = () => {
 	const dateToday = new Date();
 	const [selectDate, setSelectDate] = React.useState(null);
+	const [blockDate, setBlockDate] = React.useState(null);
 	const [bookLimit, setBookLimit] = React.useState(false);
 	const [timeleft, setTimeleft] = React.useState(0);
 	const { user } = useContext(UserContext);
@@ -57,6 +59,8 @@ const CalendarPage = () => {
 	const [_timeSlot, setTimeSlot] = React.useState("");
 	const [isPicked, setIsPicked] = React.useState("");
 	const [picked, setPicked] = React.useState("");
+	const [blockedDatesDB, setBlockedDatesDB] = React.useState([]);
+	const [blockedDatesList, setBlockedDatesList] = React.useState([]);
 	const status = REACT_APP_STATUS;
 
 	React.useEffect(() => {
@@ -81,8 +85,21 @@ const CalendarPage = () => {
 			});
 			setTimeSlotsDB(arr);
 		});
-	}, []);
 
+		db.collection("block-dates").onSnapshot((snapshot) => {
+			const array1 = [];
+			const array2 = [];
+			snapshot.docs.map((doc) => {
+				array1.push(new Date(doc.data().blockDate.seconds * 1000));
+				array2.push({
+					id: doc.id,
+					day: new Date(doc.data().blockDate.seconds * 1000),
+				});
+			});
+			setBlockedDatesDB(array1);
+			setBlockedDatesList(array2);
+		});
+	}, []);
 	React.useEffect(() => {
 		if (showProgress) {
 			triggerProgress(setTimeleft);
@@ -122,6 +139,16 @@ const CalendarPage = () => {
 			time[idx] = `${slot}-block`;
 			db.collection("timeSlot").doc(id).set({ time: time }, { merge: true });
 		});
+	};
+
+	const submitBlockDate = () => {
+		// add block date to db
+		db.collection("block-dates").add({ blockDate });
+		setBlockDate("");
+	};
+	const submitUnblockDate = (id) => {
+		// remove block date from db
+		db.collection("block-dates").doc(id).delete();
 	};
 
 	const handleSelectTimeSlot = (t) => {
@@ -274,7 +301,7 @@ const CalendarPage = () => {
 				sender: "Hairposey",
 				total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
 				balance: bookingBalance,
-				hour: serviceDuration,
+				duration: serviceDuration,
 				status: status,
 				timeSlot: _timeSlot,
 			})
@@ -284,7 +311,6 @@ const CalendarPage = () => {
 			.catch((error) => console.log("Error" + error.message));
 
 		setUserEmail("");
-		setSelectDate(false);
 		setBookLimit(false);
 		setSelectDate("");
 		setBookingData({ addOnServices: "", category: "", service: "" });
@@ -655,8 +681,59 @@ const CalendarPage = () => {
 								)}
 							</div>
 							<div className=" tw-mt-10 tw-border-t-[0.5px] tw-pt-5">
+								<div className="tw-max-w-full md:tw-max-w-[60%] lg:tw-max-w-[50%] tw-mb-5">
+									<div className="tw-mb-2 tw-text-pink-600">
+										<p>Date Blocker</p>
+									</div>
+									<div>
+										<div className="tw-bg-neutral-200">
+											<DatePickerComp
+												excludeDates={blockedDatesDB && blockedDatesDB}
+												handleSelect={(date) => setBlockDate(date)}
+												date={blockDate}
+												isLight={true}
+											/>
+										</div>
+										{blockDate && (
+											<div className="tw-w-full tw-mx-auto tw-flex tw-flex-row tw-items-center tw-text-xs tw-text-neutral-900 tw-uppercase tw-mb-0 tw-pb-[5px] tw-pt-[10px]">
+												<div
+													className={"tw-flex-[0.8] tw-w-full tw-text-center"}>
+													<span>
+														{blockDate.toDateString()}. You have chosen to
+														blocked date
+													</span>
+												</div>
+												<div className="tw-flex-[0.2] tw-text-center">
+													<button
+														onClick={submitBlockDate}
+														className="tw-uppercase tw-text-red-800">
+														Block
+													</button>
+												</div>
+											</div>
+										)}
+									</div>
+									{blockedDatesList.length > 0 && (
+										<div className="tw-grid tw-grid-cols-2 tw-gap-1">
+											{blockedDatesList.map((block) => (
+												<ul
+													key={block.id}
+													className="tw-flex tw-items-center tw- tw-text-xs tw-text-red-700 tw-font-thin tw-p-2 tw-pr-0 tw-rounded-b-md tw-bg-neutral-100 tw-h-[30px]">
+													<li className="tw-flex-[0.7]">
+														{block.day.toDateString()}
+													</li>
+													<button
+														onClick={() => submitUnblockDate(block.id)}
+														className="tw-rounded-br-md tw-bg-neutral-200 tw-text-green-800 tw-h-[30px] tw-flex-[0.3]">
+														unblock
+													</button>
+												</ul>
+											))}
+										</div>
+									)}
+								</div>
 								<div className="tw-mb-2 tw-text-pink-600">
-									<p>Days time slot</p>
+									<p>Time slot blocker</p>
 								</div>
 								<div className="tw-grid tw-grid-cols-2 tw-gap-2 tw-items-center">
 									{timeSlotDB ? (

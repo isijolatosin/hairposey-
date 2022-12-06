@@ -2,10 +2,6 @@
 import React, { useContext } from "react";
 import emailjs from "emailjs-com";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-// import "react-date-range/dist/styles.css"; // main style file
-// import "react-date-range/dist/theme/default.css"; // theme css file
-// import { Calendar } from "react-date-range";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Button from "./shared/Button";
 import { UserContext } from "../context/user-context";
@@ -25,6 +21,7 @@ import {
 import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
+import DatePickerComp from "./shared/DatePickerComp";
 
 const categories = [];
 const services = [];
@@ -69,6 +66,7 @@ function Book({ logo }) {
 	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
 	const orderNo = `Hairposey${Math.random().toString(36).slice(2)}`;
 	const [timeSlotDB, setTimeSlotsDB] = React.useState([]);
+	const [blockedDatesDB, setBlockedDatesDB] = React.useState([]);
 	const isReload = true;
 	const status = REACT_APP_STATUS;
 	React.useEffect(() => {
@@ -87,6 +85,14 @@ function Book({ logo }) {
 				arr.push({ id: doc.id, day: day, time: time });
 			});
 			setTimeSlotsDB(arr);
+		});
+
+		db.collection("block-dates").onSnapshot((snapshot) => {
+			const array = [];
+			snapshot.docs.map((doc) => {
+				array.push(new Date(doc.data().blockDate.seconds * 1000));
+			});
+			setBlockedDatesDB(array);
 		});
 
 		// if (Notification.permission !== "granted") {
@@ -140,6 +146,9 @@ function Book({ logo }) {
 		}
 		if (authDate) {
 			setAuthDate(false);
+		}
+		if (error) {
+			setError(false);
 		}
 		if (selectDate) {
 			setSelectDate(null);
@@ -444,78 +453,11 @@ function Book({ logo }) {
 					<div className="tw-flex tw-flex-col tw-items-center tw-mx-auto tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
 						<div className="tw-h-[350px]">
 							<div className="xl:tw-ml-0">
-								{/* <Calendar
-									color="rgb(157 23 77)"
-									date={new Date()}
-									onChange={handleSelect}
-									dateDisplayFormat="yyyy-MM-dd"
-									showSelectionPreview={true}
-								/> */}
-								<DatePicker
-									minDate={new Date()}
-									filterDate={(date) =>
-										date.getDay() !== 1 && date.getDay() !== 0
-									}
-									isClearable
-									clearButtonTitle="clear"
-									renderCustomHeader={({
-										monthDate,
-										customHeaderCount,
-										decreaseMonth,
-										increaseMonth,
-									}) => (
-										<div>
-											<button
-												aria-label="Previous Month"
-												className={
-													"react-datepicker__navigation react-datepicker__navigation--previous"
-												}
-												style={
-													customHeaderCount === 1
-														? { visibility: "hidden" }
-														: null
-												}
-												onClick={decreaseMonth}>
-												<span
-													className={
-														"react-datepicker__navigation-icon react-datepicker__navigation-icon--previous"
-													}>
-													{"<"}
-												</span>
-											</button>
-											<span className="react-datepicker__current-month">
-												{monthDate.toLocaleString("en-US", {
-													month: "long",
-													year: "numeric",
-												})}
-											</span>
-											<button
-												aria-label="Next Month"
-												className={
-													"react-datepicker__navigation react-datepicker__navigation--next"
-												}
-												style={
-													customHeaderCount === 1
-														? { visibility: "hidden" }
-														: null
-												}
-												onClick={increaseMonth}>
-												<span
-													className={
-														"react-datepicker__navigation-icon react-datepicker__navigation-icon--next"
-													}>
-													{">"}
-												</span>
-											</button>
-										</div>
-									)}
-									selected={new Date()}
-									onChange={handleSelect}
-									monthsShown={1}
-									calendarClassName="tw-bg-neutral-200 tw-w-[100%]"
-									className={`tw-bg-neutral-800 tw-font-thin ${
-										selectDate ? "tw-text-neutral-700" : "tw-text-white"
-									}`}
+								<DatePickerComp
+									excludeDates={blockedDatesDB && blockedDatesDB}
+									handleSelect={handleSelect}
+									date={selectDate}
+									isLight={true}
 								/>
 							</div>
 
@@ -582,6 +524,7 @@ function Book({ logo }) {
 							onSubmit={(e) => {
 								e.preventDefault();
 								if (
+									authDate ||
 									!bookingData.service ||
 									!bookingData.category ||
 									!bookingData.addOnServices ||
@@ -706,7 +649,7 @@ function Book({ logo }) {
 							<div>
 								{error && (
 									<span className="tw-text-rose-500 tw-text-[14px] tw-w-[100%] tw-mx-auto tw-mb-10">
-										Missing Condential: Date...
+										Missing Credential: Date...
 									</span>
 								)}
 
