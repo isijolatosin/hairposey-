@@ -699,8 +699,8 @@ const CalendarPage = () => {
 												<div
 													className={"tw-flex-[0.8] tw-w-full tw-text-center"}>
 													<span>
-														{blockDate.toDateString()}. You have chosen to
-														blocked date
+														{blockDate.toDateString()}. You have chosen to block
+														this date
 													</span>
 												</div>
 												<div className="tw-flex-[0.2] tw-text-center">
