@@ -13,8 +13,7 @@ function Button(props) {
 			} ${
 				props.isBorder ? "tw-border-white" : "tw-border-pink-900"
 			} hover:tw-text-pink-900 hover:tw-border-pink-900 tw-border-[1px] tw-shadow-lg
-			`}
-		>
+			`}>
 			{props.children}
 		</button>
 	);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/shared/Layout";
@@ -8,6 +8,7 @@ import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
 const Register = () => {
 	const navigate = useNavigate();
+	const inputRef = useRef(null);
 	const [authUser, setAuthUser] = useState({
 		name: "",
 		email: "",
@@ -19,6 +20,7 @@ const Register = () => {
 
 	React.useEffect(() => {
 		setSales(fetchSalesPercentage());
+		inputRef.current.focus();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -84,6 +86,7 @@ const Register = () => {
 						<form onSubmit={handleSubmit}>
 							<div>
 								<input
+									ref={inputRef}
 									type="text"
 									name="name"
 									id="name"
@@ -130,7 +133,12 @@ const Register = () => {
 								{authUser.error ? <p>Error message: {authUser.error}</p> : null}
 							</div>
 							<div className="tw-flex tw-flex-row tw-my-10 tw-justify-center">
-								<Button onClick={handleSubmit} type="submit">
+								<Button
+									onClick={handleSubmit}
+									type="submit"
+									isBlackTxt={true}
+									isSmallTxt={true}
+									isBorder={true}>
 									Create Account
 								</Button>
 							</div>

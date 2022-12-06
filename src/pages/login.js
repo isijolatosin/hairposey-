@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import firebase from "../firebase";
 import Layout from "../components/shared/Layout";
@@ -9,6 +9,7 @@ import { fetchSalesPercentage } from "../utils/salesPercentageNumber";
 
 const Login = () => {
 	const navigate = useNavigate();
+	const inputRef = useRef();
 	const [sales, setSales] = React.useState(null);
 	const [isReset, setIsReset] = React.useState(false);
 	const [authUser, setAuthUser] = useState({
@@ -19,6 +20,7 @@ const Login = () => {
 	const [showpswd, setShowpswd] = useState(false);
 
 	React.useEffect(() => {
+		inputRef.current.focus();
 		setSales(fetchSalesPercentage());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -75,6 +77,7 @@ const Login = () => {
 							<form onSubmit={handleSubmit}>
 								<div>
 									<input
+										ref={inputRef}
 										type="text"
 										name="email"
 										id="email"
@@ -109,7 +112,9 @@ const Login = () => {
 									<Button
 										onClick={handleSubmit}
 										type="submit"
-										isBlackTxt={true}>
+										isBlackTxt={true}
+										isSmallTxt={true}
+										isBorder={true}>
 										Sign In
 									</Button>
 								</div>
