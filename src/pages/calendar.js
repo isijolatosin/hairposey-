@@ -480,7 +480,7 @@ const CalendarPage = () => {
 												selectDate={selectDate}
 												timeSlotArray={timeSlotArray}
 												handleFunc={handleSelectTimeSlot}
-												isPicked
+												isPicked={isPicked}
 											/>
 										) : (
 											<span className="tw-text-[10px] tw-font-thin tw-text-neutral-500">
@@ -525,7 +525,7 @@ const CalendarPage = () => {
 										calendarList={calendarList}
 										showProgress={showProgress}
 										timeleft={timeleft}
-										handleDelete={handleSelect}
+										handleDelete={handleDelete}
 										setPicked={setPicked}
 										setConfirmDel={setConfirmDel}
 										confirmDel={confirmDel}
