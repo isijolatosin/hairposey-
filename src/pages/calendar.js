@@ -6,25 +6,26 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
-import { FaTrash } from "react-icons/fa";
 import { GoAlert } from "react-icons/go";
 import { RiHome5Fill } from "react-icons/ri";
-import { MdDeleteForever, MdKeyboardBackspace } from "react-icons/md";
+import { MdKeyboardBackspace } from "react-icons/md";
 import {
 	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_AUTHORIZED_ID_TWO,
 	REACT_APP_BOOKLIMIT,
-	REACT_APP_CANCELED,
 	REACT_APP_SITE_URL,
 	REACT_APP_STATUS,
 } from "../constant";
 import { db } from "../firebase";
 import Button from "../components/shared/Button";
 import { UserContext } from "../context/user-context";
-import Progressbar from "../components/shared/Progressbar";
 import DatePickerComp from "../components/shared/DatePickerComp";
 import { triggerProgress } from "../utils/triggerProgress";
+import TimeComponent from "../components/calendarPage/TimeComponent";
+import CalendarList from "../components/calendarPage/CalendarList";
+import DayTimeSlotComponent from "../components/calendarPage/DayTimeSlotComponent";
+import { BsFillUnlockFill } from "react-icons/bs";
 
 const categories = [];
 const services = [];
@@ -474,40 +475,13 @@ const CalendarPage = () => {
 											<span>Time slot -</span>
 										</div>
 										{selectDate ? (
-											<div>
-												{timeSlotDB.map(
-													(item) =>
-														selectDate
-															.toLowerCase()
-															?.includes(item?.day.toLowerCase()) && (
-															<div key={item.id}>
-																<p className="tw-text-xs tw-absolute tw-top-0 tw-left-16 tw-text-neutral-500">
-																	{item?.day}
-																</p>
-																<div className="tw-text-black tw-text-xs tw-flex tw-flex-wrap">
-																	{item?.time.map((slot, idx) => (
-																		<span
-																			onClick={() =>
-																				!timeSlotArray?.includes(slot) &&
-																				!slot.includes("-block") &&
-																				handleSelectTimeSlot(slot)
-																			}
-																			key={idx}
-																			className={`${
-																				timeSlotArray?.includes(slot) ||
-																				isPicked === slot ||
-																				slot.includes("-block")
-																					? "tw-cursor-not-allowed tw-text-neutral-200"
-																					: "tw-bg-white  tw-cursor-pointer md:hover:tw-bg-neutral-600 md:hover:tw-text-white "
-																			}  tw-py-1 tw-px-2 tw-rounded-2xl tw-mr-2 tw-mb-2 tw-duration-300 tw-ease-in`}>
-																			{slot.split("-")[0]}
-																		</span>
-																	))}
-																</div>
-															</div>
-														)
-												)}
-											</div>
+											<TimeComponent
+												data={timeSlotDB}
+												selectDate={selectDate}
+												timeSlotArray={timeSlotArray}
+												handleFunc={handleSelectTimeSlot}
+												isPicked
+											/>
 										) : (
 											<span className="tw-text-[10px] tw-font-thin tw-text-neutral-500">
 												Select date to display daily time slot...
@@ -547,132 +521,16 @@ const CalendarPage = () => {
 
 							<div className="tw-grid md:tw-grid-cols-2 tw-gap-3 tw-border-t-[1px] tw-pt-5">
 								{calendarList.length ? (
-									<>
-										{calendarList.map((list) => (
-											<div key={list.id}>
-												<div
-													className={`tw-mb-[-10] tw-w-[100%] tw-mx-auto tw-flex tw-items-center ${
-														showProgress && confirmDel && picked === list.id
-															? "tw-opacity-[1]"
-															: "tw-opacity-[0]"
-													} tw-ease-in tw-duration-300`}>
-													<Progressbar value={timeleft} max={100} />
-												</div>
-												<ul className="tw-bg-white tw-h-[100px] tw-overflow-auto tw-p-2 tw-rounded-b-md general-scrollbar-hide">
-													<div className="tw-flex tw-items-center tw-justify-between tw-border-b-[1px] tw-pb-1 tw-mb-1">
-														{list.data.customer === list.data.email ? (
-															<li className="tw-text-xs tw-text-neutral-600">
-																Cst: {list.data.customer}
-															</li>
-														) : (
-															<div className="tw-flex tw-flex-col">
-																<li className="tw-text-xs tw-text-neutral-600">{`Customer: ${list.data.customer}`}</li>
-																<li className="tw-text-xs tw-text-neutral-400">{`Email: ${list.data.email}`}</li>
-															</div>
-														)}
-														<div className="tw-flex tw-items-center tw-justify-center tw-relative">
-															<li className="tw-text-xs tw-bg-pink-600 tw-py-1 tw-px-3 tw-rounded-full tw-text-white">
-																Duration:{" "}
-																{list.data.duration > 1
-																	? `${list.data.duration} hrs`
-																	: `${list.data.duration} hr`}
-															</li>
-															{(new Date().getTime() >
-																new Date(list.data.date).getTime() ||
-																list.data.status !== REACT_APP_STATUS) && (
-																<>
-																	{confirmDel && picked === list.id ? (
-																		<button
-																			disabled={showProgress}
-																			onClick={() => handleDelete(list.id)}
-																			className=" tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-mb-1">
-																			<MdDeleteForever
-																				size={25}
-																				color={
-																					showProgress ? "grey" : "darkred"
-																				}
-																			/>
-																		</button>
-																	) : (
-																		<button
-																			disabled={showProgress}
-																			onClick={() => {
-																				setPicked(list.id);
-																				setConfirmDel(true);
-																			}}
-																			className="tw-ml-2 tw-border-l-[1px] tw-max-w-[30px] tw-h-[20px] tw-max-h-[20px] tw-pl-1 tw-w-[30px] tw-relative">
-																			<FaTrash
-																				size={19}
-																				color={
-																					showProgress ? "grey" : "lightgrey"
-																				}
-																			/>
-																			<span className="tw-absolute tw-top-1 tw-right-[12px] tw-font-bold tw-text-xs tw-text-white">
-																				?
-																			</span>
-																		</button>
-																	)}
-																</>
-															)}
-															<div
-																className={`${
-																	confirmDel && picked === list.id
-																		? "tw-opacity-1"
-																		: "tw-opacity-0"
-																} tw-ease-in tw-duration-300 tw-absolute -tw-bottom-5 tw-right-0 tw-text-red-600`}>
-																<p className="tw- tw-text-[10px]">
-																	Are you sure ?
-																</p>
-															</div>
-														</div>
-													</div>
-
-													<div className="tw-grid tw-grid-cols-2 tw-text-[11px] tw-gap-x-2 tw-text-neutral-800">
-														<li className="tw-text-pink-800 tw-border-b-[0.5px]">
-															Appointment Date: {list.data.date}
-														</li>
-														<li className="tw-font-thin tw-border-b-[0.5px] tw-leading-3">
-															Service: {list.data.service}
-														</li>
-														<li className="tw-font-thin tw-border-b-[0.5px]">
-															Category: {list.data.category}
-														</li>
-														<li className="tw-font-thin tw-border-b-[0.5px]">
-															Add-on Service: {list.data.addOnServices}
-														</li>
-														<li className="tw-font-thin tw-border-b-[0.5px]">
-															Time Slot: {list.data.timeSlot.split("-")[0]}
-														</li>
-														<li className="tw-font-thin tw-border-b-[0.5px]">
-															Balance: ${list.data.balance}
-														</li>
-														<li className="tw-font-thin tw-border-b-[0.5px]">
-															Status:{" "}
-															<span
-																className={`${
-																	new Date().getTime() <
-																		new Date(list.data.date).getTime() &&
-																	list.data.status !== REACT_APP_CANCELED &&
-																	"tw-text-green-700 tw-font-semibold"
-																} ${
-																	list.data.status === REACT_APP_CANCELED &&
-																	"tw-text-neutral-400 tw-italic tw-line-through"
-																} ${
-																	new Date().getTime() >
-																		new Date(list.data.date).getTime() &&
-																	"tw-text-blue-800 tw-font-semibold"
-																}`}>
-																{new Date().getTime() >
-																new Date(list.data.date).getTime()
-																	? "Appointment is due"
-																	: list.data.status}
-															</span>
-														</li>
-													</div>
-												</ul>
-											</div>
-										))}
-									</>
+									<CalendarList
+										calendarList={calendarList}
+										showProgress={showProgress}
+										timeleft={timeleft}
+										handleDelete={handleSelect}
+										setPicked={setPicked}
+										setConfirmDel={setConfirmDel}
+										confirmDel={confirmDel}
+										picked={picked}
+									/>
 								) : (
 									<div>
 										<span className="tw-text-red-800 tw-text-xs">
@@ -727,8 +585,8 @@ const CalendarPage = () => {
 													</li>
 													<button
 														onClick={() => submitUnblockDate(block.id)}
-														className="tw-rounded-br-md tw-bg-neutral-200 tw-text-green-800 tw-h-[30px] tw-flex-[0.3]">
-														unblock
+														className="tw-rounded-br-md tw-text-green-800 tw-h-[30px] tw-flex tw-flex-[0.3] tw-justify-center tw-items-center">
+														<BsFillUnlockFill size={15} />
 													</button>
 												</ul>
 											))}
@@ -738,58 +596,13 @@ const CalendarPage = () => {
 								<div className="tw-mb-2 tw-text-pink-600">
 									<p>Time slot blocker</p>
 								</div>
-								<div className="tw-grid tw-grid-cols-2 tw-gap-2 tw-items-center">
-									{timeSlotDB ? (
-										timeSlotDB.map((slt) => (
-											<div key={slt.id}>
-												<p className="tw-text-xs tw-bg-neutral-400 tw-text-neutral-50 tw-pl-2">
-													{slt?.day}
-												</p>
-												<div className="tw-grid md:tw-grid-cols-2 tw-text-black tw-text-xs tw-gap-2">
-													{slt?.time.map((slot, idx) => (
-														<div
-															onClick={() =>
-																!timeSlotArray?.includes(slot) &&
-																handleSelectTimeSlot(slot)
-															}
-															key={idx}
-															className={`tw-py-3 tw-pl-2 tw-rounded-b-md tw-flex tw-items-center tw-justify-between tw-h-[40px] ${
-																slot?.includes("block")
-																	? "tw-bg-neutral-300 tw-text-neutral-400 tw-font-thin"
-																	: "tw-bg-neutral-100 "
-															}`}>
-															<span className="tw-flex-[0.7]">
-																{slot.split("-")[0]}
-															</span>
-
-															{slot?.includes("block") ? (
-																<div
-																	onClick={() => unBlockSlot(slot, slt.id, idx)}
-																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer">
-																	<span
-																		size={20}
-																		className=" tw-text-green-800">
-																		unblock
-																	</span>
-																</div>
-															) : (
-																<div
-																	onClick={() => blockSlot(slot, slt.id, idx)}
-																	className="tw-flex-[0.3] tw-flex tw-items-center tw-justify-center tw-bg-neutral-200  tw-h-[40px] tw-rounded-br-md tw-text-[10px] tw-font-thin tw-cursor-pointer">
-																	<span size={18} className="tw-text-red-800">
-																		block
-																	</span>
-																</div>
-															)}
-														</div>
-													))}
-												</div>
-											</div>
-										))
-									) : (
-										<span>Loading...</span>
-									)}
-								</div>
+								<DayTimeSlotComponent
+									timeSlotDB={timeSlotDB}
+									timeSlotArray={timeSlotArray}
+									handleSelectTimeSlot={handleSelectTimeSlot}
+									unBlockSlot={unBlockSlot}
+									blockSlot={blockSlot}
+								/>
 							</div>
 						</div>
 					) : (
