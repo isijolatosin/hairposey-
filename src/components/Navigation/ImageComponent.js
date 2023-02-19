@@ -9,7 +9,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { BiCalendar } from "react-icons/bi";
 import { MdPrivacyTip } from "react-icons/md";
 
-function ImageComponent({ setIsNav, isNav, setSelected }) {
+const ImageComponent = React.memo(({ setIsNav, isNav, setSelected }) => {
 	const navigate = useNavigate();
 	const { user } = useContext(UserContext);
 	const [showText, setShowText] = React.useState(false);
@@ -31,8 +31,7 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 					setShowOpt(!showOpt);
 					setSecureRoute(false);
 				}}
-				className="tw-text-lg tw-font-extrabold tw-w-[100px] hover:tw-cursor-pointer"
-			>
+				className="tw-text-lg tw-font-extrabold tw-w-[100px] hover:tw-cursor-pointer">
 				<img
 					src={logo}
 					loading="lazy"
@@ -49,8 +48,7 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 							setSecureRoute(!secureRoute);
 							setShowOpt(false);
 						}}
-						className="tw-text-[25px] tw-text-neutral-50 tw-cursor-pointer hover:tw-text-slate-400 tw-ease-in tw-duration-300"
-					>
+						className="tw-text-[25px] tw-text-neutral-50 tw-cursor-pointer hover:tw-text-slate-400 tw-ease-in tw-duration-300">
 						<MdPrivacyTip />
 					</div>
 					<CursorText showText={showText}>Admin</CursorText>
@@ -79,8 +77,7 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 			<div
 				className={`tw-text-white tw-text-3xl tw-cursor-pointer hover:tw-text-slate-400 tw-ease-in tw-duration-300 ${
 					!user && "tw-ml-[-15px]"
-				}`}
-			>
+				}`}>
 				{isNav ? (
 					<CgClose onClick={() => setIsNav(false)} />
 				) : (
@@ -90,8 +87,7 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 			</div>
 			{showOpt && (
 				<div
-					className={`tw-top-[100px] tw-flex tw-flex-col tw-absolute tw-z-40 tw-left-[25px]`}
-				>
+					className={`tw-top-[100px] tw-flex tw-flex-col tw-absolute tw-z-40 tw-left-[25px]`}>
 					{window?.location?.pathname !== "/" && (
 						<div
 							onClick={() => {
@@ -99,8 +95,7 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 								setSelected(false);
 								setShowOpt(false);
 							}}
-							className="tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300 tw-rounded-t-md"
-						>
+							className="tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300 tw-rounded-t-md">
 							<RiHomeFill size={25} />
 						</div>
 					)}
@@ -109,8 +104,7 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 							onClick={() =>
 								navigate(`/user-account/${user?.email || user?.displayName}`)
 							}
-							className="tw-border-b-[1px] tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300 tw-rounded-b-md"
-						>
+							className="tw-border-b-[1px] tw-p-2 tw-bg-slate-900 tw-text-pink-800 hover:tw-cursor-pointer hover:tw-bg-pink-800 hover:tw-text-slate-900 tw-ease-in tw-duration-300 tw-rounded-b-md">
 							<BsFillPersonFill size={25} />
 						</div>
 					)}
@@ -118,6 +112,6 @@ function ImageComponent({ setIsNav, isNav, setSelected }) {
 			)}
 		</div>
 	);
-}
+});
 
 export default ImageComponent;

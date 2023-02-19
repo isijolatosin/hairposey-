@@ -1,0 +1,46 @@
+@mixin google-font($fontFamily) {
+	$fontFamily: unquote($fontFamily);
+	@import url(https://fonts.googleapis.com/css2?family=#{$fontFamily}:wght@100;200;300;400;500;600;700;800;900&display=swap);
+}
+
+@mixin border_rad($border_rad) {
+	border-radius: $border_rad;
+}
+@mixin background($background) {
+	background: $background;
+}
+@mixin border($border) {
+	border: $border;
+}
+@mixin border_all($top, $bottom, $left, $right) {
+	border-top: $top;
+	border-right: $right;
+	border-left: $left;
+	border-bottom: $bottom;
+}
+@mixin bg_color($color) {
+	background-color: $color;
+}
+@mixin browser($webkit, $moz, $ms, $user) {
+	-webkit-user-select: $webkit;
+	-moz-user-select: $moz;
+	-ms-user-select: $ms;
+	user-select: $user;
+}
+@mixin absolute($position, $top, $bottom, $left, $right) {
+	position: $position;
+	top: $top;
+	bottom: $bottom;
+	right: $right;
+	left: $left;
+}
+@mixin pseudo_element($content, $position, $display) {
+	content: $content;
+	position: $position;
+	display: $display;
+}
+@mixin image-slide($opacity, $duration, $scale) {
+	opacity: $opacity;
+	transition-duration: $duration;
+	transform: $scale;
+}
