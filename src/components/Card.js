@@ -1,10 +1,12 @@
-import React from 'react'
-import axios from 'axios'
-import { MdOutlineInventory, MdMoneyOff } from 'react-icons/md'
-import { GiMoneyStack } from 'react-icons/gi'
-import { RiSearch2Fill } from 'react-icons/ri'
-import Rating from './shared/Rating'
-import truncate from '../utils/truncate'
+import React from "react";
+import axios from "axios";
+import { MdOutlineInventory, MdMoneyOff } from "react-icons/md";
+import { GiMoneyStack } from "react-icons/gi";
+import { RiSearch2Fill } from "react-icons/ri";
+import Rating from "./shared/Rating";
+import truncate from "../utils/truncate";
+import Button from "./shared/Button";
+import { sizes } from "../constant";
 
 function Card({
 	product,
@@ -18,27 +20,27 @@ function Card({
 		try {
 			const {
 				data: { products },
-			} = await axios.get('/api/v1/products')
-			const result = products.filter((product) => product._id === id)
-			setSingleproducts(result)
+			} = await axios.get("/api/v1/products");
+			const result = products.filter((product) => product._id === id);
+			setSingleproducts(result);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-		scrollToTop()
+		scrollToTop();
 	}
 
 	const handleView = async (event) => {
 		try {
 			const {
 				data: { products },
-			} = await axios.get('/api/v1/products')
-			const result = products.filter((product) => product._id === event)
-			setImage(result)
+			} = await axios.get("/api/v1/products");
+			const result = products.filter((product) => product._id === event);
+			setImage(result);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-		setIsSingleImage(true)
-	}
+		setIsSingleImage(true);
+	};
 
 	return (
 		<div className="card tw-w-[90%] tw-mx-auto md:tw-w-[300px] tw-rounded-[30px]">
@@ -55,13 +57,13 @@ function Card({
 					<span
 						className={`${
 							product.instock
-								? 'tw-text-white  tw-left-[-45px]'
-								: 'tw-text-white tw-left-[-65px]'
+								? "tw-text-white  tw-left-[-45px]"
+								: "tw-text-white tw-left-[-65px]"
 						} tw-absolute tw-text-xs`}>
-						{product.instock ? 'Instock' : 'Not Instock'}
+						{product.instock ? "Instock" : "Not Instock"}
 					</span>
 					<MdOutlineInventory
-						className={`${!product.instock && 'tw-text-red-800'}`}
+						className={`${!product.instock && "tw-text-red-800"}`}
 					/>
 				</li>
 				<li>
@@ -75,12 +77,12 @@ function Card({
 					<span
 						className={`${
 							product.sales && sales !== 0
-								? 'tw-text-white  tw-left-[-35px]'
-								: 'tw-text-white tw-left-[-73px]'
+								? "tw-text-white  tw-left-[-35px]"
+								: "tw-text-white tw-left-[-73px]"
 						} tw-absolute tw-text-xs`}>
-						{product.sales ? 'Sales' : 'Not on Sales'}
+						{product.sales ? "Sales" : "Not on Sales"}
 					</span>
-					<MdMoneyOff className={`${!product.sales && 'tw-text-red-800'}`} />
+					<MdMoneyOff className={`${!product.sales && "tw-text-red-800"}`} />
 				</li>
 			</ul>
 			<img
@@ -99,13 +101,14 @@ function Card({
 				</h1>
 				<p className="">{truncate(product.description, 15)}</p>
 			</div>
-			<button
-				className="tw-absolute tw-text-[18px] tw-bottom-[20px] tw-right-[20px] tw-z-30"
-				onClick={(e) => routeToSingleProductPage(product._id)}>
-				Buy
-			</button>
+			<Button
+				handleFunc={(e) => routeToSingleProductPage(product._id)}
+				type="button"
+				children="Buy"
+				class={`custome-btn tw-absolute tw-bottom-[20px] tw-right-[20px] tw-z-30 tw-text-${sizes?.medium}`}
+			/>
 		</div>
-	)
+	);
 }
 
-export default Card
+export default Card;

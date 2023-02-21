@@ -92,9 +92,9 @@ select:focus {
 
 // Progressive bar
 progress {
-	height: 5px;
-	/* width: 300px; */
+	@include progress(5px);
 	@include border(none);
+	@include border_rad(30px);
 }
 
 progress::-moz-progress-bar {
@@ -386,25 +386,12 @@ progress::-webkit-progress-bar {
 	backface-visibility: hidden;
 
 	button {
-		padding: 2px 17px;
-		border-radius: 8px;
-		background: transparent;
-		border: 1px solid #fff;
-		color: #fff;
 		margin-top: 10px;
 		opacity: 0;
 		cursor: pointer;
-		transition: all 0.25s ease;
-		font-size: 0.75rem;
-		font-weight: bold;
 		outline: none;
 		font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
 			"Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-
-		&:hover {
-			background: #fff;
-			color: #000;
-		}
 	}
 
 	.con-text {
@@ -688,4 +675,19 @@ progress::-webkit-progress-bar {
 .navStyleChildWhite:hover::after {
 	width: 100%;
 	left: 0;
+}
+.progress {
+	@include progress(2px, 80%, 0 auto, $grey-100, absolute, hidden);
+
+	.inner {
+		@include inner();
+	}
+}
+@keyframes progress {
+	from {
+		@include from;
+	}
+	to {
+		@include to;
+	}
 }

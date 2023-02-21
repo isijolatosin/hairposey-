@@ -2,16 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.custome-btn {
+	@apply tw-py-1.5 tw-px-10 tw-font-thin tw-ease-in tw-duration-300 tw-rounded-sm hover:tw-bg-white/20 hover:tw-backdrop-blur-sm tw-bg-slate-900 tw-text-white;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
+.banner-text-mobile {
+	@apply md:tw-hidden tw-w-full tw-text-center tw-text-4xl tw-inline-block tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] tw-absolute tw-top-[20%];
+}
+.banner-text-desktop {
+	@apply tw-hidden md:tw-inline-block md:tw-text-[80px] lg:tw-text-[100px] xl:tw-text-[150px] 2xl:tw-text-[170px] tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] tw-absolute md:tw-top-40 lg:tw-top-[90px] 2xl:tw-top-20;
+}
+.arrow-back {
+	@apply tw-text-black tw-bg-white tw-shadow-lg tw-rounded-full tw-text-lg md:tw-text-2xl tw-p-3 hover:md:tw-bg-neutral-900 hover:md:tw-text-white tw-ease-in tw-duration-300 tw-cursor-pointer tw-absolute tw-right-5 md:tw-right-10 2xl:tw-right-16 tw-top-[40px] md:tw-top-[50px] tw-z-10;
+}
+.select-date {
+	@apply tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-pink-700 tw-mb-0 tw-opacity-[1] tw-ease-in tw-duration-300;
+}
+.select-category {
+	@apply tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0;
+}

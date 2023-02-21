@@ -53,8 +53,8 @@ const UserContextProvider = ({ children }) => {
 					</div>
 				)}
 
-				<div className="tw-rounded-full progress2">
-					<div className="inner2 tw-bg-slate-900"></div>
+				<div className="tw-rounded-full progress">
+					<div className="inner tw-bg-slate-900"></div>
 				</div>
 			</div>
 		);

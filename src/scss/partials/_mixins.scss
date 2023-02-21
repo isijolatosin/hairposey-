@@ -44,3 +44,24 @@
 	transition-duration: $duration;
 	transform: $scale;
 }
+@mixin inner() {
+	height: 100%;
+	position: absolute;
+	animation: progress 1s infinite;
+}
+@mixin progress($h: "", $w: "", $m: "", $bg: "", $p: "", $ov: "") {
+	height: $h;
+	width: $w;
+	margin: $m;
+	background-color: $bg;
+	position: $p;
+	overflow: $ov;
+}
+@mixin from {
+	left: -5%;
+	width: 5%;
+}
+@mixin to {
+	left: 105%;
+	width: 75%;
+}

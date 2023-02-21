@@ -363,9 +363,7 @@ const CalendarPage = () => {
 									{!bookLimit && (
 										<div className="tw-w-[332px] tw-mx-auto">
 											<div
-												className={
-													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}>
+												className={"select-date tw-py-[5px] tw-border-t-[1px]"}>
 												<span>
 													{selectDate
 														? `Date selected ${selectDate}`
@@ -376,10 +374,7 @@ const CalendarPage = () => {
 									)}
 									{bookLimit && (
 										<div className="tw-w-[332px] tw-mx-auto">
-											<div
-												className={
-													"tw-w-full tw-text-xs tw-text-center tw-text-pink-700 tw-bg-neutral-200 tw-border-t-[1px] tw-border-pink-700 tw-mb-0 tw-py-[5px] tw-opacity-1 tw-ease-in tw-duration-300"
-												}>
+											<div className="select-date tw-border-t-[1px]">
 												<span>We are booked for this date</span>
 											</div>
 										</div>
@@ -421,7 +416,7 @@ const CalendarPage = () => {
 											<label>Category</label>
 										</div>
 										<select
-											className="tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none  tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
+											className="select-category"
 											onChange={handleOnChange}
 											id="category"
 											value={bookingData.category}
@@ -439,7 +434,7 @@ const CalendarPage = () => {
 											<label>Services</label>
 										</div>
 										<select
-											className="tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none  tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
+											className="select-category"
 											onChange={handleOnChange}
 											id="Service"
 											value={bookingData.service}
@@ -457,7 +452,7 @@ const CalendarPage = () => {
 											<label>Add-On Services</label>
 										</div>
 										<select
-											className="tw-block tw-w-full tw-px-3 tw-py-2 tw-border-none  tw-text-sm tw-text-neutral-600 tw-font-thin tw-placeholder-gray-200 tw-ring-0"
+											className="select-category"
 											onChange={handleOnChange}
 											id="addOnServices"
 											value={bookingData.addOnServices}

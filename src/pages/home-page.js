@@ -85,19 +85,16 @@ function HomePage() {
 				<div
 					className={`tw-relative ${
 						allProducts.length === 0 ? "tw-mt-[70px]" : "tw-pt-[60px]"
-					} `}
-				>
+					} `}>
 					{!selected && (
-						<div
-							className={`tw-relative tw-h-[700px] lg:tw-h-[900px] home tw-flex tw-flex-col tw-items-center tw-pt-[55%] md:tw-pt-[35%] lg:tw-pt-[22%] 2xl:tw-pt-[18%]`}
-						>
+						<div className="tw-relative tw-h-[700px] lg:tw-h-[900px] home tw-flex tw-flex-col tw-items-center tw-pt-[55%] md:tw-pt-[35%] lg:tw-pt-[22%] 2xl:tw-pt-[18%]">
 							<div className="tw-absolute tw-mt-10 tw-shadow-md tw-w-full tw-flex tw-justify-center">
 								<img src={logo} alt="" />
 							</div>
-							<span className="tw-hidden md:tw-inline-block md:tw-text-[80px] lg:tw-text-[100px] xl:tw-text-[150px] 2xl:tw-text-[170px] tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] font_cursive tw-absolute md:tw-top-40 lg:tw-top-[90px] 2xl:tw-top-20">
+							<span className="banner-text-desktop  font_cursive">
 								Welcome to Hairposey
 							</span>
-							<span className="md:tw-hidden tw-w-full tw-text-center tw-text-4xl tw-inline-block tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-slate-900 tw-to-pink-900 tw-opacity-[1] font_cursive tw-absolute tw-top-[20%]">
+							<span className="banner-text-mobile font_cursive">
 								Welcome to Hairposey
 							</span>
 							<div className="tw-flex tw-flex-row tw-z-20">
@@ -106,9 +103,7 @@ function HomePage() {
 										handleFunc={() => handlePath("shop")}
 										type="button"
 										children="Shop"
-										size={sizes.medium}
-										isgradBG={false}
-										isBorder={true}
+										class={`custome-btn tw-text-${sizes?.small}`}
 									/>
 								</Link>
 								<Link to={`${REACT_APP_BOOK}`} className="tw-mx-5">
@@ -116,9 +111,7 @@ function HomePage() {
 										handleFunc={() => handlePath("book")}
 										type="button"
 										children="Booking"
-										size={sizes.medium}
-										isgradBG={false}
-										isBorder={true}
+										class={`custome-btn tw-text-${sizes?.small}`}
 									/>
 								</Link>
 							</div>
