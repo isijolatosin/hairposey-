@@ -65,3 +65,6 @@
 	left: 105%;
 	width: 75%;
 }
+@mixin transition($duration) {
+	transition: all $duration ease-in-out;
+}

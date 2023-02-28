@@ -655,7 +655,9 @@ function Book({ logo }) {
 											selectDate &&
 											_timeSlot &&
 											(userEmail || user?.email) && (
-												<Button type="submit">Submit Booking</Button>
+												<Button type="submit" class="btn">
+													Submit Booking
+												</Button>
 											)}
 									</div>
 								) : (
