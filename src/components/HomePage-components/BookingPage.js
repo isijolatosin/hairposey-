@@ -12,16 +12,17 @@ import Book from "../../components/Book";
 import { scrollToTop } from "../../utils/scrollTop";
 import { BiArrowBack } from "react-icons/bi";
 import Heading from "../shared/Heading";
-import { information, Policy, sizes } from "../../constant";
+import { information, sizes } from "../../constant";
 import { Link } from "react-router-dom";
+import { db } from "../../firebase";
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
-const logo = require("../../assets/logo.png");
 
 const BookingPage = ({ isBooking, handBack }) => {
 	const [toggleBookBtn, setToggleBookBtn] = React.useState(false);
 	const [isAccept, setIsAccept] = React.useState(false);
 	const [isDecline, setIsDecline] = React.useState(false);
 	const [info, setInfo] = React.useState(true);
+	const [policyService, setPolicyService] = React.useState({});
 
 	if (isDecline) {
 		setTimeout(() => {
@@ -29,6 +30,12 @@ const BookingPage = ({ isBooking, handBack }) => {
 			handBack();
 		}, 3000);
 	}
+
+	React.useEffect(() => {
+		db.collection("admin").onSnapshot((snapshot) => {
+			setPolicyService(snapshot.docs.map((doc) => doc.data())[0]);
+		});
+	}, []);
 
 	return (
 		<div>
@@ -100,7 +107,7 @@ const BookingPage = ({ isBooking, handBack }) => {
 						} tw-ease-in tw-duration-300`}>
 						<Wrapper>
 							<Elements stripe={promise}>
-								<Book logo={logo} />
+								<Book policyService={policyService} />
 							</Elements>
 						</Wrapper>
 					</div>
@@ -117,11 +124,12 @@ const BookingPage = ({ isBooking, handBack }) => {
 								/>
 							</div>
 							<div className="">
-								{Policy.map((child) => (
+								{policyService["policy"]?.map((child, idx) => (
 									<p
 										className="tw-text-[16px] tw-tracking-light tw-font-[500] tw-mb-2 "
-										key={child.id}>
-										<span className="tw-mr-5">&#x2022;</span> {child.policy}
+										key={idx}>
+										<span className="tw-mr-5">&#x2022;</span>{" "}
+										{child?.text || child}
 									</p>
 								))}
 							</div>
@@ -189,22 +197,23 @@ const BookingPage = ({ isBooking, handBack }) => {
 							</div>
 						</div>
 						<div className="tw-grid lg:tw-grid-cols-2 xl:tw-grid-cols-3 tw-gap-2 lg:tw-gap-5 tw-border-t-[1px] tw-pt-5 tw-mt-5 tw-text-sm">
-							{information.map((inform) => (
+							{information.map((inform, idx) => (
 								<div
-									key={inform.id}
+									key={idx}
 									className="tw-shadow-lg tw-px-5 tw-pb-5 tw-rounded-md">
 									<div className="tw-mt-8 tw-mb-2 tw-border-b-[1px]">
-										<Heading isGreyLight={true} children={inform.title} />
+										<Heading isGreyLight={true} children={inform} />
 									</div>
 									<div
 										className={`tw-grid ${
-											inform.info.length > 5 && "md:tw-grid-cols-2 tw-gap-x-5"
+											policyService[`${inform}`]?.length > 5 &&
+											"md:tw-grid-cols-2 tw-gap-x-5"
 										}`}>
-										{inform.info.map((inf) => (
-											<div key={inf.id}>
+										{policyService[`${inform}`]?.map((inf, idx) => (
+											<div key={idx}>
 												<p className="tw-font-thin tw-text-neutral-600 tw-mb-1">
 													<span className="tw-mr-5 tw-font-bold">&#x2022;</span>
-													{inf.desc}
+													{inf?.text || inf}
 												</p>
 											</div>
 										))}

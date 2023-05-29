@@ -1,34 +1,36 @@
-import React from 'react'
-import axios from 'axios'
-import Heading from './Heading'
-import InventoryCard from './InventoryCard'
-import Button from './shared/Button'
+import React from "react";
+import axios from "axios";
+import Heading from "./Heading";
+import InventoryCard from "./InventoryCard";
+import Button from "./shared/Button";
 
 function AllInventories() {
-	const [fetchAllData, setFetchAllData] = React.useState([])
-	const [singleProduct, setSingleProduct] = React.useState()
-	const [postError, setPostError] = React.useState('')
-	const [isTrue, setIsTrue] = React.useState(false)
+	const [fetchAllData, setFetchAllData] = React.useState([]);
+	const [singleProduct, setSingleProduct] = React.useState();
+	const [postError, setPostError] = React.useState("");
+	const [isTrue, setIsTrue] = React.useState(false);
 	// const [imageFile, setImageFile] = React.useState('')
 
 	const togglePassword = () => {
-		setIsTrue(!isTrue)
-	}
+		setIsTrue(!isTrue);
+	};
 
 	async function fetchProducts() {
 		try {
 			const {
 				data: { products },
-			} = await axios.get('/api/v1/products')
-			setFetchAllData(products)
+			} = await axios.get("/api/v1/products");
+			setFetchAllData(products);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
 	}
 
 	React.useEffect(() => {
-		fetchProducts()
-	}, [])
+		let mounted = true;
+		if (mounted) fetchProducts();
+		return () => (mounted = false);
+	}, []);
 
 	const handleInputName = (e) => {
 		setSingleProduct({
@@ -43,8 +45,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputBrand = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -58,8 +60,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputType = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -73,8 +75,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputColor = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -88,8 +90,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputAvailableColor = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -103,8 +105,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputLen = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -118,8 +120,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputAvailableLen = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -133,8 +135,8 @@ function AllInventories() {
 			availablelength: e.target.value,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice14 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -156,8 +158,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice16 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -179,8 +181,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice18 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -202,8 +204,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice20 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -225,8 +227,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice22 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -248,8 +250,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice24 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -271,8 +273,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice26 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -294,8 +296,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice28 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -317,8 +319,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputPrice30 = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -340,8 +342,8 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			description: singleProduct.description,
 			sales: singleProduct.sales,
-		})
-	}
+		});
+	};
 	const handleInputDesc = (e) => {
 		setSingleProduct({
 			id: singleProduct.id,
@@ -355,12 +357,12 @@ function AllInventories() {
 			availablelength: singleProduct.availablelength,
 			sales: singleProduct.sales,
 			description: e.target.value,
-		})
-	}
+		});
+	};
 
 	async function updateSingleProduct(e) {
-		e.preventDefault()
-		const id = singleProduct?.id
+		e.preventDefault();
+		const id = singleProduct?.id;
 		try {
 			const product = {
 				name: singleProduct.name,
@@ -373,36 +375,36 @@ function AllInventories() {
 				availablelength: singleProduct.availablelength,
 				description: singleProduct.description,
 				sales: isTrue,
-			}
+			};
 			if (
-				product.name === '' ||
-				product.brand === '' ||
-				product.type === '' ||
-				product.color === '' ||
+				product.name === "" ||
+				product.brand === "" ||
+				product.type === "" ||
+				product.color === "" ||
 				product.price === null ||
 				product.length === null ||
-				product.description === '' ||
-				product.availablelength === '' ||
-				product.availablecolor === ''
+				product.description === "" ||
+				product.availablelength === "" ||
+				product.availablecolor === ""
 			) {
-				return setPostError('Missing Credentials')
+				return setPostError("Missing Credentials");
 			}
-			await axios.patch(`/api/v1/products/${id}`, product)
-			setPostError('')
+			await axios.patch(`/api/v1/products/${id}`, product);
+			setPostError("");
 		} catch (error) {
-			setPostError(error.message)
-			console.log(error)
+			setPostError(error.message);
+			console.log(error);
 		}
 
-		setSingleProduct()
+		setSingleProduct();
 
-		fetchProducts()
+		fetchProducts();
 	}
 
 	return (
 		<div>
 			{!singleProduct ? (
-				<div className="tw-flex tw-flex-col tw-items-center tw-w-[100%] xl:tw-w-[90%] 2xl:tw-w-[85%] tw-mx-auto tw-mt-5">
+				<div className="tw-flex tw-flex-col tw-items-center tw-w-[100%] tw-mx-auto tw-mt-5">
 					<Heading>All Inventories</Heading>
 					<div className="tw-grid tw-grid-cols-1 tw-w-full md:tw-grid-cols-2 xl:tw-grid-cols-3 2xl:tw-grid-cols-4 tw-gap-5 tw-pt-2">
 						{fetchAllData.map((product) => (
@@ -434,7 +436,7 @@ function AllInventories() {
 									value={singleProduct.name}
 									onChange={handleInputName}
 									placeholder="Product Name..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 
 								<input
@@ -444,7 +446,7 @@ function AllInventories() {
 									value={singleProduct.brand}
 									onChange={handleInputBrand}
 									placeholder="Product brand..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="text"
@@ -453,7 +455,7 @@ function AllInventories() {
 									value={singleProduct.type}
 									onChange={handleInputType}
 									placeholder="Product Type..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="text"
@@ -462,7 +464,7 @@ function AllInventories() {
 									value={singleProduct.color}
 									onChange={handleInputColor}
 									placeholder="Product Color..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="text"
@@ -471,7 +473,7 @@ function AllInventories() {
 									value={singleProduct.availablecolor}
 									onChange={handleInputAvailableColor}
 									placeholder="Available Color..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -480,7 +482,7 @@ function AllInventories() {
 									value={singleProduct.length}
 									onChange={handleInputLen}
 									placeholder="Length..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="text"
@@ -489,7 +491,7 @@ function AllInventories() {
 									value={singleProduct.availablelength}
 									onChange={handleInputAvailableLen}
 									placeholder="Available Lengths..."
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 							</div>
 							<div className="tw-w-[100%] lg:tw-w-[70%]">
@@ -505,7 +507,7 @@ function AllInventories() {
 									value={singleProduct.price14}
 									onChange={handleInputPrice14}
 									placeholder="14 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -514,7 +516,7 @@ function AllInventories() {
 									value={singleProduct.price16}
 									onChange={handleInputPrice16}
 									placeholder="16 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -523,7 +525,7 @@ function AllInventories() {
 									value={singleProduct.price18}
 									onChange={handleInputPrice18}
 									placeholder="18 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -532,7 +534,7 @@ function AllInventories() {
 									value={singleProduct.price20}
 									onChange={handleInputPrice20}
 									placeholder="20 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -541,7 +543,7 @@ function AllInventories() {
 									value={singleProduct.price22}
 									onChange={handleInputPrice22}
 									placeholder="22 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -550,7 +552,7 @@ function AllInventories() {
 									value={singleProduct.price24}
 									onChange={handleInputPrice24}
 									placeholder="24 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -559,7 +561,7 @@ function AllInventories() {
 									value={singleProduct.price26}
 									onChange={handleInputPrice26}
 									placeholder="26 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -568,7 +570,7 @@ function AllInventories() {
 									value={singleProduct.price28}
 									onChange={handleInputPrice28}
 									placeholder="28 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 								<input
 									type="number"
@@ -577,7 +579,7 @@ function AllInventories() {
 									value={singleProduct.price30}
 									onChange={handleInputPrice30}
 									placeholder="30 inches"
-									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0  placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
+									className="tw-w-full tw-rounded tw-mt-1 tw-block tw-mx-auto tw-px-3 tw-py-2 tw-border-none tw-text-sm tw-shadow-xl tw-placeholder-gray-400 focus:tw-outline-none focus:tw-border-gray-200 focus:tw-ring-1 focus:tw-ring-gray-200 isabled:tw-bg-gray-50 disabled:tw-text-gray-500 disabled:tw-border-gray-200 disabled:tw-shadow-none invalid:tw-border-pink-500 invalid:tw-text-pink-600 focus:invalid:tw-border-pink-500 focus:invalid:tw-ring-pink-500 tw-outline-0 placeholder:tw-font-light placeholder:tw-text-xs tw-text-gray-700 tw-font-light"
 								/>
 							</div>
 							<textarea
@@ -598,8 +600,8 @@ function AllInventories() {
 									checked={isTrue}
 									className={
 										isTrue
-											? 'tw-ml-2 tw-rounded-full tw-bg-violet-400'
-											: 'tw-ml-2 tw-rounded-full tw-bg-none tw-border-violet-200'
+											? "tw-ml-2 tw-rounded-full tw-bg-violet-400"
+											: "tw-ml-2 tw-rounded-full tw-bg-none tw-border-violet-200"
 									}
 									onChange={togglePassword}
 								/>
@@ -615,6 +617,6 @@ function AllInventories() {
 				</div>
 			)}
 		</div>
-	)
+	);
 }
-export default AllInventories
+export default AllInventories;

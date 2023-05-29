@@ -1,39 +1,38 @@
-import React from 'react'
-import axios from 'axios'
-import InventoryForm from './InventoryForm'
+import React from "react";
+import axios from "axios";
+import InventoryForm from "./InventoryForm";
 
 function Inventory() {
-	const [isTrue, setIsTrue] = React.useState(false)
-	const [postError, setPostError] = React.useState('')
+	const [isTrue, setIsTrue] = React.useState(false);
+	const [postError, setPostError] = React.useState("");
 	const [formData, setFormData] = React.useState({
-		title: '',
-		brand: '',
-		type: '',
-		price14: '',
-		price16: '',
-		price18: '',
-		price20: '',
-		price22: '',
-		price24: '',
-		price26: '',
-		price28: '',
-		price30: '',
-		length: '',
-		availablelength: '',
-		description: '',
-	})
-	const [imageFile, setImageFile] = React.useState('')
+		title: "",
+		brand: "",
+		type: "",
+		price14: "",
+		price16: "",
+		price18: "",
+		price20: "",
+		price22: "",
+		price24: "",
+		price26: "",
+		price28: "",
+		price30: "",
+		length: "",
+		availablelength: "",
+		description: "",
+	});
+	const [imageFile, setImageFile] = React.useState("");
 
 	const handleformDataChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value })
-	}
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
 
 	const togglePassword = () => {
-		setIsTrue(!isTrue)
-	}
-	console.log(formData)
+		setIsTrue(!isTrue);
+	};
 	const handleSubmit = async (e) => {
-		e.preventDefault()
+		e.preventDefault();
 
 		try {
 			const product = {
@@ -56,172 +55,172 @@ function Inventory() {
 				description: formData.description,
 				sales: isTrue,
 				image: imageFile,
-			}
-			await axios.post('/api/v1/products', product)
+			};
+			await axios.post("/api/v1/products", product);
 		} catch (error) {
-			setPostError(error.message)
-			console.log(error)
+			setPostError(error.message);
+			console.log(error);
 		}
 
 		setFormData({
-			title: '',
-			brand: '',
-			type: '',
-			color: '',
-			price14: '',
-			price16: '',
-			price18: '',
-			price20: '',
-			price22: '',
-			price24: '',
-			price26: '',
-			price28: '',
-			price30: '',
-			length: '',
-			availablelength: '',
-			availablecolor: '',
-			description: '',
-		})
-		setIsTrue(false)
-	}
+			title: "",
+			brand: "",
+			type: "",
+			color: "",
+			price14: "",
+			price16: "",
+			price18: "",
+			price20: "",
+			price22: "",
+			price24: "",
+			price26: "",
+			price28: "",
+			price30: "",
+			length: "",
+			availablelength: "",
+			availablecolor: "",
+			description: "",
+		});
+		setIsTrue(false);
+	};
 
 	const inputTypes = [
 		{
-			id: '1',
-			name: 'title',
-			type: 'text',
+			id: "1",
+			name: "title",
+			type: "text",
 			value: formData.title,
-			placeholder: 'Product Name...',
+			placeholder: "Product Name...",
 		},
 		{
-			id: '2',
-			name: 'brand',
-			type: 'text',
+			id: "2",
+			name: "brand",
+			type: "text",
 			value: formData.brand,
-			placeholder: 'Product Brand...',
+			placeholder: "Product Brand...",
 		},
 		{
-			id: '3',
-			name: 'type',
-			type: 'text',
+			id: "3",
+			name: "type",
+			type: "text",
 			value: formData.type,
-			placeholder: 'Product Type...',
+			placeholder: "Product Type...",
 		},
 		{
-			id: '4',
-			name: 'color',
-			type: 'text',
+			id: "4",
+			name: "color",
+			type: "text",
 			value: formData.color,
-			placeholder: 'Product Color...',
+			placeholder: "Product Color...",
 		},
 		{
-			id: '5',
-			name: 'availablecolor',
-			type: 'text',
+			id: "5",
+			name: "availablecolor",
+			type: "text",
 			value: formData.availablecolor,
-			placeholder: 'Available Color...',
+			placeholder: "Available Color...",
 		},
 		{
-			id: '6',
-			name: 'length',
-			type: 'number',
+			id: "6",
+			name: "length",
+			type: "number",
 			value: formData.length,
-			placeholder: 'Length...',
+			placeholder: "Length...",
 		},
 		{
-			id: '7',
-			name: 'availablelength',
-			type: 'text',
+			id: "7",
+			name: "availablelength",
+			type: "text",
 			value: formData.availablelength,
-			placeholder: 'Available Lengths...',
+			placeholder: "Available Lengths...",
 		},
-	]
+	];
 	const priceList = [
 		{
-			id: '8',
-			name: 'price14',
-			type: 'number',
+			id: "8",
+			name: "price14",
+			type: "number",
 			value: formData.price14,
 			placeholder: '14 inches" CA($)...',
 		},
 		{
-			id: '9',
-			name: 'price16',
-			type: 'number',
+			id: "9",
+			name: "price16",
+			type: "number",
 			value: formData.price16,
 			placeholder: '16 inches" CA($)...',
 		},
 		{
-			id: '10',
-			name: 'price18',
-			type: 'number',
+			id: "10",
+			name: "price18",
+			type: "number",
 			value: formData.price18,
 			placeholder: '18 inches" CA($)...',
 		},
 		{
-			id: '11',
-			name: 'price20',
-			type: 'number',
+			id: "11",
+			name: "price20",
+			type: "number",
 			value: formData.price20,
 			placeholder: '20 inches" CA($)...',
 		},
 		{
-			id: '12',
-			name: 'price22',
-			type: 'number',
+			id: "12",
+			name: "price22",
+			type: "number",
 			value: formData.price22,
 			placeholder: '22 inches" CA($)...',
 		},
 		{
-			id: '13',
-			name: 'price24',
-			type: 'number',
+			id: "13",
+			name: "price24",
+			type: "number",
 			value: formData.price24,
 			placeholder: '24 inches" CA($)...',
 		},
 		{
-			id: '14',
-			name: 'price26',
-			type: 'number',
+			id: "14",
+			name: "price26",
+			type: "number",
 			value: formData.price26,
 			placeholder: '26 inches" CA($)...',
 		},
 		{
-			id: '15',
-			name: 'price28',
-			type: 'number',
+			id: "15",
+			name: "price28",
+			type: "number",
 			value: formData.price28,
 			placeholder: '28 inches" CA($)...',
 		},
 		{
-			id: '16',
-			name: 'price30',
-			type: 'number',
+			id: "16",
+			name: "price30",
+			type: "number",
 			value: formData.price30,
 			placeholder: '30 inches" CA($)...',
 		},
-	]
+	];
 
 	const uploadFile = async (e) => {
-		const imageFile = e.target.files[0]
-		const formData = new FormData()
-		formData.append('image', imageFile)
+		const imageFile = e.target.files[0];
+		const formData = new FormData();
+		formData.append("image", imageFile);
 		try {
 			const {
 				data: {
 					image: { src },
 				},
-			} = await axios.post('/api/v1/products/uploads', formData, {
+			} = await axios.post("/api/v1/products/uploads", formData, {
 				headers: {
-					'Content-Type': 'multipart/form-data',
+					"Content-Type": "multipart/form-data",
 				},
-			})
+			});
 
-			setImageFile(src)
+			setImageFile(src);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-	}
+	};
 
 	return (
 		<InventoryForm
@@ -236,7 +235,7 @@ function Inventory() {
 			buttonText="Add to Inventory"
 			uploadFile={uploadFile}
 		/>
-	)
+	);
 }
 
-export default Inventory
+export default Inventory;

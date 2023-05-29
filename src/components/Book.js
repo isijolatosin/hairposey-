@@ -12,7 +12,6 @@ import { GoAlert } from "react-icons/go";
 import axios from "axios";
 import { db } from "../firebase";
 import {
-	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_BOOKLIMIT,
 	REACT_APP_SITE_URL,
@@ -23,21 +22,7 @@ import Progressbar from "./shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
 import DatePickerComp from "./shared/DatePickerComp";
 
-const categories = [];
-const services = [];
-const addOnServices = [];
-
-information.map((data) => {
-	if (data.title === "Category") {
-		categories.push(...data.info);
-	} else if (data.title === "Services") {
-		services.push(...data.info);
-	} else if (data.title === "Add On Services") {
-		addOnServices.push(...data.info.slice(0, data.info.length - 1));
-	}
-});
-
-function Book({ logo }) {
+function Book({ policyService }) {
 	const dateNow = new Date();
 	const elements = useElements();
 	const stripe = useStripe();
@@ -131,6 +116,9 @@ function Book({ logo }) {
 			setBlackList(arr);
 		});
 	}, []);
+	const addOns = policyService["add on services"];
+	const services = policyService["services"];
+	const category = policyService["category"];
 	// if (succeeded && permission) {
 	// 	new Notification("Payment Notification", {
 	// 		body: "Your Payment Was Successful!",
@@ -236,13 +224,13 @@ function Book({ logo }) {
 	).toFixed(2);
 	let totalBookingPrice = 0;
 	let serviceDuration = 0;
-	services.filter((item) => {
+	services?.filter((item) => {
 		if (item?.desc === bookingData?.service) {
 			totalBookingPrice += item?.price;
 			serviceDuration += item?.duration;
 		}
 	});
-	addOnServices.filter((item) => {
+	addOns?.filter((item) => {
 		if (item?.desc === bookingData?.addOnServices)
 			totalBookingPrice += item?.price;
 	});
@@ -420,7 +408,7 @@ function Book({ logo }) {
 	const email = user?.email || userEmail;
 
 	//  filter services option
-	const filteredServices = services.filter((service) => {
+	const filteredServices = services?.filter((service) => {
 		if (REACT_APP_BOOKLIMIT - dailyMax >= 2) {
 			return service;
 		}
@@ -545,8 +533,8 @@ function Book({ logo }) {
 									<option value="" disabled selected>
 										Select category
 									</option>
-									{categories?.map((category) => (
-										<option key={category.id}>{category.desc}</option>
+									{category?.map((category, idx) => (
+										<option key={idx}>{category.text || category}</option>
 									))}
 								</select>
 							</div>
@@ -563,8 +551,8 @@ function Book({ logo }) {
 									<option value="" disabled selected>
 										Select service
 									</option>
-									{filteredServices?.map((service) => (
-										<option key={service.id}>{service.desc}</option>
+									{filteredServices?.map((service, idx) => (
+										<option key={idx}>{service.text || service}</option>
 									))}
 								</select>
 							</div>
@@ -581,8 +569,8 @@ function Book({ logo }) {
 									<option value="" disabled selected>
 										Select add-on
 									</option>
-									{addOnServices?.map((ad) => (
-										<option key={ad.id}>{ad.desc}</option>
+									{addOns?.map((ad, idx) => (
+										<option key={idx}>{ad.text || ad}</option>
 									))}
 								</select>
 							</div>
