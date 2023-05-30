@@ -23,11 +23,11 @@ const Management = React.memo(() => {
 	const { user } = useContext(UserContext);
 	const [location, setLocation] = React.useState("");
 	const [retrieveLocation, setRetrieveLocation] = React.useState("");
-	const [policyService, setPolicyService] = React.useState({});
-	const addOns = policyService["add on services"];
-	const services = policyService["services"];
-	const policy = policyService["policy"];
-	const category = policyService["category"];
+	const [policyService, setPolicyService] = React.useState();
+	const addOns = policyService?.[0]["add on services"];
+	const services = policyService?.[0]["services"];
+	const policy = policyService?.[0]["policy"];
+	const category = policyService?.[0]["category"];
 
 	React.useEffect(() => {
 		let mounted = true;
@@ -35,7 +35,8 @@ const Management = React.memo(() => {
 			setSales(fetchSalesPercentage());
 			// admin path
 			db.collection("admin").onSnapshot((snapshot) => {
-				setPolicyService(snapshot.docs.map((doc) => doc.data())[0]);
+				const _data = snapshot.docs.map((doc) => doc.data());
+				setPolicyService(_data);
 			});
 			db.collection("location").onSnapshot((snapshot) => {
 				setRetrieveLocation(snapshot.docs.map((doc) => doc.data())[0].location);

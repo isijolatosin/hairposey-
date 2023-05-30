@@ -16,6 +16,7 @@ const CustomPolicyServices = ({ data, title }) => {
 	const [price, setPrice] = React.useState(null);
 	const [duration, setDuration] = React.useState(null);
 	function updateCMS(key, text) {
+		if (replace === "") return;
 		db.collection("admin").onSnapshot((snapshot) => {
 			snapshot.docs.map((doc) => {
 				const data = doc?.data();
@@ -52,6 +53,7 @@ const CustomPolicyServices = ({ data, title }) => {
 		setReplace("");
 	}
 	function addMore(key) {
+		if (moreText === "") return;
 		const replaceObjectServices = {
 			text: moreText,
 			price: moreTextPrice,
@@ -122,7 +124,9 @@ const CustomPolicyServices = ({ data, title }) => {
 						/>
 					)}
 					<div
-						onClick={() => addMore(title)}
+						onClick={() =>
+							(moreText || moreTextPrice || moreTextDuration) && addMore(title)
+						}
 						size={35}
 						className="tw-max-w-[100px] tw-cursor-pointer tw-duration-300 tw-ease-in hover:tw-text-pink-700 tw-bg-pink-400 tw-text-xs tw-p-2 tw-rounded-br-lg">
 						<span>Add</span>
@@ -139,7 +143,7 @@ const CustomPolicyServices = ({ data, title }) => {
 					<div key={idx} className="tw-w-full tw-mb-3">
 						<div className="tw-w-full tw-h-fit tw-flex tw-items-center tw-justify-between tw-overflow-y-hidden">
 							<span className="general-scrollbar-hide tw-flex tw-items-center tw-text-sm tw-font-thin tw-w-[80%] tw-h-full tw-overflow-y-scroll">
-								{val?.text || val}
+								{typeof val === "object" ? val?.text : val}
 							</span>
 							<div
 								onClick={() => {
@@ -156,7 +160,7 @@ const CustomPolicyServices = ({ data, title }) => {
 									<InputRender
 										type="text"
 										value={replace}
-										holder={val?.text || val}
+										holder={typeof val === "object" ? val?.text : val}
 										setValue={setReplace}
 									/>
 								</div>
@@ -181,7 +185,10 @@ const CustomPolicyServices = ({ data, title }) => {
 									</div>
 								)}
 								<div
-									onClick={() => updateCMS(title, val?.text || val)}
+									onClick={() =>
+										(replace || price || duration) &&
+										updateCMS(title, val?.text || val)
+									}
 									size={20}
 									className="tw-w-1/2 tw-cursor-pointer tw-duration-300 tw-ease-in hover:tw-text-pink-700 tw-text-xs tw-bg-pink-400 tw-p-2 tw-rounded-b-md">
 									<span>Update</span>
