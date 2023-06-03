@@ -143,7 +143,11 @@ const CustomPolicyServices = ({ data, title }) => {
 					<div key={idx} className="tw-w-full tw-mb-3">
 						<div className="tw-w-full tw-h-fit tw-flex tw-items-center tw-justify-between tw-overflow-y-hidden">
 							<span className="general-scrollbar-hide tw-flex tw-items-center tw-text-sm tw-font-thin tw-w-[80%] tw-h-full tw-overflow-y-scroll">
-								{typeof val === "object" ? val?.text : val}
+								<div
+									dangerouslySetInnerHTML={{
+										__html: typeof val === "object" ? val?.text : val,
+									}}
+								/>
 							</span>
 							<div
 								onClick={() => {
