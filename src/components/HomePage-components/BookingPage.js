@@ -213,7 +213,11 @@ const BookingPage = ({ isBooking, handBack }) => {
 											<div key={idx}>
 												<p className="tw-font-thin tw-text-neutral-600 tw-mb-1">
 													<span className="tw-mr-5 tw-font-bold">&#x2022;</span>
-													{inf?.text || inf}
+													<span
+														dangerouslySetInnerHTML={{
+															__html: inf?.text || inf,
+														}}
+													/>
 												</p>
 											</div>
 										))}
