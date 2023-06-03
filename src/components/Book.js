@@ -54,6 +54,9 @@ function Book({ policyService }) {
 	const [blockedDatesDB, setBlockedDatesDB] = React.useState([]);
 	const isReload = true;
 	const status = REACT_APP_STATUS;
+	function removeHTMLTags(str) {
+		return str.replace(/<\/?[^>]+(>|$)/g, "");
+	}
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
@@ -225,14 +228,17 @@ function Book({ policyService }) {
 	let totalBookingPrice = 0;
 	let serviceDuration = 0;
 	services?.filter((item) => {
-		if (item?.desc === bookingData?.service) {
+		const text = removeHTMLTags(item?.text);
+		if (text === bookingData?.service) {
 			totalBookingPrice += item?.price;
 			serviceDuration += item?.duration;
 		}
 	});
 	addOns?.filter((item) => {
-		if (item?.desc === bookingData?.addOnServices)
+		const text = removeHTMLTags(item?.text);
+		if (text === bookingData?.addOnServices) {
 			totalBookingPrice += item?.price;
+		}
 	});
 	const totalDue =
 		Number(process.env.REACT_APP_BOOKING_PRICE) + stripeDeduction;
@@ -534,7 +540,12 @@ function Book({ policyService }) {
 										Select category
 									</option>
 									{category?.map((category, idx) => (
-										<option key={idx}>{category.text || category}</option>
+										<option
+											key={idx}
+											dangerouslySetInnerHTML={{
+												__html: category.text || category,
+											}}
+										/>
 									))}
 								</select>
 							</div>
@@ -552,7 +563,12 @@ function Book({ policyService }) {
 										Select service
 									</option>
 									{filteredServices?.map((service, idx) => (
-										<option key={idx}>{service.text || service}</option>
+										<option
+											key={idx}
+											dangerouslySetInnerHTML={{
+												__html: service.text || service,
+											}}
+										/>
 									))}
 								</select>
 							</div>
@@ -570,7 +586,12 @@ function Book({ policyService }) {
 										Select add-on
 									</option>
 									{addOns?.map((ad, idx) => (
-										<option key={idx}>{ad.text || ad}</option>
+										<option
+											key={idx}
+											dangerouslySetInnerHTML={{
+												__html: ad.text || ad,
+											}}
+										/>
 									))}
 								</select>
 							</div>
