@@ -102,6 +102,8 @@ const CustomPolicyServices = ({ data, title }) => {
 				db.collection("admin")
 					.doc(`${doc?.id}` || "policy-services")
 					.set({ [`${title.toLowerCase()}`]: filterChild }, { merge: true });
+
+				return null;
 			});
 		});
 		reload(navigate);
