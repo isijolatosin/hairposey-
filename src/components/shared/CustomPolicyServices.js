@@ -5,7 +5,6 @@ import { FiEdit2 } from "react-icons/fi";
 import InputRender from "./InputRender";
 import firebase from "firebase/compat/app";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import reload from "../../utils/reload";
 
 const CustomPolicyServices = ({ data, title }) => {
@@ -18,7 +17,7 @@ const CustomPolicyServices = ({ data, title }) => {
 	const [replace, setReplace] = React.useState("");
 	const [price, setPrice] = React.useState(null);
 	const [duration, setDuration] = React.useState(null);
-	const navigate = useNavigate();
+
 	function updateCMS(key, text) {
 		if (replace === "") return;
 		db.collection("admin").onSnapshot((snapshot) => {
@@ -55,7 +54,7 @@ const CustomPolicyServices = ({ data, title }) => {
 		setShow(false);
 		setId("");
 		setReplace("");
-		reload(navigate);
+		reload();
 	}
 	function addMore() {
 		if (moreText === "") return;
@@ -87,26 +86,39 @@ const CustomPolicyServices = ({ data, title }) => {
 		setMoreTextPrice(0);
 		setMoreTextDuration(0);
 		setMoreText("");
-		reload(navigate);
+		reload();
 	}
 	function handleDelete(item) {
-		const itm = item?.text;
+		const itm = item?.text || item;
+		if (typeof item === "object") {
+			db.collection("admin").onSnapshot((snapshot) => {
+				snapshot.docs.map((doc) => {
+					const data = doc?.data();
+					const childData = data[`${title}`];
+					const filterChild = childData?.filter((child) => child?.text !== itm);
+					db.collection("admin")
+						.doc(`${doc?.id}` || "policy-services")
+						.set({ [`${title.toLowerCase()}`]: filterChild }, { merge: true });
 
-		db.collection("admin").onSnapshot((snapshot) => {
-			snapshot.docs.map((doc) => {
-				const data = doc?.data();
-				const childData = data[`${title}`];
-				const filterChild = childData?.filter(
-					(child) => child?.text !== itm || child?.text !== itm
-				);
-				db.collection("admin")
-					.doc(`${doc?.id}` || "policy-services")
-					.set({ [`${title.toLowerCase()}`]: filterChild }, { merge: true });
-
-				return null;
+					return null;
+				});
 			});
-		});
-		reload(navigate);
+		} else {
+			db.collection("admin").onSnapshot((snapshot) => {
+				snapshot.docs.map((doc) => {
+					const data = doc?.data();
+					const childData = data[`${title}`];
+					const filterChild = childData?.filter((child) => child !== itm);
+					db.collection("admin")
+						.doc(`${doc?.id}` || "policy-services")
+						.set({ [`${title.toLowerCase()}`]: filterChild }, { merge: true });
+
+					return null;
+				});
+			});
+		}
+
+		reload();
 	}
 	return (
 		<div>

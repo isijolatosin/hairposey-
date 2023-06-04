@@ -1,6 +1,11 @@
-function reload(navigate) {
+/* eslint-disable no-restricted-globals */
+function reload() {
 	setTimeout(() => {
-		navigate(0);
+		// Store the current scroll position
+		localStorage.setItem("scrollPosition", window.scrollY);
+
+		// Reload the page
+		location.reload();
 	}, 500);
 }
 

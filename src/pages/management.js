@@ -28,6 +28,18 @@ const Management = React.memo(() => {
 	const services = policyService?.[0]["services"];
 	const policy = policyService?.[0]["policy"];
 	const category = policyService?.[0]["category"];
+	const scrollPosition = localStorage.getItem("scrollPosition");
+
+	React.useEffect(() => {
+		let mounted = true;
+		if (scrollPosition && mounted) {
+			document.getElementById("policy").scrollIntoView();
+		}
+		localStorage.removeItem("scrollPosition");
+		return () => {
+			mounted = false;
+		};
+	}, [scrollPosition]);
 
 	React.useEffect(() => {
 		let mounted = true;
@@ -42,7 +54,6 @@ const Management = React.memo(() => {
 				setRetrieveLocation(snapshot.docs.map((doc) => doc.data())[0].location);
 			});
 		}
-
 		return () => (mounted = false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -94,7 +105,7 @@ const Management = React.memo(() => {
 							? "tw-mt-[70px] tw-pt-10 tw-flex tw-flex-col tw-w-full tw-items-center tw-bg-slate-100"
 							: "tw-mt-[20px] md:tw-mt-[60px] tw-pt-20 md:tw-pt-10 tw-flex tw-flex-col tw-w-[100%] tw-items-center tw-bg-slate-100"
 					} tw-max-w-max-content-width tw-mx-auto`}>
-					<div className="tw-flex tw-flex-col  tw-items-left tw-justify-between tw-w-[100%] lg:tw-w-[70%] tw-px-3">
+					<div className="tw-flex tw-flex-col tw-mb-10 tw-items-left tw-justify-between tw-w-[100%] lg:tw-w-[70%] tw-px-3">
 						<div className="tw-mb-2">
 							<Heading children="Admin portal" isBold={true} />
 						</div>
@@ -148,7 +159,17 @@ const Management = React.memo(() => {
 							</a>
 						</div>
 					</div>
-					<div className="tw-mt-5 tw-px-3 tw-w-[100%] tw-text-slate-900">
+					<div
+						id="policy"
+						className="tw-bg-neutral-200 tw-w-full tw-px-10 tw-py-5">
+						<div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 2xl:tw-grid-cols-4 tw-gap-5">
+							<CustomPolicyServices data={addOns} title="add on services" />
+							<CustomPolicyServices data={category} title="category" />
+							<CustomPolicyServices data={policy} title="policy" />
+							<CustomPolicyServices data={services} title="services" />
+						</div>
+					</div>
+					<div className="tw-mt-2 tw-px-3 tw-w-[100%] tw-text-slate-900">
 						<ul className="tw-flex tw-text-xs tw-flex-row tw-items-center tw-justify-between tw-w-[100%] lg:tw-w-[50%] tw-mx-auto">
 							<li
 								id="all-inventory"
@@ -185,14 +206,6 @@ const Management = React.memo(() => {
 							</span>
 						</div>
 					)}
-					<div className="tw-bg-neutral-200 tw-my-20 tw-w-full tw-px-10 tw-py-5">
-						<div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 2xl:tw-grid-cols-4 tw-gap-5">
-							<CustomPolicyServices data={addOns} title="add on services" />
-							<CustomPolicyServices data={category} title="category" />
-							<CustomPolicyServices data={policy} title="policy" />
-							<CustomPolicyServices data={services} title="services" />
-						</div>
-					</div>
 				</div>
 			</Layout>
 		</>
