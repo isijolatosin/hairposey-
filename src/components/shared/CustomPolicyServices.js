@@ -4,6 +4,9 @@ import { db } from "../../firebase";
 import { FiEdit2 } from "react-icons/fi";
 import InputRender from "./InputRender";
 import firebase from "firebase/compat/app";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import reload from "../../utils/reload";
 
 const CustomPolicyServices = ({ data, title }) => {
 	const [id, setId] = React.useState("");
@@ -15,6 +18,7 @@ const CustomPolicyServices = ({ data, title }) => {
 	const [replace, setReplace] = React.useState("");
 	const [price, setPrice] = React.useState(null);
 	const [duration, setDuration] = React.useState(null);
+	const navigate = useNavigate();
 	function updateCMS(key, text) {
 		if (replace === "") return;
 		db.collection("admin").onSnapshot((snapshot) => {
@@ -42,7 +46,7 @@ const CustomPolicyServices = ({ data, title }) => {
 				edittedArray[replaceIndex] = theReplace;
 
 				db.collection("admin")
-					.doc("policy-services")
+					.doc(doc?.id || "policy-services")
 					.set({ [`${key.toLowerCase()}`]: edittedArray }, { merge: true });
 
 				return null;
@@ -51,8 +55,9 @@ const CustomPolicyServices = ({ data, title }) => {
 		setShow(false);
 		setId("");
 		setReplace("");
+		reload(navigate);
 	}
-	function addMore(key) {
+	function addMore() {
 		if (moreText === "") return;
 		const replaceObjectServices = {
 			text: moreText,
@@ -74,7 +79,7 @@ const CustomPolicyServices = ({ data, title }) => {
 			.doc("policy-services")
 			.set(
 				{
-					[`${key.toLowerCase()}`]:
+					[`${title.toLowerCase()}`]:
 						firebase.firestore.FieldValue.arrayUnion(theReplace), //tells the server to union the given elements with any array value that already exists on the server.
 				},
 				{ merge: true }
@@ -82,6 +87,24 @@ const CustomPolicyServices = ({ data, title }) => {
 		setMoreTextPrice(0);
 		setMoreTextDuration(0);
 		setMoreText("");
+		reload(navigate);
+	}
+	function handleDelete(item) {
+		const itm = item?.text;
+
+		db.collection("admin").onSnapshot((snapshot) => {
+			snapshot.docs.map((doc) => {
+				const data = doc?.data();
+				const childData = data[`${title}`];
+				const filterChild = childData?.filter(
+					(child) => child?.text !== itm || child?.text !== itm
+				);
+				db.collection("admin")
+					.doc(`${doc?.id}` || "policy-services")
+					.set({ [`${title.toLowerCase()}`]: filterChild }, { merge: true });
+			});
+		});
+		reload(navigate);
 	}
 	return (
 		<div>
@@ -125,7 +148,7 @@ const CustomPolicyServices = ({ data, title }) => {
 					)}
 					<div
 						onClick={() =>
-							(moreText || moreTextPrice || moreTextDuration) && addMore(title)
+							(moreText || moreTextPrice || moreTextDuration) && addMore()
 						}
 						size={35}
 						className="tw-max-w-[100px] tw-cursor-pointer tw-duration-300 tw-ease-in hover:tw-text-pink-700 tw-bg-pink-400 tw-text-xs tw-p-2 tw-rounded-br-lg">
@@ -154,8 +177,13 @@ const CustomPolicyServices = ({ data, title }) => {
 									setShow(!show);
 									setId(idx);
 								}}
-								className="tw-w-[20%] tw-h-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-text-pink-700 tw-duration-300 tw-ease-in">
+								className="tw-w-[10%] tw-h-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-text-pink-700 tw-duration-300 tw-ease-in">
 								<FiEdit2 size={15} />
+							</div>
+							<div
+								onClick={() => handleDelete(val)}
+								className="tw-w-[10%] tw-h-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-text-pink-700 tw-duration-300 tw-ease-in">
+								<MdOutlineDeleteOutline size={20} />
 							</div>
 						</div>
 						{show && id === idx && (

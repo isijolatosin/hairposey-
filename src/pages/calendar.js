@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { Calendar } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import emailjs from "emailjs-com";
 import { GoAlert } from "react-icons/go";
@@ -26,6 +26,7 @@ import CalendarList from "../components/calendarPage/CalendarList";
 import DayTimeSlotComponent from "../components/calendarPage/DayTimeSlotComponent";
 import { BsFillUnlockFill } from "react-icons/bs";
 import removeHTMLTags from "../utils/removeHTMLTags";
+import reload from "../utils/reload";
 
 const CalendarPage = () => {
 	const dateToday = new Date();
@@ -51,6 +52,7 @@ const CalendarPage = () => {
 	const [blockedDatesList, setBlockedDatesList] = React.useState([]);
 	const status = REACT_APP_STATUS;
 	const [policyService, setPolicyService] = React.useState({});
+	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		db.collection("all-bookings").onSnapshot((snapshot) => {
@@ -119,6 +121,7 @@ const CalendarPage = () => {
 			time[idx] = slot.split("-")[0];
 			db.collection("timeSlot").doc(id).set({ time: time }, { merge: true });
 		});
+		reload(navigate);
 	};
 	const blockSlot = (slot, id, idx) => {
 		db.collection("timeSlot").onSnapshot((snapshot) => {
@@ -136,6 +139,7 @@ const CalendarPage = () => {
 			time[idx] = `${slot}-block`;
 			db.collection("timeSlot").doc(id).set({ time: time }, { merge: true });
 		});
+		reload(navigate);
 	};
 
 	const submitBlockDate = () => {
@@ -206,6 +210,8 @@ const CalendarPage = () => {
 			setShowProgress(false);
 			setTimeleft(0);
 		}, 10000);
+
+		reload(navigate);
 	};
 
 	const handleOnChange = (e) => {
