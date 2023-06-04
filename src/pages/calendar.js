@@ -10,7 +10,6 @@ import { GoAlert } from "react-icons/go";
 import { RiHome5Fill } from "react-icons/ri";
 import { MdKeyboardBackspace } from "react-icons/md";
 import {
-	information,
 	REACT_APP_AUTHORIZED_ID_ONE,
 	REACT_APP_AUTHORIZED_ID_TWO,
 	REACT_APP_BOOKLIMIT,
@@ -26,20 +25,7 @@ import TimeComponent from "../components/calendarPage/TimeComponent";
 import CalendarList from "../components/calendarPage/CalendarList";
 import DayTimeSlotComponent from "../components/calendarPage/DayTimeSlotComponent";
 import { BsFillUnlockFill } from "react-icons/bs";
-
-const categories = [];
-const services = [];
-const addOnServices = [];
-
-information.map((data) => {
-	if (data.title === "Category") {
-		categories.push(...data.info);
-	} else if (data.title === "Services") {
-		services.push(...data.info);
-	} else if (data.title === "Add On Services") {
-		addOnServices.push(...data.info.slice(0, data.info.length - 1));
-	}
-});
+import removeHTMLTags from "../utils/removeHTMLTags";
 
 const CalendarPage = () => {
 	const dateToday = new Date();
@@ -64,6 +50,7 @@ const CalendarPage = () => {
 	const [blockedDatesDB, setBlockedDatesDB] = React.useState([]);
 	const [blockedDatesList, setBlockedDatesList] = React.useState([]);
 	const status = REACT_APP_STATUS;
+	const [policyService, setPolicyService] = React.useState({});
 
 	React.useEffect(() => {
 		db.collection("all-bookings").onSnapshot((snapshot) => {
@@ -101,12 +88,20 @@ const CalendarPage = () => {
 			setBlockedDatesDB(array1);
 			setBlockedDatesList(array2);
 		});
+
+		db.collection("admin").onSnapshot((snapshot) => {
+			setPolicyService(snapshot.docs.map((doc) => doc.data())[0]);
+		});
 	}, []);
 	React.useEffect(() => {
 		if (showProgress) {
 			triggerProgress(setTimeleft);
 		}
 	}, [showProgress]);
+
+	const addOnServices = policyService["add on services"];
+	const services = policyService["services"];
+	const categories = policyService["category"];
 
 	const unBlockSlot = (slot, id, idx) => {
 		db.collection("timeSlot").onSnapshot((snapshot) => {
@@ -223,15 +218,18 @@ const CalendarPage = () => {
 	).toFixed(2);
 	let totalBookingPrice = 0;
 	let serviceDuration = 0;
-	services.filter((item) => {
-		if (item?.desc === bookingData?.service) {
-			totalBookingPrice += item?.price;
-			serviceDuration += item?.duration;
+	services?.filter((item) => {
+		const text = removeHTMLTags(item?.text);
+		if (text === bookingData?.service) {
+			totalBookingPrice += Number(item?.price);
+			serviceDuration += Number(item?.duration);
 		}
 	});
-	addOnServices.filter((item) => {
-		if (item?.desc === bookingData?.addOnServices)
-			totalBookingPrice += item?.price;
+	addOnServices?.filter((item) => {
+		const text = removeHTMLTags(item?.text);
+		if (text === bookingData?.addOnServices) {
+			totalBookingPrice += Number(item?.price);
+		}
 	});
 	const totalDue = +process.env.REACT_APP_BOOKING_PRICE + stripeDeduction;
 	const bookingBalance =
@@ -324,7 +322,7 @@ const CalendarPage = () => {
 	};
 
 	//  filter services option
-	const filteredServices = services.filter((service) => {
+	const filteredServices = services?.filter((service) => {
 		if (REACT_APP_BOOKLIMIT - dailyMax >= 2) {
 			return service;
 		}
@@ -334,7 +332,7 @@ const CalendarPage = () => {
 	});
 
 	return (
-		<div className="tw-bg-neutral-200 relative">
+		<div className="relative tw-bg-neutral-200">
 			<Helmet>
 				<title>my-calendar</title>
 			</Helmet>
@@ -425,7 +423,12 @@ const CalendarPage = () => {
 												Select category
 											</option>
 											{categories?.map((category) => (
-												<option key={category.id}>{category.desc}</option>
+												<option
+													key={category.id}
+													dangerouslySetInnerHTML={{
+														__html: category.text || category,
+													}}
+												/>
 											))}
 										</select>
 									</div>
@@ -442,8 +445,13 @@ const CalendarPage = () => {
 											<option value="" disabled selected>
 												Select service
 											</option>
-											{filteredServices?.map((service) => (
-												<option key={service.id}>{service.desc}</option>
+											{filteredServices?.map((service, idx) => (
+												<option
+													key={idx}
+													dangerouslySetInnerHTML={{
+														__html: service.text || service,
+													}}
+												/>
 											))}
 										</select>
 									</div>
@@ -460,8 +468,13 @@ const CalendarPage = () => {
 											<option value="" disabled selected>
 												Select add-on
 											</option>
-											{addOnServices?.map((ad) => (
-												<option key={ad.id}>{ad.desc}</option>
+											{addOnServices?.map((ad, idx) => (
+												<option
+													key={idx}
+													dangerouslySetInnerHTML={{
+														__html: ad.text || ad,
+													}}
+												/>
 											))}
 										</select>
 									</div>

@@ -21,6 +21,7 @@ import { ValidateEmail } from "../utils/ValidateEmail";
 import Progressbar from "./shared/Progressbar";
 import { triggerProgress } from "../utils/triggerProgress";
 import DatePickerComp from "./shared/DatePickerComp";
+import removeHTMLTags from "../utils/removeHTMLTags";
 
 function Book({ policyService }) {
 	const dateNow = new Date();
@@ -54,9 +55,7 @@ function Book({ policyService }) {
 	const [blockedDatesDB, setBlockedDatesDB] = React.useState([]);
 	const isReload = true;
 	const status = REACT_APP_STATUS;
-	function removeHTMLTags(str) {
-		return str.replace(/<\/?[^>]+(>|$)/g, "");
-	}
+
 	React.useEffect(() => {
 		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
@@ -230,14 +229,14 @@ function Book({ policyService }) {
 	services?.filter((item) => {
 		const text = removeHTMLTags(item?.text);
 		if (text === bookingData?.service) {
-			totalBookingPrice += item?.price;
-			serviceDuration += item?.duration;
+			totalBookingPrice += Number(item?.price);
+			serviceDuration += Number(item?.duration);
 		}
 	});
 	addOns?.filter((item) => {
 		const text = removeHTMLTags(item?.text);
 		if (text === bookingData?.addOnServices) {
-			totalBookingPrice += item?.price;
+			totalBookingPrice += Number(item?.price);
 		}
 	});
 	const totalDue =
