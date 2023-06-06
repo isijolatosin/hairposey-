@@ -29,6 +29,7 @@ function Book({ policyService }) {
 	const stripe = useStripe();
 	const { user } = useContext(UserContext);
 	const [bookLimit, setBookLimit] = React.useState(false);
+	const [_30DaysMax, set30DaysMax] = React.useState(false);
 	const [selectDate, setSelectDate] = React.useState(null);
 	const [succeeded, setSucceeded] = React.useState(false);
 	const [processing, setProcessing] = React.useState(false);
@@ -57,6 +58,9 @@ function Book({ policyService }) {
 	const status = REACT_APP_STATUS;
 
 	React.useEffect(() => {
+		db.collection("calendarmax").onSnapshot((snapshot) => {
+			snapshot.docs.map((doc) => set30DaysMax(doc.data()?.is30Days));
+		});
 		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
 				data: doc.data(),
@@ -447,6 +451,7 @@ function Book({ policyService }) {
 						<div className="tw-h-[350px]">
 							<div className="xl:tw-ml-0">
 								<DatePickerComp
+									_30DaysMax={_30DaysMax}
 									excludeDates={blockedDatesDB && blockedDatesDB}
 									handleSelect={handleSelect}
 									date={selectDate}

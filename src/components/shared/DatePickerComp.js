@@ -2,7 +2,13 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function DatePickerComp({ handleSelect, date, excludeDates, isLight }) {
+function DatePickerComp({
+	_30DaysMax,
+	handleSelect,
+	date,
+	excludeDates,
+	isLight,
+}) {
 	return (
 		<DatePicker
 			minDate={new Date()}
@@ -18,6 +24,7 @@ function DatePickerComp({ handleSelect, date, excludeDates, isLight }) {
 			}) => (
 				<div>
 					<button
+						disabled={_30DaysMax}
 						aria-label="Previous Month"
 						className={
 							"react-datepicker__navigation react-datepicker__navigation--previous"
@@ -38,6 +45,7 @@ function DatePickerComp({ handleSelect, date, excludeDates, isLight }) {
 						})}
 					</span>
 					<button
+						disabled={_30DaysMax}
 						aria-label="Next Month"
 						className={
 							"react-datepicker__navigation react-datepicker__navigation--next"

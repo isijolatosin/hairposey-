@@ -24,7 +24,7 @@ import { triggerProgress } from "../utils/triggerProgress";
 import TimeComponent from "../components/calendarPage/TimeComponent";
 import CalendarList from "../components/calendarPage/CalendarList";
 import DayTimeSlotComponent from "../components/calendarPage/DayTimeSlotComponent";
-import { BsFillUnlockFill } from "react-icons/bs";
+import { BsChevronRight, BsFillUnlockFill } from "react-icons/bs";
 import removeHTMLTags from "../utils/removeHTMLTags";
 import reload from "../utils/reload";
 
@@ -32,6 +32,8 @@ const CalendarPage = () => {
 	const dateToday = new Date();
 	const [selectDate, setSelectDate] = React.useState(null);
 	const [blockDate, setBlockDate] = React.useState(null);
+	const [showSet, setShowSet] = React.useState(false);
+	const [_30DaysMax, set30DaysMax] = React.useState({});
 	const [bookLimit, setBookLimit] = React.useState(false);
 	const [timeleft, setTimeleft] = React.useState(0);
 	const { user } = useContext(UserContext);
@@ -55,6 +57,10 @@ const CalendarPage = () => {
 	const navigate = useNavigate();
 
 	React.useEffect(() => {
+		db.collection("calendarmax").onSnapshot((snapshot) => {
+			snapshot.docs.map((doc) => set30DaysMax(doc.data()?.is30Days));
+		});
+
 		db.collection("all-bookings").onSnapshot((snapshot) => {
 			const arr = [];
 			snapshot.docs.map((doc) => {
@@ -337,6 +343,12 @@ const CalendarPage = () => {
 		}
 	});
 
+	const handleLock30DaysMax = () => {
+		db.collection("calendarmax")
+			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.set({ is30Days: _30DaysMax ? false : true }, { merge: true });
+	};
+
 	return (
 		<div className="relative tw-bg-neutral-200">
 			<Helmet>
@@ -554,18 +566,41 @@ const CalendarPage = () => {
 								)}
 							</div>
 							<div className=" tw-mt-10 tw-border-t-[0.5px] tw-pt-5">
-								<div className="tw-max-w-full md:tw-max-w-[60%] lg:tw-max-w-[50%] tw-pb-10 tw-mb-5 tw-border-b-[1px]">
+								<div className="tw-max-w-full md:tw-max-w-[60%] lg:tw-max-w-[50%] tw-pb-5 tw-mb-5 tw-border-b-[1px]">
 									<div className="tw-mb-2 tw-text-pink-600">
 										<p>Date Blocker</p>
 									</div>
 									<div>
-										<div className="tw-bg-neutral-200">
-											<DatePickerComp
-												excludeDates={blockedDatesDB && blockedDatesDB}
-												handleSelect={(date) => setBlockDate(date)}
-												date={blockDate}
-												isLight={true}
-											/>
+										<div className="tw-flex tw-items-center tw-justify-between tw-w-full">
+											<div className="tw-bg-neutral-200 tw-w-[50%]">
+												<DatePickerComp
+													excludeDates={blockedDatesDB && blockedDatesDB}
+													handleSelect={(date) => setBlockDate(date)}
+													date={blockDate}
+													isLight={true}
+												/>
+											</div>
+											<div className="tw-h-[36px] tw-w-[50%] tw-flex tw-items-center tw-justify-between tw-border">
+												<div className="tw-h-full tw-flex tw-justify-center tw-text-black/60 tw-w-full">
+													<Button
+														children={
+															_30DaysMax
+																? "Click to extend calendar"
+																: "Click to Set 30 days max"
+														}
+														type="button"
+														class="tw-font-thin tw-text-center tw-w-full tw-text-xs"
+														handleFunc={() => setShowSet(!showSet)}
+													/>
+												</div>
+												<div
+													onClick={handleLock30DaysMax}
+													className={`${
+														showSet ? "tw-inline-block" : "tw-hidden"
+													} tw-h-full tw-border-l tw-text-white tw-w-[50px] tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-neutral-700  tw-ease-in tw-duration-300`}>
+													<BsChevronRight className="hover:tw-translate-x-1 tw-w-full tw-h-full tw-ease-in tw-duration-300 " />
+												</div>
+											</div>
 										</div>
 										{blockDate && (
 											<div className="tw-w-full tw-mx-auto tw-flex tw-flex-row tw-items-center tw-text-[10px] tw-text-red-800 tw-uppercase tw-mb-0 tw-pb-[5px] tw-pt-[10px]">
