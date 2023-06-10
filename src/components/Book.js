@@ -437,7 +437,7 @@ function Book({ policyService }) {
 						className="tw-flex-col tw-text-neutral-400 tw-text-xs tw-font-light tw-flex tw-items-center tw-justify-center tw-mb-7 hover:tw-text-neutral-600 tw-ease tw-duration-300 ">
 						<MdLocationPin size={35} className="tw-text-yellow-500 tw-mb-2" />
 						<span className="navStyleChildWhite">
-							<span className="tw-text-green-500">Currently</span>, we are in{" "}
+							<span className="tw-text-green-500">Currently</span>, we are @{" "}
 							{location}
 						</span>
 					</a>
