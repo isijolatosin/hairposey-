@@ -12,7 +12,11 @@ function DatePickerComp({
 	return (
 		<DatePicker
 			minDate={new Date()}
-			maxDate={new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)}
+			maxDate={
+				_30DaysMax
+					? new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+					: ""
+			}
 			filterDate={(date) => date.getDay() !== 1 && date.getDay() !== 0}
 			isClearable
 			excludeDates={excludeDates}
