@@ -135,8 +135,8 @@ function Book({ policyService }) {
 	// 	});
 	// }
 	const handleSelect = (date) => {
-		if (date <= new Date().setDate(new Date().getDate() + 1)) {
-			setAuthDate(true);
+		if (Date.parse(date) <= new Date().setDate(new Date().getDate() + 1)) {
+			return setAuthDate(true);
 		}
 		if (authDate) {
 			setAuthDate(false);
