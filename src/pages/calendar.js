@@ -24,7 +24,11 @@ import { triggerProgress } from "../utils/triggerProgress";
 import TimeComponent from "../components/calendarPage/TimeComponent";
 import CalendarList from "../components/calendarPage/CalendarList";
 import DayTimeSlotComponent from "../components/calendarPage/DayTimeSlotComponent";
-import { BsChevronRight, BsFillUnlockFill } from "react-icons/bs";
+import {
+	BsChevronRight,
+	BsFillLockFill,
+	BsFillUnlockFill,
+} from "react-icons/bs";
 import removeHTMLTags from "../utils/removeHTMLTags";
 import reload from "../utils/reload";
 
@@ -164,6 +168,8 @@ const CalendarPage = () => {
 	};
 
 	const handleSelect = (date) => {
+		if (Date.parse(date) <= new Date().setDate(new Date().getDate() + 1))
+			return;
 		if (selectDate) {
 			setSelectDate(null);
 		}
@@ -369,11 +375,22 @@ const CalendarPage = () => {
 								<div>
 									<div className="tw-w-full tw-flex tw-justify-center">
 										<Calendar
+											min={Date.now()}
+											max={
+												_30DaysMax
+													? new Date(
+															new Date().getFullYear(),
+															new Date().getMonth() + 1,
+															0
+													  )
+													: ""
+											}
 											color="rgb(157 23 77)"
 											date={new Date()}
 											onChange={handleSelect}
 											dateDisplayFormat="yyyy-MM-dd"
 											showSelectionPreview={true}
+											showMonthArrow={_30DaysMax ? false : true}
 										/>
 									</div>
 									{!bookLimit && (
@@ -405,7 +422,7 @@ const CalendarPage = () => {
 												id="email"
 												value={userEmail}
 												onChange={(e) => setUserEmail(e.target.value)}
-												className={`tw-outline-0 focus:tw-outline-none focus:tw-ring-0 tw-w-full tw-border-[0px] tw-text-sm`}
+												className={`tw-outline-0 focus:tw-outline-none focus:tw-ring-0 tw-w-full tw-border-[0px] tw-text-sm tw-mt-5 md:tw-mt-0`}
 											/>
 											<p className="tw-top-[0px]">Customer email address...</p>
 										</label>
@@ -581,15 +598,26 @@ const CalendarPage = () => {
 												/>
 											</div>
 											<div className="tw-h-[36px] tw-w-[50%] tw-flex tw-items-center tw-justify-between tw-border">
-												<div className="tw-h-full tw-flex tw-justify-center tw-text-black/60 tw-w-full">
+												<div className="tw-h-full tw-flex tw-justify-center tw-items-center tw-text-black/60 tw-w-full">
+													<div className="tw-mx-2">
+														{_30DaysMax ? (
+															<BsFillLockFill
+																size={20}
+																className="tw-text-red-800"
+															/>
+														) : (
+															<BsFillUnlockFill
+																size={20}
+																className="tw-text-green-800"
+															/>
+														)}
+													</div>
 													<Button
 														children={
-															_30DaysMax
-																? "Click to extend calendar"
-																: "Click to Set 30 days max"
+															_30DaysMax ? "Open Calendar" : "Lock Calendar"
 														}
 														type="button"
-														class="tw-font-thin tw-text-center tw-w-full tw-text-xs"
+														class="tw-font-thin tw-text-start tw-w-full tw-text-xs tw-uppercase"
 														handleFunc={() => setShowSet(!showSet)}
 													/>
 												</div>
