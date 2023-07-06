@@ -217,7 +217,9 @@ const CalendarPage = () => {
 			setTimeleft(0);
 		}, 10000);
 
-		reload(navigate);
+		setTimeout(() => {
+			reload(navigate);
+		}, 10000);
 	};
 
 	const handleOnChange = (e) => {
