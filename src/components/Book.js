@@ -30,6 +30,7 @@ function Book({ policyService }) {
 	const { user } = useContext(UserContext);
 	const [bookLimit, setBookLimit] = React.useState(false);
 	const [_30DaysMax, set30DaysMax] = React.useState(false);
+	const [showNextMonth, setShowNextMonth] = React.useState(false);
 	const [selectDate, setSelectDate] = React.useState(null);
 	const [succeeded, setSucceeded] = React.useState(false);
 	const [processing, setProcessing] = React.useState(false);
@@ -59,7 +60,10 @@ function Book({ policyService }) {
 
 	React.useEffect(() => {
 		db.collection("calendarmax").onSnapshot((snapshot) => {
-			snapshot.docs.map((doc) => set30DaysMax(doc.data()?.is30Days));
+			snapshot.docs.map((doc) => {
+				set30DaysMax(doc.data()?.is30Days);
+				setShowNextMonth(doc.data()?.showNextMonth);
+			});
 		});
 		db.collection("location").onSnapshot((snapshot) => {
 			const results = snapshot.docs.map((doc) => ({
@@ -448,10 +452,11 @@ function Book({ policyService }) {
 				</div>
 				<div className=" tw-p-2 lg:tw-p-5 xl:tw-pr-[20px] tw-flex tw-flex-col lg:tw-flex-row  xl:tw-flex-row">
 					<div className="tw-flex tw-flex-col tw-items-center tw-mx-auto tw-mt-[-40px] tw-px-5 lg:tw-mr-10 tw-w-[332px]">
-						<div className="tw-h-[350px]">
+						<div className={`tw-h-[350px] ${_30DaysMax ? "tw-mb-10" : ""}`}>
 							<div className="xl:tw-ml-0">
 								<DatePickerComp
 									_30DaysMax={_30DaysMax}
+									showNextMonth={showNextMonth}
 									excludeDates={blockedDatesDB && blockedDatesDB}
 									handleSelect={handleSelect}
 									date={selectDate}

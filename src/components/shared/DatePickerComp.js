@@ -4,12 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function DatePickerComp({
 	_30DaysMax,
+	showNextMonth,
 	handleSelect,
 	date,
 	excludeDates,
 	isLight,
 }) {
-	return (
+	return !_30DaysMax ? (
 		<DatePicker
 			minDate={new Date()}
 			maxDate={
@@ -29,7 +30,7 @@ function DatePickerComp({
 			}) => (
 				<div>
 					<button
-						disabled={_30DaysMax}
+						disabled={showNextMonth}
 						aria-label="Previous Month"
 						className={
 							"react-datepicker__navigation react-datepicker__navigation--previous"
@@ -50,7 +51,7 @@ function DatePickerComp({
 						})}
 					</span>
 					<button
-						disabled={_30DaysMax}
+						disabled={showNextMonth}
 						aria-label="Next Month"
 						className={
 							"react-datepicker__navigation react-datepicker__navigation--next"
@@ -80,6 +81,10 @@ function DatePickerComp({
 					  }`
 			} tw-font-thin tw-text-sm`}
 		/>
+	) : (
+		<p className="tw-text-green-600 tw-text-lg tw-text-center">
+			Bookings are closed for now!
+		</p>
 	);
 }
 

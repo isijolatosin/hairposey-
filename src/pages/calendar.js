@@ -24,20 +24,17 @@ import { triggerProgress } from "../utils/triggerProgress";
 import TimeComponent from "../components/calendarPage/TimeComponent";
 import CalendarList from "../components/calendarPage/CalendarList";
 import DayTimeSlotComponent from "../components/calendarPage/DayTimeSlotComponent";
-import {
-	BsChevronRight,
-	BsFillLockFill,
-	BsFillUnlockFill,
-} from "react-icons/bs";
+import { BsFillUnlockFill } from "react-icons/bs";
 import removeHTMLTags from "../utils/removeHTMLTags";
 import reload from "../utils/reload";
+import CalendarCondition from "../components/shared/CalendarCondition";
 
 const CalendarPage = () => {
 	const dateToday = new Date();
 	const [selectDate, setSelectDate] = React.useState(null);
 	const [blockDate, setBlockDate] = React.useState(null);
-	const [showSet, setShowSet] = React.useState(false);
-	const [_30DaysMax, set30DaysMax] = React.useState({});
+	const [_30DaysMax, set30DaysMax] = React.useState(false);
+	const [showNextMonth, setShowNextMonth] = React.useState(false);
 	const [bookLimit, setBookLimit] = React.useState(false);
 	const [timeleft, setTimeleft] = React.useState(0);
 	const { user } = useContext(UserContext);
@@ -48,6 +45,7 @@ const CalendarPage = () => {
 	const [calendarList, setCalendarList] = React.useState([]);
 	const [timeSlotDB, setTimeSlotsDB] = React.useState([]);
 	const [showProgress, setShowProgress] = React.useState(false);
+	const [showNextMonthWarning, setShowNextMonthWarning] = React.useState(false);
 	const [confirmDel, setConfirmDel] = React.useState(false);
 	const [dailyMax, setDailyMax] = React.useState(0);
 	const [timeSlotArray, setTimeSlotArray] = React.useState([]);
@@ -62,7 +60,10 @@ const CalendarPage = () => {
 
 	React.useEffect(() => {
 		db.collection("calendarmax").onSnapshot((snapshot) => {
-			snapshot.docs.map((doc) => set30DaysMax(doc.data()?.is30Days));
+			snapshot.docs.map((doc) => {
+				set30DaysMax(doc.data()?.is30Days);
+				setShowNextMonth(doc.data()?.showNextMonth);
+			});
 		});
 
 		db.collection("all-bookings").onSnapshot((snapshot) => {
@@ -355,6 +356,13 @@ const CalendarPage = () => {
 		db.collection("calendarmax")
 			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
 			.set({ is30Days: _30DaysMax ? false : true }, { merge: true });
+
+		showNextMonthWarning && setShowNextMonthWarning(false);
+	};
+	const handleShowNextMonth = () => {
+		db.collection("calendarmax")
+			.doc(`${REACT_APP_AUTHORIZED_ID_ONE}/`)
+			.set({ showNextMonth: showNextMonth ? false : true }, { merge: true });
 	};
 
 	return (
@@ -387,12 +395,20 @@ const CalendarPage = () => {
 													  )
 													: ""
 											}
-											color="rgb(157 23 77)"
-											date={new Date()}
+											color={_30DaysMax ? "" : "rgb(157 23 77)"}
+											date={
+												_30DaysMax
+													? new Date(
+															new Date().getFullYear(),
+															new Date().getMonth(),
+															0
+													  )
+													: new Date()
+											}
 											onChange={handleSelect}
 											dateDisplayFormat="yyyy-MM-dd"
 											showSelectionPreview={true}
-											showMonthArrow={_30DaysMax ? false : true}
+											showMonthArrow={showNextMonth ? false : true}
 										/>
 									</div>
 									{!bookLimit && (
@@ -585,92 +601,83 @@ const CalendarPage = () => {
 								)}
 							</div>
 							<div className=" tw-mt-10 tw-border-t-[0.5px] tw-pt-5">
-								<div className="tw-max-w-full md:tw-max-w-[60%] lg:tw-max-w-[50%] tw-pb-5 tw-mb-5 tw-border-b-[1px]">
-									<div className="tw-mb-2 tw-text-pink-600">
-										<p>Date Blocker</p>
-									</div>
-									<div>
-										<div className="tw-flex tw-items-center tw-justify-between tw-w-full">
-											<div className="tw-bg-neutral-200 tw-w-[50%]">
-												<DatePickerComp
-													excludeDates={blockedDatesDB && blockedDatesDB}
-													handleSelect={(date) => setBlockDate(date)}
-													date={blockDate}
-													isLight={true}
-												/>
-											</div>
-											<div className="tw-h-[36px] tw-w-[50%] tw-flex tw-items-center tw-justify-between tw-border">
-												<div className="tw-h-full tw-flex tw-justify-center tw-items-center tw-text-black/60 tw-w-full">
-													<div className="tw-mx-2">
-														{_30DaysMax ? (
-															<BsFillLockFill
-																size={20}
-																className="tw-text-red-800"
-															/>
-														) : (
-															<BsFillUnlockFill
-																size={20}
-																className="tw-text-green-800"
-															/>
-														)}
-													</div>
-													<Button
-														children={
-															_30DaysMax ? "Open Calendar" : "Lock Calendar"
-														}
-														type="button"
-														class="tw-font-thin tw-text-start tw-w-full tw-text-xs tw-uppercase"
-														handleFunc={() => setShowSet(!showSet)}
+								<div className="tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-end tw-gap-x-5 tw-justify-between tw-w-full tw-pb-5 tw-mb-5 tw-border-b-[1px]">
+									<div className="tw-w-[50%] tw-mb-5 sm:tw-mb-0">
+										<div className="tw-mb-2 tw-text-pink-600">
+											<p>Date Blocker</p>
+										</div>
+										<div>
+											<div className="tw-flex tw-items-center tw-justify-between tw-w-full">
+												<div className="tw-bg-neutral-200 tw-w-full">
+													<DatePickerComp
+														excludeDates={blockedDatesDB && blockedDatesDB}
+														handleSelect={(date) => setBlockDate(date)}
+														date={blockDate}
+														isLight={true}
 													/>
 												</div>
-												<div
-													onClick={handleLock30DaysMax}
-													className={`${
-														showSet ? "tw-inline-block" : "tw-hidden"
-													} tw-h-full tw-border-l tw-text-white tw-w-[50px] tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-neutral-700  tw-ease-in tw-duration-300`}>
-													<BsChevronRight className="hover:tw-translate-x-1 tw-w-full tw-h-full tw-ease-in tw-duration-300 " />
-												</div>
 											</div>
-										</div>
-										{blockDate && (
-											<div className="tw-w-full tw-mx-auto tw-flex tw-flex-row tw-items-center tw-text-[10px] tw-text-red-800 tw-uppercase tw-mb-0 tw-pb-[5px] tw-pt-[10px]">
-												<div className="tw-flex-[0.9] tw-w-full tw-text-center tw-flex tw-flex-row tw-items-center">
-													<div className="tw-mr-2 tw-text-red-800">
-														<GoAlert />
+											{blockDate && (
+												<div className="tw-w-full tw-mx-auto tw-flex tw-flex-row tw-items-center tw-text-[10px] tw-text-red-800 tw-uppercase tw-mb-0 tw-pb-[5px] tw-pt-[10px]">
+													<div className="tw-flex-[0.9] tw-w-full tw-text-center tw-flex tw-flex-row tw-items-center">
+														<div className="tw-mr-2 tw-text-red-800">
+															<GoAlert />
+														</div>
+														<span>
+															{blockDate.toDateString()}. You have chosen to
+															block this date
+														</span>
 													</div>
-													<span>
-														{blockDate.toDateString()}. You have chosen to block
-														this date
-													</span>
+													<div className="tw-flex-[0.1] tw-px-2 tw-text-center tw-border-[1px] tw-border-red-800 tw-rounded-sm">
+														<button
+															onClick={submitBlockDate}
+															className="tw-uppercase tw-text-red-800">
+															Block
+														</button>
+													</div>
 												</div>
-												<div className="tw-flex-[0.1] tw-px-2 tw-text-center tw-border-[1px] tw-border-red-800 tw-rounded-sm">
-													<button
-														onClick={submitBlockDate}
-														className="tw-uppercase tw-text-red-800">
-														Block
-													</button>
-												</div>
+											)}
+										</div>
+										{blockedDatesList.length > 0 && (
+											<div className="tw-grid tw-grid-cols-2 tw-gap-1">
+												{blockedDatesList.map((block) => (
+													<ul
+														key={block.id}
+														className="tw-flex tw-items-center tw- tw-text-xs tw-text-red-700 tw-font-thin tw-p-2 tw-pr-0 tw-rounded-b-md tw-bg-neutral-100 tw-h-[30px]">
+														<li className="tw-flex-[0.7]">
+															{block.day.toDateString()}
+														</li>
+														<button
+															onClick={() => submitUnblockDate(block.id)}
+															className="tw-rounded-br-md tw-text-green-800 tw-h-[30px] tw-flex tw-flex-[0.3] tw-justify-center tw-items-center">
+															<BsFillUnlockFill size={15} />
+														</button>
+													</ul>
+												))}
 											</div>
 										)}
 									</div>
-									{blockedDatesList.length > 0 && (
-										<div className="tw-grid tw-grid-cols-2 tw-gap-1">
-											{blockedDatesList.map((block) => (
-												<ul
-													key={block.id}
-													className="tw-flex tw-items-center tw- tw-text-xs tw-text-red-700 tw-font-thin tw-p-2 tw-pr-0 tw-rounded-b-md tw-bg-neutral-100 tw-h-[30px]">
-													<li className="tw-flex-[0.7]">
-														{block.day.toDateString()}
-													</li>
-													<button
-														onClick={() => submitUnblockDate(block.id)}
-														className="tw-rounded-br-md tw-text-green-800 tw-h-[30px] tw-flex tw-flex-[0.3] tw-justify-center tw-items-center">
-														<BsFillUnlockFill size={15} />
-													</button>
-												</ul>
-											))}
-										</div>
-									)}
+									<div className="tw-w-[50%]">
+										<CalendarCondition
+											condition={_30DaysMax}
+											textArray={["Open Calendar", "Lock Calendar"]}
+											func={handleLock30DaysMax}
+										/>
+										<CalendarCondition
+											condition={showNextMonth}
+											textArray={["Show Next Month", "Hide Next Month"]}
+											func={
+												!_30DaysMax
+													? handleShowNextMonth
+													: () => setShowNextMonthWarning(true)
+											}
+										/>
+										{showNextMonthWarning && _30DaysMax && (
+											<p className="tw-capitalize tw-w-full tw-text-red-800 tw-text-center tw-mt-3.5 tw-text-sm">
+												Please open calendar before setting
+											</p>
+										)}
+									</div>
 								</div>
 								<div className="tw-mb-2 tw-text-pink-600">
 									<p>Time slot blocker</p>
