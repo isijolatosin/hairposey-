@@ -344,7 +344,7 @@ function Book({ policyService }) {
 					setBookingData({});
 
 					setTimeout(() => {
-						SendClientSuccessfulPurchaseEmail();
+						// SendClientSuccessfulPurchaseEmail(); // Stop customers email notification
 						SendMerchantSuccessfulPurchaseEmail();
 					}, 1000);
 				}
@@ -375,6 +375,7 @@ function Book({ policyService }) {
 		serviceDuration: `${serviceDuration} hours`,
 		timeSlot: _timeSlot,
 	};
+	// eslint-disable-next-line no-unused-vars
 	const SendClientSuccessfulPurchaseEmail = () => {
 		emailjs
 			.send(
