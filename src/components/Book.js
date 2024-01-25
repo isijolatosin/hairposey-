@@ -345,7 +345,7 @@ function Book({ policyService }) {
 
 					setTimeout(() => {
 						// SendClientSuccessfulPurchaseEmail(); // Stop customers email notification
-						SendMerchantSuccessfulPurchaseEmail();
+						// SendMerchantSuccessfulPurchaseEmail(); // Stop Merchant email notification
 					}, 1000);
 				}
 			}
@@ -401,6 +401,7 @@ function Book({ policyService }) {
 		sender: "Hairposey Bookings",
 		customer: user?.displayName || user?.email || userEmail,
 	};
+	// eslint-disable-next-line no-unused-vars
 	const SendMerchantSuccessfulPurchaseEmail = () => {
 		emailjs
 			.send(
