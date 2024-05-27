@@ -299,56 +299,60 @@ function Book({ policyService }) {
 		// One time payment
 		setProcessing(true);
 
-		if (clientSecret) {
-			const payload = await stripe.confirmCardPayment(clientSecret, {
-				payment_method: {
-					card: elements.getElement(CardElement),
-				},
-			});
-			if (payload.error) {
-				set_Error(`Payment failed ${payload.error.message}`);
-				setProcessing(false);
-			} else {
-				if (payload?.paymentIntent?.client_secret) {
-					set_Error(null);
+		if (process.env.REACT_APP_ALLOWSERVICE === "true") {
+			if (clientSecret) {
+				const payload = await stripe.confirmCardPayment(clientSecret, {
+					payment_method: {
+						card: elements.getElement(CardElement),
+					},
+				});
+				if (payload.error) {
+					set_Error(`Payment failed ${payload.error.message}`);
 					setProcessing(false);
-					setSucceeded(true);
+				} else {
+					if (payload?.paymentIntent?.client_secret) {
+						set_Error(null);
+						setProcessing(false);
+						setSucceeded(true);
 
-					db.collection("all-bookings")
-						.add({
-							date: selectDate,
-							customer: user?.displayName || userEmail,
-							email: user?.email || userEmail,
-							category: bookingData.category,
-							service: bookingData.service,
-							addOnServices: bookingData.addOnServices,
-							orderNo: orderNo,
-							quantity: 1,
-							transactionDate: dateNow.toDateString(),
-							payMethod: "Card",
-							product: "Hair Appointment",
-							sender: "Hairposey",
-							total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
-							balance: bookingBalance,
-							duration: serviceDuration,
-							status: status,
-							timeSlot: _timeSlot,
-						})
-						.then(() => {
-							console.log(`SUCCESSFULL`);
-						})
-						.catch((error) => console.log("Error" + error.message));
+						db.collection("all-bookings")
+							.add({
+								date: selectDate,
+								customer: user?.displayName || userEmail,
+								email: user?.email || userEmail,
+								category: bookingData.category,
+								service: bookingData.service,
+								addOnServices: bookingData.addOnServices,
+								orderNo: orderNo,
+								quantity: 1,
+								transactionDate: dateNow.toDateString(),
+								payMethod: "Card",
+								product: "Hair Appointment",
+								sender: "Hairposey",
+								total: `${process.env.REACT_APP_BOOKING_PRICE}.00`,
+								balance: bookingBalance,
+								duration: serviceDuration,
+								status: status,
+								timeSlot: _timeSlot,
+							})
+							.then(() => {
+								console.log(`SUCCESSFULL`);
+							})
+							.catch((error) => console.log("Error" + error.message));
 
-					setUserEmail("");
-					setSelectDate("");
-					setBookingData({});
+						setUserEmail("");
+						setSelectDate("");
+						setBookingData({});
 
-					setTimeout(() => {
-						// SendClientSuccessfulPurchaseEmail(); // Stop customers email notification
-						// SendMerchantSuccessfulPurchaseEmail(); // Stop Merchant email notification
-					}, 1000);
+						setTimeout(() => {
+							SendClientSuccessfulPurchaseEmail();
+							SendMerchantSuccessfulPurchaseEmail();
+						}, 1000);
+					}
 				}
 			}
+		} else {
+			return;
 		}
 	};
 

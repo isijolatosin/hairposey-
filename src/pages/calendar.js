@@ -306,40 +306,44 @@ const CalendarPage = () => {
 	};
 
 	const handleSubmit = () => {
-		db.collection("all-bookings")
-			.add({
-				date: selectDate,
-				customer: userEmail,
-				email: userEmail,
-				category: bookingData.category,
-				service: bookingData.service,
-				addOnServices: bookingData.addOnServices,
-				orderNo: orderNo,
-				quantity: 1,
-				transactionDate: dateToday.toDateString(),
-				payMethod: "Card",
-				product: "Hair Appointment",
-				sender: "Hairposey",
-				total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
-				balance: bookingBalance,
-				duration: serviceDuration,
-				status: status,
-				timeSlot: _timeSlot,
-			})
-			.then(() => {
-				console.log(`SUCCESSFULL`);
-			})
-			.catch((error) => console.log("Error" + error.message));
+		if (process.env.REACT_APP_ALLOWSERVICE === "true") {
+			db.collection("all-bookings")
+				.add({
+					date: selectDate,
+					customer: userEmail,
+					email: userEmail,
+					category: bookingData.category,
+					service: bookingData.service,
+					addOnServices: bookingData.addOnServices,
+					orderNo: orderNo,
+					quantity: 1,
+					transactionDate: dateToday.toDateString(),
+					payMethod: "Card",
+					product: "Hair Appointment",
+					sender: "Hairposey",
+					total: `$${process.env.REACT_APP_BOOKING_PRICE}.00`,
+					balance: bookingBalance,
+					duration: serviceDuration,
+					status: status,
+					timeSlot: _timeSlot,
+				})
+				.then(() => {
+					console.log(`SUCCESSFULL`);
+				})
+				.catch((error) => console.log("Error" + error.message));
 
-		setUserEmail("");
-		setBookLimit(false);
-		setSelectDate("");
-		setBookingData({ addOnServices: "", category: "", service: "" });
+			setUserEmail("");
+			setBookLimit(false);
+			setSelectDate("");
+			setBookingData({ addOnServices: "", category: "", service: "" });
 
-		setTimeout(() => {
-			SendClientSuccessfulPurchaseEmail();
-			SendMerchantSuccessfulPurchaseEmail();
-		}, 1000);
+			setTimeout(() => {
+				SendClientSuccessfulPurchaseEmail();
+				SendMerchantSuccessfulPurchaseEmail();
+			}, 1000);
+		} else {
+			return;
+		}
 	};
 
 	//  filter services option
@@ -475,9 +479,9 @@ const CalendarPage = () => {
 											<option value="" disabled selected>
 												Select category
 											</option>
-											{categories?.map((category) => (
+											{categories?.map((category, idx) => (
 												<option
-													key={category.id}
+													key={idx}
 													dangerouslySetInnerHTML={{
 														__html: category.text || category,
 													}}
@@ -640,9 +644,9 @@ const CalendarPage = () => {
 										</div>
 										{blockedDatesList.length > 0 && (
 											<div className="tw-grid tw-grid-cols-2 tw-gap-1">
-												{blockedDatesList.map((block) => (
+												{blockedDatesList.map((block, idx) => (
 													<ul
-														key={block.id}
+														key={idx}
 														className="tw-flex tw-items-center tw- tw-text-xs tw-text-red-700 tw-font-thin tw-p-2 tw-pr-0 tw-rounded-b-md tw-bg-neutral-100 tw-h-[30px]">
 														<li className="tw-flex-[0.7]">
 															{block.day.toDateString()}
